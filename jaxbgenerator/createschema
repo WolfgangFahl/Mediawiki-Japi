@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#
+# get the example queries
+#
+queries() {
+  local l_query="http://www.mediawiki.org/w/api.php?action=query"
+  local l_format="&format=xml"
+cat << EOF | egrep -v "^#"
+http://www.mediawiki.org/w/api.php?&action=query&titles=Main%20Page&prop=revisions&rvprop=content$l_format
+#http://www.mediawiki.org/w/api.php?&action=query&titles=2011_Wikimedia_fundraiser|2011_Wikimedia_fundraiser&prop=revisions&rvprop=content$l_format
+#$l_query&list=allpages&apfrom=Kre&aplimit=5$l_format
+#$l_query&meta=siteinfo&siprop=statistics$l_format
+#$l_query&meta=siteinfo$l_format
+EOF
+}
+
+#
+# get a schema
+#
+getschema() {
+  local l_xml="$1"
+  local l_tmpschemahtml="/tmp/schemahtml$$"
+  local l_tmpschema="/tmp/schema$$.xsd"
+
+  # non working schema generators (mostly not easy to handle with curl ...)
+	# xmlschemagen_url="http://www.xmlforasp.net/CodeBank/System_Xml_Schema/BuildSchema/BuildXMLSchema.aspx"
+	#  --data "__VIEWSTATEGENERATOR=1BA98693" \
+	#  --data "__VIEWSTATE=/wEPDwULLTE0NDc4ODY1NjZkZALwgmQT8TjHX9VW1hRQODpWO37P" \
+	#  --data "__EVENTVALIDATION=/wEWBgL4yt2nBgKj+/r1AwKM1c/8AwKkyPGDAQK7yPGDAQK0p9vtDUxLg82ZLCD8XFqL4UFJWhoBlHR7" \
+	# xml_schemagen_url="http://xmlgrid.net/xml2xsd.html"
+
+	xmlschemagen_url="http://devutilsonline.com/xsd-xml/generate-xsd-from-xml"
+	curl -s -F design=rd -F xmlcontent='<'$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+	cat  $l_tmpschemahtml | xmlstarlet unesc | awk '
+BEGIN { 
+  quote="\x22"
+  printf ("<?xml version=%s1.0%s?>\n",quote,quote) 
+}
+/\<xs:schema/,/\<\/xs:schema/ { print }	
+	' > $l_tmpschema
+	rm -f $l_tmpschemahtml
+	echo $l_tmpschema
+}
+
+#
+# generate java code for the schema
+#
+schemagen() {
+  local l_xsd="$1"
+  local l_tmpcleanxsd="/tmp/schemaclean$$.xsd"
+  #cat $l_xsd | xmlstarlet ed -d "/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='warnings']" > $l_tmpcleanxsd
+  cat $l_xsd \
+    | xmlstarlet ed -d "/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='warnings']" \
+    | xmlstarlet ed -d "//xs:attribute[@ref='xml:space']" > $l_tmpcleanxsd
+  xjc -b binding.xml -p com.bitplan.jmediawiki.api -d src $l_tmpcleanxsd 
+	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
+}
+
+for query in `queries`
+do
+  tmpxml=/tmp/mediawiki$$.xml
+  echo "getting xml for Query $query ..."
+  curl -s "$query" -o $tmpxml
+  echo "getting schema for xml result $tmpxml ..."
+  xsd=`getschema $tmpxml`
+	schemagen $xsd
+done
