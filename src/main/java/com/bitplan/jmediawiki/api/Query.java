@@ -13,7 +13,7 @@ public class Query {
    protected General general;
    protected Allpages allpages;
    protected List<Page> pages=new ArrayList<Page>();
-
+   protected List<Rc> recentchanges=new ArrayList<Rc>();
 	/**
 	 * @return the statistics
 	 */
@@ -99,5 +99,21 @@ public class Query {
   public void setPages(List<Page> value) {
       this.pages = value;
   }
+
+	/**
+	 * @return the recentchanges
+	 */
+  @XmlElementWrapper(name="recentchanges")
+  @XmlElement(name="rc", type=Rc.class)
+	public List<Rc> getRecentchanges() {
+		return recentchanges;
+	}
+
+	/**
+	 * @param recentchanges the recentchanges to set
+	 */
+	public void setRecentchanges(List<Rc> recentchanges) {
+		this.recentchanges = recentchanges;
+	}
 
 }

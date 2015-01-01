@@ -17,36 +17,38 @@ import com.sun.jersey.api.client.WebResource;
 
 /**
  * access to Mediawiki api
+ * 
  * @author wf
  *
  */
 public class JMediawiki {
-	
+
 	/**
 	 * set to true for debugging
 	 */
-	protected boolean debug=false;
-	
+	protected boolean debug = false;
+
 	/**
-	 *  Logging may be enabled by setting debug to true
+	 * Logging may be enabled by setting debug to true
 	 */
 	protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
 			.getLogger("com.bitplan.jmediawiki");
-	
+
 	protected String siteurl;
-	protected String scriptPath="/w";
-	// FIXME - default should be json soon 
-	protected String format="xml";
-	protected String apiPath="/api.php?action=query";
-	
+	protected String scriptPath = "/w";
+	// FIXME - default should be json soon
+	protected String format = "xml";
+	protected String apiPath = "/api.php?action=query";
+
 	/**
 	 * enabel debugging
+	 * 
 	 * @param debug
 	 */
 	public void setDebug(boolean debug) {
-		this.debug=debug;
+		this.debug = debug;
 	}
-	
+
 	/**
 	 * @return the siteurl
 	 */
@@ -55,7 +57,8 @@ public class JMediawiki {
 	}
 
 	/**
-	 * @param siteurl the siteurl to set
+	 * @param siteurl
+	 *          the siteurl to set
 	 */
 	public void setSiteurl(String siteurl) {
 		this.siteurl = siteurl;
@@ -69,7 +72,8 @@ public class JMediawiki {
 	}
 
 	/**
-	 * @param scriptPath the scriptPath to set
+	 * @param scriptPath
+	 *          the scriptPath to set
 	 */
 	public void setScriptPath(String scriptPath) {
 		this.scriptPath = scriptPath;
@@ -77,29 +81,33 @@ public class JMediawiki {
 
 	/**
 	 * construct a Mediawik for the given url
-	 * @param siteurl - the url to use
+	 * 
+	 * @param siteurl
+	 *          - the url to use
 	 */
 	public JMediawiki(String siteurl) {
-		this.siteurl=siteurl;
+		this.siteurl = siteurl;
 	}
-	
+
 	/**
 	 * get the Result for the given query
+	 * 
 	 * @param query
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {
-	  String queryUrl=siteurl+scriptPath+apiPath+query+"&format="+format;
-	  if (debug)
-	  	LOGGER.log(Level.INFO,queryUrl);
-	  WebResource resource = Client.create().resource(queryUrl);
-	  String xml=resource.get(String.class);
-	  xml=xml.replace(">", ">\n");
-	  if (debug)
-	  	LOGGER.log(Level.INFO,xml);
-	  Api api=Api.fromXML(xml);
-	  return api;
+		String queryUrl = siteurl + scriptPath + apiPath + query + "&format="
+				+ format;
+		if (debug)
+			LOGGER.log(Level.INFO, queryUrl);
+		WebResource resource = Client.create().resource(queryUrl);
+		String xml = resource.get(String.class);
+		xml = xml.replace(">", ">\n");
+		if (debug)
+			LOGGER.log(Level.INFO, xml);
+		Api api = Api.fromXML(xml);
+		return api;
 	}
 
 }

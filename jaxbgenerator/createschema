@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) 2015 BITPlan GmbH
+# http://www.bitplan.com
+# WF 2015-01-01
 
 #
 # get the example queries
@@ -7,7 +10,8 @@ queries() {
   local l_query="http://www.mediawiki.org/w/api.php?action=query"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
-http://www.mediawiki.org/w/api.php?&action=query&titles=Main%20Page&prop=revisions&rvprop=content$l_format
+$l_query&list=recentchanges&rcprop=title|ids|sizes|flags|user&rclimit=3$l_format
+#http://www.mediawiki.org/w/api.php?&action=query&titles=Main%20Page&prop=revisions&rvprop=content$l_format
 #http://www.mediawiki.org/w/api.php?&action=query&titles=2011_Wikimedia_fundraiser|2011_Wikimedia_fundraiser&prop=revisions&rvprop=content$l_format
 #$l_query&list=allpages&apfrom=Kre&aplimit=5$l_format
 #$l_query&meta=siteinfo&siprop=statistics$l_format
@@ -46,11 +50,12 @@ BEGIN {
 #
 # generate java code for the schema
 #
-schemagen() {
+codegen() {
   local l_xsd="$1"
   local l_tmpcleanxsd="/tmp/schemaclean$$.xsd"
-  #cat $l_xsd | xmlstarlet ed -d "/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='warnings']" > $l_tmpcleanxsd
+  # remove problematic notes (e.g. duplicate stuff)
   cat $l_xsd \
+    | xmlstarlet ed -d "//xs:element[@name='query-continue']" \
     | xmlstarlet ed -d "/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='warnings']" \
     | xmlstarlet ed -d "//xs:attribute[@ref='xml:space']" > $l_tmpcleanxsd
   xjc -b binding.xml -p com.bitplan.jmediawiki.api -d src $l_tmpcleanxsd 
@@ -64,5 +69,5 @@ do
   curl -s "$query" -o $tmpxml
   echo "getting schema for xml result $tmpxml ..."
   xsd=`getschema $tmpxml`
-	schemagen $xsd
+	codegen $xsd
 done

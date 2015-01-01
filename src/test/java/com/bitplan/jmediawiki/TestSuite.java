@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ TestApiJaxb.class,TestAPI_Query.class, TestAPI_Meta.class, TestUsage.class})
+@Suite.SuiteClasses({ TestApiJaxb.class,TestAPI_Query.class, TestAPI_Meta.class, TestAPI_Recentchanges.class,TestUsage.class})
 public class TestSuite {
 
 }

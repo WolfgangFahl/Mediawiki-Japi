@@ -21,7 +21,7 @@ public class TestAPI {
 	/**
 	 * set to true for debugging
 	 */
-	protected boolean debug=false;
+	protected boolean debug=true;
 	
 	/**
 	 *  Logging may be enabled by setting debug to true
@@ -37,7 +37,7 @@ public class TestAPI {
 	 */
 	public Api getQueryResult(String query) throws Exception {
 		JMediawiki wiki=new JMediawiki("http://www.mediawiki.org");
-		// wiki.setDebug(true);
+		wiki.setDebug(debug);
 		Api api=wiki.getQueryResult(query);
 		return api;
 	}
