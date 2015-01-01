@@ -10,7 +10,10 @@ queries() {
   local l_query="http://www.mediawiki.org/w/api.php?action=query"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
-$l_query&list=recentchanges&rcprop=title|ids|sizes|flags|user&rclimit=3$l_format
+# set your own username and password here
+# change curl furhter down to -X POST
+#http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml
+#$l_query&list=recentchanges&rcprop=title|ids|sizes|flags|user&rclimit=3$l_format
 #http://www.mediawiki.org/w/api.php?&action=query&titles=Main%20Page&prop=revisions&rvprop=content$l_format
 #http://www.mediawiki.org/w/api.php?&action=query&titles=2011_Wikimedia_fundraiser|2011_Wikimedia_fundraiser&prop=revisions&rvprop=content$l_format
 #$l_query&list=allpages&apfrom=Kre&aplimit=5$l_format
@@ -66,7 +69,10 @@ for query in `queries`
 do
   tmpxml=/tmp/mediawiki$$.xml
   echo "getting xml for Query $query ..."
+  # uncomment for POST actions e.g. login
+  #  curl -s -X POST "$query" -o $tmpxml
   curl -s "$query" -o $tmpxml
+
   echo "getting schema for xml result $tmpxml ..."
   xsd=`getschema $tmpxml`
 	codegen $xsd

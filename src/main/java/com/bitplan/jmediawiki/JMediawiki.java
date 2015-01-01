@@ -38,7 +38,7 @@ public class JMediawiki {
 	protected String scriptPath = "/w";
 	// FIXME - default should be json soon
 	protected String format = "xml";
-	protected String apiPath = "/api.php?action=query";
+	protected String apiPath = "/api.php?";
 
 	/**
 	 * enabel debugging
@@ -90,6 +90,32 @@ public class JMediawiki {
 	}
 
 	/**
+	 * get the result for the given action and aprams
+	 * @param action
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Api getActionResult(String action,String params) throws Exception {
+		String queryUrl = siteurl + scriptPath + apiPath +"&action="+action+ params + "&format="
+				+ format;
+		if (debug)
+			LOGGER.log(Level.INFO, queryUrl);
+		WebResource resource = Client.create().resource(queryUrl);
+		String xml;
+		if ("login".equals(action)) {
+			xml=resource.post(String.class);
+		} else {
+			xml=resource.get(String.class);
+		}
+		xml = xml.replace(">", ">\n");
+		if (debug)
+			LOGGER.log(Level.INFO, xml);
+		Api api = Api.fromXML(xml);
+		return api;
+	}
+	
+	/**
 	 * get the Result for the given query
 	 * 
 	 * @param query
@@ -97,17 +123,8 @@ public class JMediawiki {
 	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {
-		String queryUrl = siteurl + scriptPath + apiPath + query + "&format="
-				+ format;
-		if (debug)
-			LOGGER.log(Level.INFO, queryUrl);
-		WebResource resource = Client.create().resource(queryUrl);
-		String xml = resource.get(String.class);
-		xml = xml.replace(">", ">\n");
-		if (debug)
-			LOGGER.log(Level.INFO, xml);
-		Api api = Api.fromXML(xml);
-		return api;
+		Api result=this.getActionResult("query", query);
+		return result;
 	}
 
 }

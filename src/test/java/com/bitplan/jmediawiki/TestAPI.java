@@ -22,6 +22,8 @@ public class TestAPI {
 	 * set to true for debugging
 	 */
 	protected boolean debug=false;
+
+	protected JMediawiki wiki;
 	
 	/**
 	 *  Logging may be enabled by setting debug to true
@@ -29,6 +31,11 @@ public class TestAPI {
 	protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
 			.getLogger("com.bitplan.jmediawiki");
 	
+  public TestAPI() {
+		wiki=new JMediawiki("http://www.mediawiki.org");
+		wiki.setDebug(debug);
+  }
+  
 	/**
 	 * get a query Result
 	 * @param query
@@ -36,8 +43,6 @@ public class TestAPI {
 	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {
-		JMediawiki wiki=new JMediawiki("http://www.mediawiki.org");
-		wiki.setDebug(debug);
 		Api api=wiki.getQueryResult(query);
 		return api;
 	}

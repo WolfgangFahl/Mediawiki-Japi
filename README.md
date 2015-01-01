@@ -73,7 +73,7 @@ There is a bash script createschema which
 * generates java code from the xml
 
 This is a semi-automatic process. The resulting java code needs to be adapted to be workable. For a start
-14 Java classes have been generated that allow some 7 JUnit tests to pass.
+16 Java classes have been generated that allow some 9 JUnit tests to pass.
   
 ## Version history
 * 0.0.1 - 2015-01-01: first version

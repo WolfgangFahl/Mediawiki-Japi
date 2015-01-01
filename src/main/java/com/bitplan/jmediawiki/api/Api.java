@@ -40,6 +40,32 @@ public class Api {
 	public void setServedby(String servedby) {
 		this.servedby = servedby;
 	}
+	
+   protected Login login;
+
+   /**
+    * Gets the value of the login property.
+    * 
+    * @return
+    *     possible object is
+    *     {@link Login }
+    *     
+    */
+   public Login getLogin() {
+       return login;
+   }
+
+   /**
+    * Sets the value of the login property.
+    * 
+    * @param value
+    *     allowed object is
+    *     {@link Login }
+    *     
+    */
+   public void setLogin(Login value) {
+       this.login = value;
+   }
 
 	/**
 	 * @return the query
@@ -54,6 +80,8 @@ public class Api {
 	public void setQuery(Query query) {
 		this.query = query;
 	}
+	
+	
 
 	/**
 	 * create a Api from an XML string
