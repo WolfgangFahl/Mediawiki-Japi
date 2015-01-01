@@ -1,0 +1,219 @@
+<!--
+	Copyright (c) 2015 BITPlan GmbH
+
+	Project details and license at:
+	https://github.com/WolfgangFahl/Jmediawiki
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.bitplan</groupId>
+	<artifactId>jmediawiki</artifactId>
+	<packaging>jar</packaging>
+	<name>BITPlan-jmediawiki</name>
+	<version>0.0.1</version>
+	<description>Java library to call Mediawiki api</description>
+	<prerequisites>
+    <maven>3.1.1</maven>
+  </prerequisites>
+	<url>https://github.com/WolfgangFahl/jmediawiki</url>
+	<licenses>
+		<license>
+			<name>Apache </name>
+			<url>http://www.opensource.org/licenses/lgpl-3.0.html</url>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/WolfgangFahl/jmediawiki.git</connection>
+		<developerConnection>scm:git:git@github.com:WolfgangFahl/jmediawiki.git</developerConnection>
+		<url>https://github.com/WolfgangFahl/jmediawiki</url>
+	</scm>
+	<issueManagement>
+		<url>https://github.com/WolfgangFahl/jmediawiki/issues</url>
+		<system>GitHub</system>
+	</issueManagement>
+	<developers>
+		<developer>
+			<id>wf</id>
+			<name>Wolfgang Fahl</name>
+			<organization>BITPlan GmbH</organization>
+			<organizationUrl>http://www.bitplan.com</organizationUrl>
+		</developer>
+	</developers>
+	<properties>
+		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
+		<github.global.server>github</github.global.server>
+		<!-- versions of other libraries to be used -->
+		<jersey.version>1.18</jersey.version>
+		<junit4.version>4.11</junit4.version>
+		<commons.io.version>2.4</commons.io.version>
+		<moxy.version>2.5.1</moxy.version>
+	</properties>
+	<dependencies>
+		<!-- commons io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
+		</dependency>
+		<!-- Jersey client -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<!-- Multipart support -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<!-- eclipse moxy -->
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.moxy</artifactId>
+			<version>${moxy.version}</version>
+		</dependency>
+		<!-- Jersey moxy -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-moxy</artifactId>
+			<version>${jersey.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- JUnit testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit4.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source />
+					<target />
+				</configuration>
+			</plugin>
+			<plugin>
+				<!--
+					see
+					http://central.sonatype.org/pages/apache-maven.html
+
+					Javadoc and Sources Attachments
+					To get Javadoc and Source jar files generated, you have to configure
+					the
+					javadoc and source Maven plugins.
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+				GPG Signed Components
+				The Maven GPG plugin is used to sign the components with the following
+				configuration.
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+				according to :
+
+				http://central.sonatype.org/pages/apache-maven.html
+
+				Nexus Staging Maven Plugin for Deployment and Release
+
+				The Nexus Staging Maven Plugin is the recommended way to deploy your
+				components
+				to OSSRH and release them to the Central Repository.
+				To configure it simply add the plugin to your Maven pom.xml.
+			-->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<!-- set to true for automation -->
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<!-- Maven release plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
+					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
+				</configuration>
+			</plugin>
+			<!-- git hub site plugin https://github.com/github/maven-plugins -->
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.10</version>
+				<configuration>
+					<message>Creating site for ${project.version}</message>
+					<repositoryName>jmediawiki</repositoryName>      <!-- github repo name -->
+					<repositoryOwner>WolfgangFahl</repositoryOwner>    <!-- github username -->
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
