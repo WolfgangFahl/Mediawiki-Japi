@@ -21,7 +21,7 @@ public class TestAPI {
 	/**
 	 * set to true for debugging
 	 */
-	protected boolean debug=true;
+	protected boolean debug=false;
 	
 	/**
 	 *  Logging may be enabled by setting debug to true
