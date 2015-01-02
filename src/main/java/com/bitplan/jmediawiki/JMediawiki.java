@@ -107,43 +107,6 @@ public class JMediawiki implements IMediawiki {
 		ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
 		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
 		client = ApacheHttpClient.create(config);
-		// client=Client.create();
-		// client.addFilter(new CookieFilter());
-	}
-
-	
-
-	/**
-	 * Cookie handling
-	 * http://stackoverflow.com/questions/6713893/jersey-client-adding
-	 * -cookies-to-request
-	 * 
-	 * @author wf
-	 *
-	 */
-	public class CookieFilter extends ClientFilter {
-
-		@Override
-		public ClientResponse handle(ClientRequest request)
-				throws ClientHandlerException {
-			if (cookies != null) {
-				request.getHeaders().put("Cookie", cookies);
-			}
-			ClientResponse response = getNext().handle(request);
-			if (response.getCookies() != null) {
-				if (cookies == null) {
-					cookies = new ArrayList<Object>();
-				}
-				// simple addAll just for illustration (should probably check for
-				// duplicates and expired cookies)
-				List<NewCookie> responseCookies = response.getCookies();
-				for (NewCookie newCookie:responseCookies) {
-					LOGGER.log(Level.INFO,newCookie.getName()+"="+newCookie.getValue());
-					cookies.add(newCookie);
-				}
-			}
-			return response;
-		}
 	}
 
 	/**

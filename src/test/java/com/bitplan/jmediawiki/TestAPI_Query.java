@@ -38,7 +38,7 @@ public class TestAPI_Query extends TestAPI {
 	@Test
 	public void testGetAllPages() throws Exception {
 		Api api = getQueryResult("&list=allpages&apfrom=Kre&aplimit=5");
-		List<P> pageRefList = api.getQuery().getAllpages().getP();
+		List<P> pageRefList = api.getQuery().getAllpages();
 		assertEquals(5, pageRefList.size());
 	}
 

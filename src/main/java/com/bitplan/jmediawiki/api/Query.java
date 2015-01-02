@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Query {
    protected Statistics statistics;
    protected General general;
-   protected Allpages allpages;
+   protected List<P> allpages=new ArrayList<P>();
    protected List<Page> pages=new ArrayList<Page>();
    protected List<Rc> recentchanges=new ArrayList<Rc>();
 	/**
@@ -61,24 +61,18 @@ public class Query {
   /**
    * Gets the value of the allpages property.
    * 
-   * @return
-   *     possible object is
-   *     {@link Allpages }
-   *     
    */
-  public Allpages getAllpages() {
+  @XmlElementWrapper(name="allpages")
+  @XmlElement(name="p", type=P.class)
+  public List<P> getAllpages() {
       return allpages;
   }
 
   /**
    * Sets the value of the allpages property.
    * 
-   * @param value
-   *     allowed object is
-   *     {@link Allpages }
-   *     
    */
-  public void setAllpages(Allpages value) {
+  public void setAllpages(List<P> value) {
       this.allpages = value;
   }
   
