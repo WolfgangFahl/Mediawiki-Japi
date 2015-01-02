@@ -10,7 +10,7 @@ This is a Java API for the Mediawiki web API described at
 http://www.mediawiki.org/wiki/API:Main_page
 
 ### Documentation
-* [Javadoc](/apidocs/index.html)
+* Javadoc: http://wolfgangfahl.github.io/JMediawiki/apidocs/index.html
 * [Examples](#Examples)
 
 ### Status
@@ -43,7 +43,7 @@ Maven dependency:
 * mvn install
 
 
-## Examples:
+## Examples
 
 ### Sample query:get a single page
 http://www.mediawiki.org/wiki/API:Query#Sample_query
