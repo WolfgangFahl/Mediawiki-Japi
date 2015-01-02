@@ -45,9 +45,9 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
 ```java
   /**
    * http://www.mediawiki.org/wiki/API:Query#Sample_query
-	 * http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&titles=Main%20Page&format=xml
-	 * @throws Exception 
-	 */
+   * http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&titles=Main%20Page&format=xml
+   * @throws Exception 
+   */
 	@Test
 	public void testSampleQuery() throws Exception {
 		JMediawiki wiki=new JMediawiki("http://en.wikipedia.org");
