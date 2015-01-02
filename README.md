@@ -1,17 +1,14 @@
 JMediawiki
 ==========
 
-Client for Mediawiki Api
+This is a Java API for the Mediawiki web API described at 
+http://www.mediawiki.org/wiki/API:Main_page
 
 ## Project 
-### Purpose
-This is a Java API for the Mediawiki web API described at 
-
-http://www.mediawiki.org/wiki/API:Main_page
 
 ### Documentation
 * Javadoc: http://wolfgangfahl.github.io/JMediawiki/apidocs/index.html
-* [Examples](#Examples)
+* [Examples](#examples)
 
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
