@@ -63,11 +63,20 @@ public class TestAPI_Login extends TestAPI {
 	public void testLogin() throws Exception {
 		WikiUser wuser=WikiUser.getUser("mediawiki_org");
 		// avoid uncommenting - will show password information ...
-		// wiki.setDebug(true);
 		Login login=wiki.login(wuser.getUsername(),wuser.getPassword());
 		assertEquals("Success",login.getResult());
 		assertNotNull(login.getLguserid());
 		assertEquals(wuser.getUsername(),login.getLgusername());
 		assertNotNull(login.getLgtoken());
+		// make sure logout also works
+		wiki.logout();
+		// FIXME - test effect of logout
 	}
+	
+	@Test
+	public void testLoginNotExists() throws Exception {
+		Login login=wiki.login("someUserThatDoesNotExist","somePassword");
+		assertEquals("NotExists",login.getResult());
+	}
+	
 }

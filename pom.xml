@@ -20,8 +20,8 @@
 	<url>https://github.com/WolfgangFahl/jmediawiki</url>
 	<licenses>
 		<license>
-			<name>Apache </name>
-			<url>http://www.opensource.org/licenses/lgpl-3.0.html</url>
+			<name>Apache 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
 	<scm>

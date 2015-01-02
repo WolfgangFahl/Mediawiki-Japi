@@ -11,19 +11,13 @@ package com.bitplan.jmediawiki;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 
-import javax.ws.rs.core.NewCookie;
-
 import com.bitplan.jmediawiki.api.Api;
+import com.bitplan.jmediawiki.api.Error;
 import com.bitplan.jmediawiki.api.Login;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientRequest;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
@@ -34,12 +28,29 @@ import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
  * @author wf
  *
  */
-public class JMediawiki implements IMediawiki {
+public class JMediawiki implements MediawikiApi {
+
+	/**
+	 *  current Version 
+	 */
+	protected static final String VERSION="0.0.2";
+	
+	/**
+	 * see <a href='https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Identifying your client:User-Agent</a>
+	 */
+	protected static final String USER_AGENT = "JMediawiki/"+VERSION+" (https://github.com/WolfgangFahl/JMediawiki; support@bitplan.com)";
+
+	private static final String DEFAULT_SCRIPTPATH = "/w";
 
 	/**
 	 * set to true for debugging
 	 */
 	protected boolean debug = false;
+	
+	/**
+	 * set to true if exceptions should be thrown on Error
+	 */
+	protected boolean throwExceptionOnError=true;
 
 	/**
 	 * Logging may be enabled by setting debug to true
@@ -48,7 +59,7 @@ public class JMediawiki implements IMediawiki {
 			.getLogger("com.bitplan.jmediawiki");
 
 	protected String siteurl;
-	protected String scriptPath = "/w";
+	protected String scriptPath = DEFAULT_SCRIPTPATH;
 	// FIXME - default should be json soon
 	protected String format = "xml";
 	protected String apiPath = "/api.php?";
@@ -64,6 +75,20 @@ public class JMediawiki implements IMediawiki {
 	 */
 	public void setDebug(boolean debug) {
 		this.debug = debug;
+	}
+
+	/**
+	 * @return the throwExceptionOnError
+	 */
+	public boolean isThrowExceptionOnError() {
+		return throwExceptionOnError;
+	}
+
+	/**
+	 * @param throwExceptionOnError the throwExceptionOnError to set
+	 */
+	public void setThrowExceptionOnError(boolean throwExceptionOnError) {
+		this.throwExceptionOnError = throwExceptionOnError;
 	}
 
 	/**
@@ -97,17 +122,28 @@ public class JMediawiki implements IMediawiki {
 	}
 
 	/**
-	 * construct a Mediawik for the given url
+	 * construct a JMediawiki for the given url using the default Script path 
 	 * 
-	 * @param siteurl
-	 *          - the url to use
+	 * @param siteurl - the url to use
 	 */
 	public JMediawiki(String siteurl) {
+		this(siteurl,DEFAULT_SCRIPTPATH);
+	}
+	
+	/**
+	 * construct a JMediawiki for the given url and scriptpath
+	 * @param siteurl - the url to use
+	 * @param scriptpath - the scriptpath to use
+	 */
+	public JMediawiki(String siteurl, String scriptpath) {
 		this.siteurl = siteurl;
+		this.scriptPath=scriptpath;
 		ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
 		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
 		client = ApacheHttpClient.create(config);
 	}
+
+	
 
 	/**
 	 * get the result for the given action and aprams
@@ -124,15 +160,32 @@ public class JMediawiki implements IMediawiki {
 			LOGGER.log(Level.INFO, queryUrl);
 		WebResource resource = client.resource(queryUrl);
 		String xml;
+		// decide for the method to use for api access
 		if ("login".equals(action)) {
-			xml = resource.post(String.class);
+			xml = resource.header("USER-AGENT", USER_AGENT).post(String.class);
 		} else {
-			xml = resource.get(String.class);
+			xml = resource.header("USER-AGENT", USER_AGENT).get(String.class);
 		}
-		xml = xml.replace(">", ">\n");
-		if (debug)
-			LOGGER.log(Level.INFO, xml);
+		if (debug) {
+			// convert the xml to a more readable format
+			String xmlDebug = xml.replace(">", ">\n");
+			LOGGER.log(Level.INFO, xmlDebug);
+		}
+		// retrieve the JAXB wrapper representation from the xml received
 		Api api = Api.fromXML(xml);
+		// check whether an error code was sent
+		Error error = api.getError();
+		// if there is an error - handle it
+		if (error!=null) {
+			// prepare the error message
+			String errMsg="error code="+error.getCode()+" info:'"+error.getInfo()+"'";
+			// log it
+			LOGGER.log(Level.SEVERE,errMsg);
+			// and throw an error if this is configured
+			if (this.isThrowExceptionOnError()) {
+				throw new Exception(errMsg);
+			}
+		}
 		return api;
 	}
 
@@ -175,8 +228,13 @@ public class JMediawiki implements IMediawiki {
 	
 	/**
 	 * end the session
+	 * @throws Exception 
 	 */
-	public void logout() {
+	public void logout() throws Exception {
+		Api apiResult=getActionResult("logout","");
+		if (apiResult!=null) {
+			// FIXME check apiResult			
+		}
 		if (cookies!=null) {
 			cookies.clear();
 			cookies=null;

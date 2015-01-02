@@ -5,10 +5,11 @@ Client for Mediawiki Api
 
 ### Purpose
 This is a Java API for the Mediawiki web API described at 
+
 http://www.mediawiki.org/wiki/API:Main_page
 
 ### Status
-Early Alpha state - not release on Maven Central yet.
+- Implemented Features are limited to what the test cases of the current version check
 
 ### Project
 * Open Source hosted at https://github.com/WolfgangFahl/JMediawiki
@@ -73,8 +74,8 @@ There is a bash script createschema which
 * generates java code from the xml
 
 This is a semi-automatic process. The resulting java code needs to be adapted to be workable. For a start
-14 Java classes have been generated that allow some 10 JUnit tests to pass.
+15 Java classes have been generated that allow some 12 JUnit tests to pass.
   
 ## Version history
 * 0.0.1 - 2015-01-01: first version
-* 0.0.2 - 2015-01-01: not published via maven central yet
+* 0.0.2 - 2015-01-02: not published via maven central yet
