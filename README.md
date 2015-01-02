@@ -42,7 +42,6 @@ Maven dependency:
 ### Sample query:get a single page
 http://www.mediawiki.org/wiki/API:Query#Sample_query
 
-
 ```java
   /**
    * http://www.mediawiki.org/wiki/API:Query#Sample_query
@@ -52,14 +51,31 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
 	@Test
 	public void testSampleQuery() throws Exception {
 		JMediawiki wiki=new JMediawiki("http://en.wikipedia.org");
-		Api api = wiki.getQueryResult("&prop=revisions&rvprop=content&titles=Main%20Page");
-		Page page=api.getQuery().getPages().get(0);
-		assertEquals("Main Page",page.getTitle());
-		String content=page.getRevisions().get(0).getValue();	
+		String content=wiki.getPageContent("Main Page");
 		assertTrue(content.contains("Wikipedia"));
 	}
 ```		
-  
+
+### login/logout
+http://www.mediawiki.org/wiki/API:Login
+
+```java
+  /**
+	 * test Login and logout 
+	 * see <a href='http://www.mediawiki.org/wiki/API:Login'>API:Login</a>
+	 * @throws Exception
+	 */
+	@Test
+	public void testLogin() throws Exception {
+		WikiUser wuser=WikiUser.getUser("mediawiki_org");
+		Login login=wiki.login(wuser.getUsername(),wuser.getPassword());
+		assertEquals("Success",login.getResult());
+		assertNotNull(login.getLguserid());
+		assertEquals(wuser.getUsername(),login.getLgusername());
+		assertNotNull(login.getLgtoken());
+		wiki.logout();
+	}
+```		
 
 ## Design decisions
 The Mediawiki API supports XML and Json encoding of API calls. The XML version of things will be deprecated soon. The

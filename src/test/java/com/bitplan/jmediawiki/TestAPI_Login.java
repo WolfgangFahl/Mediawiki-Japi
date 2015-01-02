@@ -59,6 +59,11 @@ public class TestAPI_Login extends TestAPI {
 		assertNotNull(login.getSessionid());
 	}
 	
+	/**
+	 * test Login and logout 
+	 * see <a href='http://www.mediawiki.org/wiki/API:Login'>API:Login</a>
+	 * @throws Exception
+	 */
 	@Test
 	public void testLogin() throws Exception {
 		WikiUser wuser=WikiUser.getUser("mediawiki_org");

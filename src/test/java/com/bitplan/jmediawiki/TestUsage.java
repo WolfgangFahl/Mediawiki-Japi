@@ -32,10 +32,7 @@ public class TestUsage {
 	@Test
 	public void testSampleQuery() throws Exception {
 		JMediawiki wiki=new JMediawiki("http://en.wikipedia.org");
-		Api api = wiki.getQueryResult("&prop=revisions&rvprop=content&titles=Main%20Page");
-		Page page=api.getQuery().getPages().get(0);
-		assertEquals("Main Page",page.getTitle());
-		String content=page.getRevisions().get(0).getValue();	
+		String content=wiki.getPageContent("Main Page");
 		assertTrue(content.contains("Wikipedia"));
 	}
 }

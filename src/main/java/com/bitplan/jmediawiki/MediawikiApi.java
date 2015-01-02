@@ -50,6 +50,14 @@ public interface MediawikiApi {
 	public void logout() throws Exception;
 	
 	/**
+	 * get the page Content for the given page Title
+	 * @param pageTitle
+	 * @return
+	 * @throws Exception
+	 */
+	public String getPageContent(String pageTitle) throws Exception;
+	
+	/**
 	 * are exceptions thrown when an api error code is received?
 	 * @return the throwExceptionOnError
 	 */

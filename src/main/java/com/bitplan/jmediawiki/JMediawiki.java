@@ -9,6 +9,8 @@
  */
 package com.bitplan.jmediawiki;
 
+import static org.junit.Assert.assertEquals;
+
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -16,6 +18,7 @@ import java.util.logging.Level;
 import com.bitplan.jmediawiki.api.Api;
 import com.bitplan.jmediawiki.api.Error;
 import com.bitplan.jmediawiki.api.Login;
+import com.bitplan.jmediawiki.api.Page;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.client.apache.ApacheHttpClient;
@@ -212,6 +215,16 @@ public class JMediawiki implements MediawikiApi {
 		return result;
 	}
 
+	/**
+	 * normalize the given page title
+	 * @param title
+	 * @return
+	 */
+	protected String normalize(String title) {
+		String result=encode(title);
+		return result;
+	}
+	
 	// login implementation
 	public Login login(String username, String password) throws Exception {
 		username=encode(username);
@@ -239,6 +252,20 @@ public class JMediawiki implements MediawikiApi {
 			cookies.clear();
 			cookies=null;
 		}
+	}
+
+	/**
+	 * get the page Content for the given page Title
+	 * @param pageTitle
+	 * @return
+	 * @throws Exception 
+	 */
+	public String getPageContent(String pageTitle) throws Exception {
+		Api api = getQueryResult("&prop=revisions&rvprop=content&titles="+normalize(pageTitle));
+		Page page=api.getQuery().getPages().get(0);
+		assertEquals("Main Page",page.getTitle());
+		String content=page.getRevisions().get(0).getValue();	
+		return content;
 	}
 
 }
