@@ -3,22 +3,29 @@ JMediawiki
 
 Client for Mediawiki Api
 
+## Project 
 ### Purpose
 This is a Java API for the Mediawiki web API described at 
 
 http://www.mediawiki.org/wiki/API:Main_page
 
+### Documentation
+* Javadoc: http://wolfgangfahl.github.io/JMediawiki/apidocs/index.html
+* <a href="JMediawiki/README.md#Examples">Examples</a>
+
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
 
-### Project
+### 
 * Open Source hosted at https://github.com/WolfgangFahl/JMediawiki
 * Issues via https://github.com/WolfgangFahl/JMediawiki/issues
 * Apache License
 * Maven based Java project including JUnit 4 tests.
 * Project page at http://wolfgangfahl.github.io/JMediawiki/
 
-Available at http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
+
+### Distribution
+Available at Maven Central see http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
 
 Maven dependency:
 
@@ -35,7 +42,6 @@ Maven dependency:
 * cd JMediawiki
 * mvn install
 
-### How to use
 
 ## Examples:
 
