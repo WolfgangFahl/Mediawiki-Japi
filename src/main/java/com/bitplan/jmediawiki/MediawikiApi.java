@@ -12,8 +12,8 @@ package com.bitplan.jmediawiki;
 import com.bitplan.jmediawiki.api.Login;
 
 /**
- * Mediawiki Interface
- * see <a href=https://www.mediawiki.org/wiki/API:Main_page'>https://www.mediawiki.org/wiki/API:Main_page</a>
+ * Mediawiki API Interface
+ * see <a href="https://www.mediawiki.org/wiki/API:Main_page">https://www.mediawiki.org/wiki/API:Main_page</a>
  * @author wf
  *
  */
