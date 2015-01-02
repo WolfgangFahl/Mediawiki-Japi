@@ -123,7 +123,7 @@ public class Api {
 	/**
 	 * create a Json representation for this Api object
 	 * 
-	 * @return
+	 * @return a Json representation of the Api object
 	 * @throws JAXBException
 	 */
 	public String asJson() throws JAXBException {

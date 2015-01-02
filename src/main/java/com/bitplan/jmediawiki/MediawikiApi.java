@@ -36,7 +36,7 @@ public interface MediawikiApi {
 	 * 
 	 * @param username
 	 * @param password
-	 * @return 
+	 * @return the Login information as returned by the API
 	 * @throws Exception 
 	 */
 	public Login login(String username, String password) throws Exception;
@@ -52,7 +52,7 @@ public interface MediawikiApi {
 	/**
 	 * get the page Content for the given page Title
 	 * @param pageTitle
-	 * @return
+	 * @return the content of the page
 	 * @throws Exception
 	 */
 	public String getPageContent(String pageTitle) throws Exception;

@@ -80,9 +80,7 @@ public class Page {
     /**
      * Gets the value of the revisions property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Revisions }
+     * @return list of {@link Rev }
      *     
      */
     @XmlElementWrapper(name="revisions")
@@ -94,9 +92,7 @@ public class Page {
     /**
      * Sets the value of the revisions property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Revisions }
+     * @param value list of  {@link Rev }
      *     
      */
     public void setRevisions(List<Rev> value) {

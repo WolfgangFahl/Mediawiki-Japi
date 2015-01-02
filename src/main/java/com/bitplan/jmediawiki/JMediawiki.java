@@ -9,8 +9,6 @@
  */
 package com.bitplan.jmediawiki;
 
-import static org.junit.Assert.assertEquals;
-
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -153,7 +151,7 @@ public class JMediawiki implements MediawikiApi {
 	 * 
 	 * @param action
 	 * @param params
-	 * @return
+	 * @return the API result for the action
 	 * @throws Exception
 	 */
 	public Api getActionResult(String action, String params) throws Exception {
@@ -196,8 +194,8 @@ public class JMediawiki implements MediawikiApi {
 	 * get the Result for the given query
 	 * 
 	 * @param query
-	 * @return
-	 * @throws Exception
+	 * @return the API result for the query
+	 * @throws Exception 
 	 */
 	public Api getQueryResult(String query) throws Exception {
 		Api result = this.getActionResult("query", query);
@@ -207,7 +205,7 @@ public class JMediawiki implements MediawikiApi {
 	/**
 	 * request parameter encoding
 	 * @param param
-	 * @return
+	 * @return an encoded url parameter
 	 */
 	protected String encode(String param) {
 		@SuppressWarnings("deprecation")
@@ -218,7 +216,8 @@ public class JMediawiki implements MediawikiApi {
 	/**
 	 * normalize the given page title
 	 * @param title
-	 * @return
+	 * @return the normalized title e.g. replacing blanks
+	 * FIXME encode is not good enough
 	 */
 	protected String normalize(String title) {
 		String result=encode(title);
@@ -257,13 +256,12 @@ public class JMediawiki implements MediawikiApi {
 	/**
 	 * get the page Content for the given page Title
 	 * @param pageTitle
-	 * @return
+	 * @return the page Content
 	 * @throws Exception 
 	 */
 	public String getPageContent(String pageTitle) throws Exception {
 		Api api = getQueryResult("&prop=revisions&rvprop=content&titles="+normalize(pageTitle));
 		Page page=api.getQuery().getPages().get(0);
-		assertEquals("Main Page",page.getTitle());
 		String content=page.getRevisions().get(0).getValue();	
 		return content;
 	}

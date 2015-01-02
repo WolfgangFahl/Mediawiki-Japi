@@ -79,7 +79,7 @@ public class Query {
   /**
    * Gets the value of the pages property.
    * 
-   * @return
+   * @return the list of pages
    *     
    */
   @XmlElementWrapper(name="pages")
