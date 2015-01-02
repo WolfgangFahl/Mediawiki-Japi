@@ -51,8 +51,60 @@ public class Login {
     protected String cookieprefix;
     @XmlAttribute(name = "sessionid")
     protected String sessionid;
+    
+    // after successful login
+    @XmlAttribute(name = "lguserid")
+    protected String lguserid;
 
+    @XmlAttribute(name = "lgusername")
+    protected String lgusername;
+    
+    @XmlAttribute(name = "lgtoken")
+    protected String lgtoken;
+    
     /**
+		 * @return the lguserid
+		 */
+		public String getLguserid() {
+			return lguserid;
+		}
+
+		/**
+		 * @param lguserid the lguserid to set
+		 */
+		public void setLguserid(String lguserid) {
+			this.lguserid = lguserid;
+		}
+
+		/**
+		 * @return the lgusername
+		 */
+		public String getLgusername() {
+			return lgusername;
+		}
+
+		/**
+		 * @param lgusername the lgusername to set
+		 */
+		public void setLgusername(String lgusername) {
+			this.lgusername = lgusername;
+		}
+
+		/**
+		 * @return the lgtoken
+		 */
+		public String getLgtoken() {
+			return lgtoken;
+		}
+
+		/**
+		 * @param lgtoken the lgtoken to set
+		 */
+		public void setLgtoken(String lgtoken) {
+			this.lgtoken = lgtoken;
+		}
+
+		/**
      * Gets the value of the value property.
      * 
      * @return

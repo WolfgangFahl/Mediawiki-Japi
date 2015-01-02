@@ -66,6 +66,12 @@
 			<artifactId>jersey-client</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
+		<!--  Jersey apache client  -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-apache-client</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
 		<!-- Multipart support -->
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>

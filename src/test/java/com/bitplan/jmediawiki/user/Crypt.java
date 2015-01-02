@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2015 BITPlan GmbH
+ *
+ * Pater-Delp-Str. 1
+ * D-47877 Willich-Schiefbahn
+ *
+ * http://www.bitplan.com
+ * 
+ */
 package com.bitplan.jmediawiki.user;
 
 import java.io.IOException;
@@ -13,7 +22,11 @@ import javax.crypto.spec.PBEParameterSpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-@SuppressWarnings("restriction")
+/**
+ * Encryption class to be use for password encryption for test cases
+ * @author wf
+ *
+ */
 public class Crypt {
 
 	private char[] cypher;

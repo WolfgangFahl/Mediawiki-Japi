@@ -6,8 +6,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@SuppressWarnings("restriction")
 @XmlRootElement(name="query")
+/**
+ * Query Jaxb Wrapping class
+ * @author wf
+ *
+ */
 public class Query {
    protected Statistics statistics;
    protected General general;

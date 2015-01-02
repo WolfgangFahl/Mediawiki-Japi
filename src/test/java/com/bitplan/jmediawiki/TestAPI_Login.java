@@ -9,7 +9,7 @@
  */
 package com.bitplan.jmediawiki;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.logging.Level;
 
@@ -47,15 +47,27 @@ public class TestAPI_Login extends TestAPI {
 	 *
 	 */
 	@Test
-	public void testLogin() throws Exception {
+	public void testLoginToken() throws Exception {
 		WikiUser wuser = WikiUser.getUser("mediawiki_org");
 		// do not keep uncommented - password will be visible in log
 		// wiki.setDebug(true);
-		Api api = wiki.getActionResult("login", "&lgname=" + wuser.getUsername() + "&lgpassword="
-				+ wuser.getPassword());
+		Api api = wiki.getActionResult("login", "&lgname=" + wuser.getUsername());
 		Login login = api.getLogin();
 		assertNotNull(login);
+		assertEquals("NeedToken",login.getResult());
 		assertNotNull(login.getToken());
 		assertNotNull(login.getSessionid());
+	}
+	
+	@Test
+	public void testLogin() throws Exception {
+		WikiUser wuser=WikiUser.getUser("mediawiki_org");
+		// avoid uncommenting - will show password information ...
+		// wiki.setDebug(true);
+		Login login=wiki.login(wuser.getUsername(),wuser.getPassword());
+		assertEquals("Success",login.getResult());
+		assertNotNull(login.getLguserid());
+		assertEquals(wuser.getUsername(),login.getLgusername());
+		assertNotNull(login.getLgtoken());
 	}
 }

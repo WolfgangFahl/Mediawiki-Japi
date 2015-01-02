@@ -19,7 +19,6 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
  * @author wf
  *
  */
-@SuppressWarnings("restriction")
 @XmlRootElement(name="api")
 public class Api {
 	
