@@ -24,7 +24,7 @@ Maven dependency:
 ```
 <dependency>
   <groupId>com.bitplan</groupId>
-  <artifactId>JMediawiki</artifactId>
+  <artifactId>jmediawiki</artifactId>
   <version>0.0.1</version>
 </dependency>
 ```
