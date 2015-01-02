@@ -17,7 +17,7 @@ Early Alpha state - not release on Maven Central yet.
 * Maven based Java project including JUnit 4 tests.
 * Project page at http://wolfgangfahl.github.io/JMediawiki/
 
-Available at http://search.maven.org/#artifactdetails|com.bitplan|JMediawiki|0.0.1|jar
+Available at http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
 
 Maven dependency:
 
