@@ -9,7 +9,7 @@
  */
 package com.bitplan.jmediawiki;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -34,5 +34,8 @@ public class TestAPI_Recentchanges extends TestAPI {
 		Api api = getQueryResult("&list=recentchanges&rcprop=title%7Cids%7Csizes%7Cflags%7Cuser&rclimit=3");
 		List<Rc> rcList = api.getQuery().getRecentchanges();
 		assertEquals(3, rcList.size());
+		for (Rc rc:rcList) {
+			assertNotNull(rc.getTitle());
+		}
 	}
 }
