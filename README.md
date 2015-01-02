@@ -49,6 +49,12 @@ Maven dependency:
 http://www.mediawiki.org/wiki/API:Query#Sample_query
 
 ```java
+	JMediawiki wiki=new JMediawiki("http://en.wikipedia.org");
+	String content=wiki.getPageContent("Main Page");
+```		
+
+#### junit test
+```java
   /**
    * http://www.mediawiki.org/wiki/API:Query#Sample_query
    * http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&titles=Main%20Page&format=xml
@@ -65,6 +71,11 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
 ### login/logout
 http://www.mediawiki.org/wiki/API:Login
 
+```java
+Login login=wiki.login(wuser.getUsername(),wuser.getPassword());
+```		
+
+#### junit test
 ```java
   /**
 	 * test Login and logout 
