@@ -10,13 +10,13 @@ This is a Java API for the Mediawiki web API described at
 http://www.mediawiki.org/wiki/API:Main_page
 
 ### Documentation
-* Javadoc: http://wolfgangfahl.github.io/JMediawiki/apidocs/index.html
-* <a href="JMediawiki/README.md#Examples">Examples</a>
+* [Javadoc](/apidocs/index.html)
+* [Examples](#Examples)
 
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
 
-### 
+### Project info
 * Open Source hosted at https://github.com/WolfgangFahl/JMediawiki
 * Issues via https://github.com/WolfgangFahl/JMediawiki/issues
 * Apache License
