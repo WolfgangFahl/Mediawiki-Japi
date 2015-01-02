@@ -41,7 +41,10 @@ public class JMediawiki implements MediawikiApi {
 	 */
 	protected static final String USER_AGENT = "JMediawiki/"+VERSION+" (https://github.com/WolfgangFahl/JMediawiki; support@bitplan.com)";
 
-	private static final String DEFAULT_SCRIPTPATH = "/w";
+	/**
+	 * default script path
+	 */
+	public static final String DEFAULT_SCRIPTPATH = "/w";
 
 	/**
 	 * set to true for debugging

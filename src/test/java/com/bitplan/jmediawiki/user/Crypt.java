@@ -12,6 +12,9 @@ package com.bitplan.jmediawiki.user;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -30,7 +33,29 @@ import sun.misc.BASE64Encoder;
 public class Crypt {
 
 	private char[] cypher;
-	private byte[] salt;
+	byte[] salt;
+
+	/**
+	 * @return the cypher
+	 */
+	public String getCypher() {
+		return new String(cypher);
+	}
+	
+	/**
+	 * return the salt
+	 * @return
+	 */
+	public String getSalt() {
+		return new String(salt);
+	}
+
+	/**
+	 * @param cypher the cypher to set
+	 */
+	public void setCypher(char[] cypher) {
+		this.cypher = cypher;
+	}
 
 	/**
 	 * create me from a password and salt
@@ -39,8 +64,45 @@ public class Crypt {
 	 * @param pSalt
 	 */
 	Crypt(String pCypher, String pSalt) {
-		this.cypher = pCypher.toCharArray();
+		this.setCypher(pCypher.toCharArray());
 		this.salt = pSalt.getBytes();
+	}
+
+	/**
+	 * generate a Random key
+	 * @param pLength
+	 * @return
+	 */
+	public static String generateRandomKey(int pLength) {
+    int asciiFirst = 48;
+    int asciiLast = 122;
+    Integer[] exceptions = { 58,59,60,61,62,63,91,92,93,94,96 };
+
+    List<Integer> exceptionsList = Arrays.asList(exceptions);
+    SecureRandom random = new SecureRandom();
+    StringBuilder builder = new StringBuilder();
+    for (int i=0; i<pLength; i++) {
+        int charIndex;
+        do {
+            charIndex = random.nextInt(asciiLast - asciiFirst + 1) + asciiFirst;
+        }
+        while (exceptionsList.contains(charIndex));
+
+        builder.append((char) charIndex);
+    }
+
+    return builder.toString();
+}
+
+	/**
+	 * get a random Crypt
+	 * @return
+	 */
+	public static Crypt getRandomCrypt() {
+	  String lCypher=generateRandomKey(32);
+	  String lSalt=generateRandomKey(8);
+	  Crypt result=new Crypt(lCypher,lSalt);
+	  return result;
 	}
 
 	/**
@@ -50,8 +112,7 @@ public class Crypt {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		// regenerate the Crypt parameters with a randomizer before you use this
-		Crypt pcf=new Crypt("jr7DlOUFSnsJw6M6nS3ADSFrXf9gK3n5","8XWCfDem");
+		Crypt pcf=getRandomCrypt();
 		String originalPassword = "secretPassword";
 		System.out.println("Original password: " + originalPassword);
 		String encryptedPassword = pcf.encrypt(originalPassword);
@@ -67,7 +128,7 @@ public class Crypt {
 	 * @throws GeneralSecurityException
 	 * @throws UnsupportedEncodingException
 	 */
-	private String encrypt(String property) throws GeneralSecurityException,
+	String encrypt(String property) throws GeneralSecurityException,
 			UnsupportedEncodingException {
 		SecretKeyFactory keyFactory = SecretKeyFactory
 				.getInstance("PBEWithMD5AndDES");

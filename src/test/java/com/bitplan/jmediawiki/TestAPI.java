@@ -9,6 +9,7 @@
  */
 package com.bitplan.jmediawiki;
 
+import java.util.Collection;
 import java.util.logging.Level;
 
 import com.bitplan.jmediawiki.api.Api;
@@ -29,6 +30,9 @@ public class TestAPI {
 	protected boolean debug = false;
 
 	protected ExampleWiki wiki;
+	protected Collection<ExampleWiki> wikis;
+	// the wiki to use for single tests / write access
+	private static final String MAIN_TESTWIKI_ID = "mediawiki_org"; // "mediawiki_test2"; //
 
 	/**
 	 * Logging may be enabled by setting debug to true
@@ -40,8 +44,8 @@ public class TestAPI {
 	 * construct a Test
 	 */
 	public TestAPI() {
-		wiki = new ExampleWiki("http://www.mediawiki.org");
-		// wiki = new ExampleWiki("http://capri.bitplan.com","/mediawiki");
+		wiki=ExampleWiki.get(MAIN_TESTWIKI_ID);
+		wikis=ExampleWiki.exampleWikis.values();
 	}
 
 	/**
@@ -51,9 +55,21 @@ public class TestAPI {
 	 * @return
 	 * @throws Exception
 	 */
+	public Api getQueryResult(ExampleWiki pWiki,String query) throws Exception {
+		pWiki.setDebug(debug);
+		Api api = pWiki.getQueryResult(query);
+		return api;
+	}
+	
+	/**
+	 * get a query Result
+	 * 
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
 	public Api getQueryResult(String query) throws Exception {
-		wiki.setDebug(debug);
-		Api api = wiki.getQueryResult(query);
+		Api api = getQueryResult(wiki,query);
 		return api;
 	}
 
@@ -63,10 +79,21 @@ public class TestAPI {
 	 * @param name
 	 * @param value
 	 */
-	protected void check(String name, Object value) {
-		assertNotNull(value);
+	protected void check(String name, Object value, boolean mayBeNull) {
+		if (!mayBeNull)
+			assertNotNull(name+" should not be null",value);
 		if (debug) {
 			LOGGER.log(Level.INFO, name + "='" + value.toString() + "'");
 		}
 	}
+	
+	/**
+	 * check the given name and value
+	 * @param name
+	 * @param value
+	 */
+	protected void check(String name, Object value) {
+		check(name,value,false);
+	}
+	
 }

@@ -72,7 +72,8 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
 http://www.mediawiki.org/wiki/API:Login
 
 ```java
-Login login=wiki.login(wuser.getUsername(),wuser.getPassword());
+Login login=wiki.login("scott","tiger");
+wiki.logout();
 ```		
 
 #### junit test

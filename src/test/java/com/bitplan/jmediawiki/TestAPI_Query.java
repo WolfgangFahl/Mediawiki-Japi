@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 import org.junit.Test;
 
+import com.bitplan.jmediawiki.ExampleWiki.ExamplePage;
 import com.bitplan.jmediawiki.api.Api;
 import com.bitplan.jmediawiki.api.P;
 import com.bitplan.jmediawiki.api.Page;
@@ -37,26 +38,41 @@ public class TestAPI_Query extends TestAPI {
 	 */
 	@Test
 	public void testGetAllPages() throws Exception {
-		Api api = getQueryResult("&list=allpages&apfrom=Kre&aplimit=5");
-		List<P> pageRefList = api.getQuery().getAllpages();
-		assertEquals(5, pageRefList.size());
+		for (ExampleWiki lwiki : wikis) {
+			Api api = getQueryResult(lwiki, "&list=allpages&apfrom=Kre&aplimit=3");
+			List<P> pageRefList = api.getQuery().getAllpages();
+			assertEquals(lwiki.getSiteurl(),3, pageRefList.size());
+		}
 	}
 
 	@Test
 	public void testGetPages() throws Exception {
-		Api api= getQueryResult("&titles=2011_Wikimedia_fundraiser%7C2012_Wikimedia_fundraiser&prop=revisions&rvprop=content");
-		List<Page> pages = api.getQuery().getPages();
-		assertEquals(2,pages.size());
-		for (Page page:pages) {
-			if (debug) {
-				LOGGER.log(Level.INFO,page.getTitle());
+		for (ExampleWiki lwiki : wikis) {
+			List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
+			String titles="";
+			String delim="";
+			for (ExamplePage page:examplePages) {
+				titles=titles+delim+wiki.normalize(page.getTitle());
+				delim="%7C";
 			}
-			assertTrue(page.getTitle().contains("Wikimedia fundraiser"));
-			Rev rev= page.getRevisions().get(0);
-			if (debug) {
-				LOGGER.log(Level.INFO,rev.getValue());
+			Api api = getQueryResult(lwiki,
+					"&titles=" + titles
+							+ "&prop=revisions&rvprop=content");
+			List<Page> pages = api.getQuery().getPages();
+			assertEquals(2, pages.size());
+			int index=0;
+			for (Page page : pages) {
+				ExamplePage expected=examplePages.get(index++);
+				if (debug) {
+					LOGGER.log(Level.INFO, page.getTitle());
+				}
+				assertEquals(lwiki.getSiteurl(),expected.getTitle(),page.getTitle());
+				Rev rev = page.getRevisions().get(0);
+				if (debug) {
+					LOGGER.log(Level.INFO, rev.getValue());
+				}
+				assertTrue(rev.getValue().contains(expected.getContentPart()));
 			}
-			assertTrue(rev.getValue().contains("{{Wikimedia engineering project information"));
 		}
 	}
 }
