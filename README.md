@@ -2,6 +2,7 @@ JMediawiki
 ==========
 
 This is a Java API for the Mediawiki web API described at 
+
 http://www.mediawiki.org/wiki/API:Main_page
 
 ## Project 
@@ -22,7 +23,9 @@ http://www.mediawiki.org/wiki/API:Main_page
 
 
 ### Distribution
-Available at Maven Central see http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
+Available at Maven Central see 
+
+http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
 
 Maven dependency:
 
