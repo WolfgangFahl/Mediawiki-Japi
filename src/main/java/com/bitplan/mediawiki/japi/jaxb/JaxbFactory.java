@@ -76,7 +76,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 	/**
 	 * get a marshaller for the given <T> instance 
 	 * @param type
-	 * @return
+	 * @return a marshaller for <T>
 	 * @throws JAXBException
 	 */
 	public Marshaller getMarshaller(T instance) throws JAXBException {
@@ -89,7 +89,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 	/**
 	 * get the string representation of the given marshaller
 	 * @param marshaller
-	 * @return
+	 * @return the string representation for the given marshaller
 	 * @throws JAXBException
 	 */
 	public String getString(Marshaller marshaller) throws JAXBException {

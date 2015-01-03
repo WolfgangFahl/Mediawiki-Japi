@@ -67,6 +67,7 @@ public class TestAPI_Query extends TestAPI {
 					LOGGER.log(Level.INFO, page.getTitle());
 				}
 				assertEquals(lwiki.getSiteurl(),expected.getTitle(),page.getTitle());
+				assertTrue(lwiki.getSiteurl(),page.getRevisions().size()>0);
 				Rev rev = page.getRevisions().get(0);
 				if (debug) {
 					LOGGER.log(Level.INFO, rev.getValue());

@@ -33,6 +33,7 @@ public class TestAPI_Edit extends TestAPI {
 	@Test
 	public void testGetEditToken() throws Exception {
 		for (ExampleWiki lwiki : wikis) {
+			lwiki.login();
 			lwiki.setDebug(true);
 			String editversion = "";
 			String action="query";
@@ -45,7 +46,8 @@ public class TestAPI_Edit extends TestAPI {
 				params="";
 			} else {
 				editversion = "Version 1.19 and earlier";
-				params="&prop=info";
+				// FIXME title specific?
+				params="&prop=info&7Crevisions&intoken=edit&titles=Main%20Page";
 			}
 			if (debug) {
 				LOGGER.log(Level.INFO,

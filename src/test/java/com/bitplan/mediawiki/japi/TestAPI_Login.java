@@ -76,7 +76,7 @@ public class TestAPI_Login extends TestAPI {
 			// lwiki.debug = true;
 			Login login = lwiki.login(wuser.getUsername(), wuser.getPassword());
 			assertNotNull(login.getLguserid());
-			assertEquals(wuser.getUsername(), login.getLgusername());
+			assertEquals(wuser.getUsername().toLowerCase(), login.getLgusername().toLowerCase());
 			assertNotNull(login.getLgtoken());
 			// make sure logout also works
 			lwiki.logout();

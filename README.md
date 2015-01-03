@@ -8,8 +8,9 @@ http://www.mediawiki.org/wiki/API:Main_page
 ## Project 
 
 ### Documentation
-* [Javadoc] (http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html)
-* [Examples] (http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples)
+* [Javadoc](http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html)
+* [Examples](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples)
+* [Wiki](http://mediawiki-japi.bitplan.com)
 * [Developer info](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Developer_Info)
 
 ### Status
@@ -38,11 +39,14 @@ Maven dependency:
 ```
 
 ### How to build
-* git clone https://github.com/WolfgangFahl/Mediawiki-Japi
-* cd Mediawiki-Japi
-* mvn -D skipTests install
+```
+git clone https://github.com/WolfgangFahl/Mediawiki-Japi
+cd Mediawiki-Japi
+mvn install -DskipTests=true -Dgpg.skip=true
+```
 
 ## Examples
+See also [Examples] (http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples) on the Mediawiki-Japi Wiki
 
 ### Sample query:get a single page
 http://www.mediawiki.org/wiki/API:Query#Sample_query

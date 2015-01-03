@@ -238,7 +238,7 @@ public class Mediawiki implements MediawikiApi {
 	
 	/**
 	 * get the general siteinfo
-	 * @return
+	 * @return the siteinfo
 	 * @throws Exception 
 	 */
 	public General getSiteInfo() throws Exception {

@@ -38,8 +38,35 @@ public class TestAPI_Meta extends TestAPI {
 		for (ExampleWiki lwiki : wikis) {
 			General general = lwiki.getSiteInfo();
 			assertNotNull(general);
-			assertEquals(lwiki.getLogo(), general.getLogo());
-			boolean mayBeNull=true;
+			boolean mayBeNull = true;
+			check("generator", general.getGenerator());
+			check("logo", general.getLogo(), mayBeNull);
+			if (general.getGenerator().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
+				assertEquals(lwiki.getLogo(), general.getLogo());
+				check("favicon", general.getFavicon());
+				check("githash", general.getGitHash());
+				check("langconversion", general.getLangconversion());
+				check("linkprefix", general.getLinkprefix());
+				check("linkprefixcharset", general.getLinkprefixcharset());
+				check("linktrail", general.getLinktrail());
+				check("maxuploadsize", general.getMaxuploadsize());
+				List<Limit> imageLimits = general.getImagelimits().getLimit();
+				assertNotNull(imageLimits);
+				for (Limit imageLimit : imageLimits) {
+					check("\twidth", imageLimit.getWidth());
+					check("\theight", imageLimit.getHeight());
+				}
+				Extensiondistributor extdist = general.getExtensiondistributor();
+				if (extdist != null) {
+					check("ext-list", extdist.getList());
+					Snapshots snapshots = extdist.getSnapshots();
+					assertNotNull(snapshots);
+					for (String snapshot : snapshots.getSnapshot()) {
+						check("snapshot", snapshot.trim());
+					}
+				}
+
+			}
 			check("language", general.getLang());
 			check("articlepath", general.getArticlepath());
 			check("base", general.getBase());
@@ -47,43 +74,20 @@ public class TestAPI_Meta extends TestAPI {
 			check("dbtype", general.getDbtype());
 			check("dbversion", general.getDbversion());
 			check("fallback", general.getFallback());
-			check("favicon", general.getFavicon());
-			check("generator", general.getGenerator());
-			check("gitbranch", general.getGitBranch(),mayBeNull);
-			check("githash", general.getGitHash());
-			check("hhvmversion", general.getHhvmversion(),mayBeNull);
-			check("imagewhitelistenabled", general.getImagewhitelistenabled(),mayBeNull);
-			check("langconversion", general.getLangconversion());
-			check("legaltitlechars", general.getLegaltitlechars(),mayBeNull);
-			check("linkprefix", general.getLinkprefix());
-			check("linkprefixcharset", general.getLinkprefixcharset());
-			check("linktrail", general.getLinktrail());
-			check("logo", general.getLogo());
+			check("gitbranch", general.getGitBranch(), mayBeNull);
+			check("hhvmversion", general.getHhvmversion(), mayBeNull);
+			check("imagewhitelistenabled", general.getImagewhitelistenabled(),
+					mayBeNull);
+			check("legaltitlechars", general.getLegaltitlechars(), mayBeNull);
 			check("mainpage", general.getMainpage());
-			check("maxuploadsize", general.getMaxuploadsize());
-			check("misermode", general.getMisermode(),mayBeNull);
+			check("misermode", general.getMisermode(), mayBeNull);
 			check("phpsapi", general.getPhpsapi());
 			check("phpversion", general.getPhpversion());
 			check("script", general.getScript());
 			check("scriptpath", general.getScriptpath());
 			check("server", general.getServer());
-			check("servername", general.getServername(),mayBeNull);
+			check("servername", general.getServername(), mayBeNull);
 			check("sitename", general.getSitename());
-			List<Limit> imageLimits = general.getImagelimits().getLimit();
-			assertNotNull(imageLimits);
-			for (Limit imageLimit : imageLimits) {
-				check("\twidth", imageLimit.getWidth());
-				check("\theight", imageLimit.getHeight());
-			}
-			Extensiondistributor extdist = general.getExtensiondistributor();
-			if (extdist!=null) {
-				check("ext-list", extdist.getList());
-				Snapshots snapshots = extdist.getSnapshots();
-				assertNotNull(snapshots);
-				for (String snapshot : snapshots.getSnapshot()) {
-					check("snapshot", snapshot.trim());
-				}
-			}
 		}
 	}
 

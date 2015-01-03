@@ -36,14 +36,14 @@ public interface MediawikiApi {
 	
 	/**
 	 * get the Version of this Mediawiki
-	 * @return
+	 * @return the the version string
 	 * @throws Exception 
 	 */
 	public String getVersion() throws Exception;
 	
 	/**
 	 * get the general siteinfo
-	 * @return
+	 * @return the siteinfo
 	 * @throws Exception 
 	 */
 	public General getSiteInfo() throws Exception;
