@@ -9,13 +9,9 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.bitplan.mediawiki.japi.Mediawiki;
-import com.bitplan.mediawiki.japi.api.Api;
-import com.bitplan.mediawiki.japi.api.Page;
 
 /**
  * Junit Test to show off how to use Mediawiki-Japi

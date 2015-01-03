@@ -75,56 +75,40 @@ public class WikiUser {
 	}
 
 	/**
-	 * get the Wiki user for the given wikiid
-	 * 
+	 * get the property file for the given wiki
+	 * @param wikiId
 	 * @return
-	 * @throws IOException 
-	 * @throws Exception
 	 */
-	public static WikiUser getUser(String wikiid) {
+	public static File getPropertyFile(String wikiId) {
 		String user = System.getProperty("user.name");
 		String userPropertiesFileName = System.getProperty("user.home") + "/.mediawiki-japi/"
-				+ user + "_" + wikiid + ".ini";
+				+ user + "_" + wikiId + ".ini";
 		File propFile = new File(userPropertiesFileName);
+		return propFile;
+	}
+	
+	/**
+	 * get the Wiki user for the given wikiid
+	 * 
+	 * @param wikiId - the id of the wiki
+	 * @param siteurl - the siteurl
+	 * @return a Wikiuser for this site
+	 */
+	public static WikiUser getUser(String wikiId,String siteurl) {
+    File propFile=getPropertyFile(wikiId);
 		Properties props = new Properties();
-		WikiUser result = new WikiUser();
+		WikiUser result =null;
 		try {
 			props.load(new FileReader(propFile));
+			result = new WikiUser();
 			result.setUsername(props.getProperty("user"));
 			result.setEmail(props.getProperty("email"));
 			Crypt pcf = new Crypt(props.getProperty("cypher"),
 					props.getProperty("salt"));
 			result.setPassword(pcf.decrypt(props.getProperty("secret")));
 		} catch (FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "Please initialize the user ini file at "
-					+ userPropertiesFileName);
-			try {
-				String username = getInput("username");
-				String password = getInput("password");
-				String email=getInput("email");
-				String remember= getInput("shall i store "+username+"'s credentials encrypted in "+userPropertiesFileName+" y/n?");
-				if (remember.trim().toLowerCase().startsWith("y")) {
-					Crypt lCrypt=Crypt.getRandomCrypt();
-					props.setProperty("cypher", lCrypt.getCypher());
-					props.setProperty("salt", lCrypt.getSalt());
-					props.setProperty("user", username);
-					props.setProperty("email",email);
-					props.setProperty("secret", lCrypt.encrypt(password));
-					File userPropertiesFile=new File(userPropertiesFileName);
-					if (!userPropertiesFile.getParentFile().exists()) {
-						userPropertiesFile.getParentFile().mkdirs();
-					}
-					FileOutputStream propsFile=new FileOutputStream(userPropertiesFile);
-					props.store(propsFile, "Mediawiki JAPI credentials for "+wikiid);
-					propsFile.close();
-				}
-				result.setUsername(username);
-				result.setPassword(password);
-			} catch (IOException e1) {
-				LOGGER.log(Level.SEVERE,e1.getMessage());
-			} catch (GeneralSecurityException e1) {
-				LOGGER.log(Level.SEVERE,e1.getMessage());
-			}
+			String msg=help(wikiId,siteurl);
+			LOGGER.log(Level.SEVERE, msg);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		} catch (GeneralSecurityException e) {
@@ -162,5 +146,68 @@ public class WikiUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	/**
+	 * create a credentials ini file from the command line
+	 */
+	public static void createIniFile(String wikiid) {
+		try {
+			if (wikiid==null)
+				wikiid=getInput("wiki id");
+			File propFile=getPropertyFile(wikiid);
+			String username = getInput("username");
+			String password = getInput("password");
+			String email=getInput("email");
+			String remember= getInput("shall i store "+username+"'s credentials encrypted in "+propFile.getName()+" y/n?");
+			if (remember.trim().toLowerCase().startsWith("y")) {
+				Crypt lCrypt=Crypt.getRandomCrypt();
+				Properties props = new Properties();
+				props.setProperty("cypher", lCrypt.getCypher());
+				props.setProperty("salt", lCrypt.getSalt());
+				props.setProperty("user", username);
+				props.setProperty("email",email);
+				props.setProperty("secret", lCrypt.encrypt(password));
+				if (!propFile.getParentFile().exists()) {
+					propFile.getParentFile().mkdirs();
+				}
+				FileOutputStream propsStream=new FileOutputStream(propFile);
+				props.store(propsStream, "Mediawiki JAPI credentials for "+wikiid);
+				propsStream.close();
+			}
+		} catch (IOException e1) {
+			LOGGER.log(Level.SEVERE,e1.getMessage());
+		} catch (GeneralSecurityException e1) {
+			LOGGER.log(Level.SEVERE,e1.getMessage());
+		}
+	}
+
+	/**
+	 * help text
+	 * @param wikiId
+	 * @param siteurl
+	 * @return
+	 */
+	public static String help(String wikiId, String siteurl) {
+		File propFile=getPropertyFile(wikiId);
+		String help="Need to be able to read Credentials for \n\t"+siteurl+"\nfrom "
+				+ propFile.getPath()+"\n";
+		help+="Please run \n";
+		help+="\tjava -cp target/test-classes com.bitplan.mediawiki.japi.user.WikiUser "+wikiId+"\n";
+		help+="to create it. Then restart your tests.";
+		return help;
+	}
+
+	
+	/**
+	 * main program
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		if (args.length==0)
+			createIniFile(null);
+		else
+		  createIniFile(args[0]);
+	}
+
 
 }

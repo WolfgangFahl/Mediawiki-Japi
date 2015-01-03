@@ -69,6 +69,9 @@ public class TestAPI_Login extends TestAPI {
 	public void testLogin() throws Exception {
 		for (ExampleWiki lwiki : wikis) {
 			WikiUser wuser = lwiki.getWikiUser();
+			if (wuser==null) {
+				fail(WikiUser.help(lwiki.wikiId,lwiki.siteurl));
+			}
 			// avoid uncommenting - will show password information ...
 			// lwiki.debug = true;
 			Login login = lwiki.login(wuser.getUsername(), wuser.getPassword());

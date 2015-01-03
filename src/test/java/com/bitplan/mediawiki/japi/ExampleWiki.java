@@ -102,7 +102,7 @@ public class ExampleWiki extends Mediawiki {
 	 * @return
 	 */
 	public WikiUser getWikiUser() {
-		WikiUser wuser = WikiUser.getUser(wikiId);
+		WikiUser wuser = WikiUser.getUser(wikiId,this.siteurl);
 		if (debug) {
 			LOGGER.log(Level.INFO, "user=" + wuser.getUsername());
 		}

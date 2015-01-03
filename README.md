@@ -8,8 +8,8 @@ http://www.mediawiki.org/wiki/API:Main_page
 ## Project 
 
 ### Documentation
-* Javadoc: http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html
-* [Examples](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples)
+* [Javadoc] (http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html)
+* [Examples] (http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples)
 * [Developer info](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Developer_Info)
 
 ### Status
@@ -40,8 +40,7 @@ Maven dependency:
 ### How to build
 * git clone https://github.com/WolfgangFahl/Mediawiki-Japi
 * cd Mediawiki-Japi
-* mvn install
-
+* mvn -D skipTests install
 
 ## Examples
 
