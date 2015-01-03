@@ -1,16 +1,25 @@
+/**
+ * Copyright (C) 2015 BITPlan GmbH
+ *
+ * Pater-Delp-Str. 1
+ * D-47877 Willich-Schiefbahn
+ *
+ * http://www.bitplan.com
+ * 
+ * This source is part of
+ * https://github.com/WolfgangFahl/JMediawiki
+ * and the license for JMediawiki applies
+ * 
+ */
 package com.bitplan.jmediawiki.api;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.eclipse.persistence.jaxb.MarshallerProperties;
+import com.bitplan.jmediawiki.jaxb.JaxbFactory;
+import com.bitplan.jmediawiki.jaxb.JaxbFactoryApi;
+import com.bitplan.jmediawiki.jaxb.JaxbPersistenceApi;
 
 /**
  * Mediawiki Api Jaxb wrapper
@@ -21,7 +30,7 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
  *
  */
 @XmlRootElement(name = "api")
-public class Api {
+public class Api implements JaxbPersistenceApi<Api> {
 
 	String servedby;
 	protected Query query;
@@ -100,7 +109,18 @@ public class Api {
 	public void setError(Error value) {
 		this.error = value;
 	}
+	
+	/**
+	 * 
+	 * @author wf
+	 *
+	 */
+	public static class ApiFactory  extends JaxbFactory<Api> {
+		public ApiFactory() {			super(Api.class);}
+	}
 
+	private static ApiFactory apifactory=new ApiFactory();
+	
 	/**
 	 * create a Api from an XML string
 	 * 
@@ -111,31 +131,29 @@ public class Api {
 	 *           if there's something wrong with the xml input
 	 */
 	public static Api fromXML(final String xml) throws JAXBException {
-		// unmarshal the xml message to an Mediawiki Api Java object
-		JAXBContext context = JAXBContext.newInstance(Api.class);
-		Unmarshaller u = context.createUnmarshaller();
-		StringReader xmlReader = new StringReader(xml);
-		// this step will convert from xml text to Java Object
-		Api result = (Api) u.unmarshal(xmlReader);
-		return result;
+		return apifactory.fromXML(xml);
 	}
 
 	/**
-	 * create a Json representation for this Api object
-	 * 
-	 * @return a Json representation of the Api object
-	 * @throws JAXBException
+	 * get my factory
+	 * @return the factory
+	 */
+	public JaxbFactoryApi<Api> getFactory() {
+		return apifactory;
+	}
+
+	/**
+	 * return me as a Json string
 	 */
 	public String asJson() throws JAXBException {
-		JAXBContext context = JAXBContext.newInstance(Api.class);
-		Marshaller marshaller = context.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-		marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
-		StringWriter sw = new StringWriter();
-		marshaller.marshal(this, sw);
-		String result = sw.toString();
-		return result;
+		return getFactory().asJson(this);
+	}
+
+	/**
+	 * return me as an Xml string
+	 */
+	public String asXml() throws JAXBException {
+		return getFactory().asXml(this);
 	}
 
 }

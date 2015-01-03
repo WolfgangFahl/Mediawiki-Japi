@@ -30,7 +30,7 @@ public class TestApiJaxb {
 	 * test Jaxb Api wrapping
 	 * @throws Exception
 	 */
-	public void testApi() throws Exception {
+	public void testApiFromXml() throws Exception {
 		String xml="<?xml version=\"1.0\"?>"+
 	    "<api>\n"+
 		  "  <query>\n"+

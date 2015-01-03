@@ -6,6 +6,10 @@
  *
  * http://www.bitplan.com
  * 
+ * This source is part of
+ * https://github.com/WolfgangFahl/JMediawiki
+ * and the license for JMediawiki applies
+ * 
  */
 package com.bitplan.jmediawiki.user;
 

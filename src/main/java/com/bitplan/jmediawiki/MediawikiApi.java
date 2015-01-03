@@ -6,9 +6,14 @@
  *
  * http://www.bitplan.com
  * 
+ * This source is part of
+ * https://github.com/WolfgangFahl/JMediawiki
+ * and the license for JMediawiki applies
+ * 
  */
 package com.bitplan.jmediawiki;
 
+import com.bitplan.jmediawiki.api.General;
 import com.bitplan.jmediawiki.api.Login;
 
 /**
@@ -28,6 +33,20 @@ public interface MediawikiApi {
 	 * @param siteurl
 	 */
 	public void setSiteurl(String siteurl);
+	
+	/**
+	 * get the Version of this Mediawiki
+	 * @return
+	 * @throws Exception 
+	 */
+	public String getVersion() throws Exception;
+	
+	/**
+	 * get the general siteinfo
+	 * @return
+	 * @throws Exception 
+	 */
+	public General getSiteInfo() throws Exception;
 	
 	/**
 	 * login the given user with the given password

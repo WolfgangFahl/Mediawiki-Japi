@@ -6,6 +6,10 @@
  *
  * http://www.bitplan.com
  * 
+ * This source is part of
+ * https://github.com/WolfgangFahl/JMediawiki
+ * and the license for JMediawiki applies
+ * 
  */
 package com.bitplan.jmediawiki;
 
@@ -15,6 +19,7 @@ import java.util.logging.Level;
 
 import com.bitplan.jmediawiki.api.Api;
 import com.bitplan.jmediawiki.api.Error;
+import com.bitplan.jmediawiki.api.General;
 import com.bitplan.jmediawiki.api.Login;
 import com.bitplan.jmediawiki.api.Page;
 import com.sun.jersey.api.client.Client;
@@ -71,6 +76,10 @@ public class JMediawiki implements MediawikiApi {
 	// the client and it's cookies
 	private Client client;
 	private ArrayList<Object> cookies;
+
+	// mediaWikiVersion and site info
+	protected String mediawikiVersion;
+	protected General siteinfo;
 
 	/**
 	 * enabel debugging
@@ -227,6 +236,31 @@ public class JMediawiki implements MediawikiApi {
 		return result;
 	}
 	
+	/**
+	 * get the general siteinfo
+	 * @return
+	 * @throws Exception 
+	 */
+	public General getSiteInfo() throws Exception {
+		if (siteinfo==null) {
+			Api api = getQueryResult("&meta=siteinfo");
+			siteinfo=api.getQuery().getGeneral();
+		}
+		return siteinfo;
+	}
+
+	/**
+	 * get the Version of this wiki
+	 * @throws Exception 
+	 */
+	public String getVersion() throws Exception {
+		if (mediawikiVersion==null) {
+			General lGeneral=getSiteInfo();
+			mediawikiVersion=lGeneral.getGenerator();
+		}
+		return mediawikiVersion;
+	}
+	
 	// login implementation
 	public Login login(String username, String password) throws Exception {
 		username=encode(username);
@@ -268,5 +302,7 @@ public class JMediawiki implements MediawikiApi {
 		String content=page.getRevisions().get(0).getValue();	
 		return content;
 	}
+
+	
 
 }

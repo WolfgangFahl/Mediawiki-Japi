@@ -83,7 +83,7 @@ public class TestAPI {
 		if (!mayBeNull)
 			assertNotNull(name+" should not be null",value);
 		if (debug) {
-			LOGGER.log(Level.INFO, name + "='" + value.toString() + "'");
+			LOGGER.log(Level.INFO, name + "='" + value + "'");
 		}
 	}
 	

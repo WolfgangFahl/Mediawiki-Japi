@@ -6,6 +6,10 @@
  *
  * http://www.bitplan.com
  * 
+ * This source is part of
+ * https://github.com/WolfgangFahl/JMediawiki
+ * and the license for JMediawiki applies
+ * 
  */
 package com.bitplan.jmediawiki.user;
 
@@ -79,7 +83,7 @@ public class WikiUser {
 	 */
 	public static WikiUser getUser(String wikiid) {
 		String user = System.getProperty("user.name");
-		String userPropertiesFileName = System.getProperty("user.home") + "/.Wiki/"
+		String userPropertiesFileName = System.getProperty("user.home") + "/.jmediawiki/"
 				+ user + "_" + wikiid + ".ini";
 		File propFile = new File(userPropertiesFileName);
 		Properties props = new Properties();

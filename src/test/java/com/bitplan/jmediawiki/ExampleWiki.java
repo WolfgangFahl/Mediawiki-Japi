@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.bitplan.jmediawiki.api.Page;
 import com.bitplan.jmediawiki.user.WikiUser;
 
@@ -23,6 +25,7 @@ import com.bitplan.jmediawiki.user.WikiUser;
  * @author wf
  *
  */
+@XmlRootElement(name = "examplewiki")
 public class ExampleWiki extends JMediawiki {
 
 	/**
@@ -174,7 +177,7 @@ public class ExampleWiki extends JMediawiki {
 	
 			// test site on localhost
 			// uncommment to enable
-			/**
+			// /**
 			wiki = new ExampleWiki("mediawiki_test2", "http://localhost",
 					"/mediawiki-test2");
 			wiki.setLogo("http://localhost/mediawiki-test2/images/4/4e/BITPlanLogo2012_197x118.png");
@@ -187,14 +190,10 @@ public class ExampleWiki extends JMediawiki {
 			// bitplan internal wiki
 			// wiki = new
 			// ExampleWiki("capri_bitplan","http://capri.bitplan.com","/mediawiki");
-			 *
-			 */
+			// */
 		}
 		ExampleWiki result=exampleWikis.get(wikiId);
 		return result;
 	}
-
-	
-	
 
 }

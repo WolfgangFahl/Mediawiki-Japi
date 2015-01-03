@@ -10,6 +10,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Documentation
 * Javadoc: http://wolfgangfahl.github.io/JMediawiki/apidocs/index.html
 * [Examples](#examples)
+* [Developer info](Developer.md)
 
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
@@ -21,7 +22,6 @@ http://www.mediawiki.org/wiki/API:Main_page
 * Maven based Java project including JUnit 4 tests.
 * Project page at http://wolfgangfahl.github.io/JMediawiki/
 
-
 ### Distribution
 Available at Maven Central see 
 
@@ -29,7 +29,7 @@ http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
 
 Maven dependency:
 
-```
+```xml
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>jmediawiki</artifactId>

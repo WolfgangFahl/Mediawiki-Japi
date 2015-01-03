@@ -35,11 +35,8 @@ public class TestAPI_Meta extends TestAPI {
 	 */
 	@Test
 	public void testGeneralSiteInfo() throws Exception {
-		// debug=true;
 		for (ExampleWiki lwiki : wikis) {
-			Api api = getQueryResult(lwiki, "&meta=siteinfo");
-			assertNotNull(api);
-			General general = api.getQuery().getGeneral();
+			General general = lwiki.getSiteInfo();
 			assertNotNull(general);
 			assertEquals(lwiki.getLogo(), general.getLogo());
 			boolean mayBeNull=true;
