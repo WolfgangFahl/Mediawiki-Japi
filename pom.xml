@@ -2,22 +2,22 @@
 	Copyright (c) 2015 BITPlan GmbH
 
 	Project details and license at:
-	https://github.com/WolfgangFahl/Jmediawiki
+	https://github.com/WolfgangFahl/Mediawiki-Japi
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan</groupId>
-	<artifactId>jmediawiki</artifactId>
+	<artifactId>mediawiki-japi</artifactId>
 	<packaging>jar</packaging>
-	<name>BITPlan-jmediawiki</name>
+	<name>BITPlan-Mediawiki-Japi</name>
 	<version>0.0.2</version>
 	<description>Java library to call Mediawiki api</description>
 	<prerequisites>
 		<maven>3.1.1</maven>
 	</prerequisites>
-	<url>https://github.com/WolfgangFahl/jmediawiki</url>
+	<url>https://github.com/WolfgangFahl/Mediawiki-Japi</url>
 	<licenses>
 		<license>
 			<name>Apache 2.0</name>
@@ -25,12 +25,12 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:git://github.com/WolfgangFahl/jmediawiki.git</connection>
-		<developerConnection>scm:git:git@github.com:WolfgangFahl/jmediawiki.git</developerConnection>
-		<url>https://github.com/WolfgangFahl/jmediawiki</url>
+		<connection>scm:git:git://github.com/WolfgangFahl/Mediawiki-Japi.git</connection>
+		<developerConnection>scm:git:git@github.com:WolfgangFahl/Mediawiki-Japi.git</developerConnection>
+		<url>https://github.com/WolfgangFahl/Mediawiki-Japi</url>
 	</scm>
 	<issueManagement>
-		<url>https://github.com/WolfgangFahl/jmediawiki/issues</url>
+		<url>https://github.com/WolfgangFahl/Mediawiki-Japi/issues</url>
 		<system>GitHub</system>
 	</issueManagement>
 	<developers>
@@ -208,7 +208,7 @@
 				<version>0.10</version>
 				<configuration>
 					<message>Creating site for ${project.version}</message>
-					<repositoryName>jmediawiki</repositoryName>      <!-- github repo name -->
+					<repositoryName>Mediawiki-Japi</repositoryName>      <!-- github repo name -->
 					<repositoryOwner>WolfgangFahl</repositoryOwner>    <!-- github username -->
 				</configuration>
 				<executions>

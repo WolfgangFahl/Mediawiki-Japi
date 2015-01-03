@@ -1,5 +1,5 @@
-JMediawiki
-==========
+Mediawiki-Japi
+==============
 
 This is a Java API for the Mediawiki web API described at 
 
@@ -8,38 +8,38 @@ http://www.mediawiki.org/wiki/API:Main_page
 ## Project 
 
 ### Documentation
-* Javadoc: http://wolfgangfahl.github.io/JMediawiki/apidocs/index.html
+* Javadoc: http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html
 * [Examples](#examples)
-* [Developer info](Developer.md)
+* [Developer info](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Developer_Info)
 
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
 
 ### Project info
-* Open Source hosted at https://github.com/WolfgangFahl/JMediawiki
-* Issues via https://github.com/WolfgangFahl/JMediawiki/issues
+* Open Source hosted at https://github.com/WolfgangFahl/Mediawiki-Japi
+* Issues via https://github.com/WolfgangFahl/Mediawiki-Japi/issues
 * Apache License
 * Maven based Java project including JUnit 4 tests.
-* Project page at http://wolfgangfahl.github.io/JMediawiki/
+* Project page at http://wolfgangfahl.github.io/Mediawiki-Japi/
 
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|jmediawiki|0.0.1|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.2|jar
 
 Maven dependency:
 
 ```xml
 <dependency>
   <groupId>com.bitplan</groupId>
-  <artifactId>jmediawiki</artifactId>
-  <version>0.0.1</version>
+  <artifactId>mediawiki-japi</artifactId>
+  <version>0.0.2</version>
 </dependency>
 ```
 
 ### How to build
-* git clone https://github.com/WolfgangFahl/JMediawiki
-* cd JMediawiki
+* git clone https://github.com/WolfgangFahl/Mediawiki-Japi
+* cd Mediawiki-Japi
 * mvn install
 
 
@@ -49,7 +49,7 @@ Maven dependency:
 http://www.mediawiki.org/wiki/API:Query#Sample_query
 
 ```java
-	JMediawiki wiki=new JMediawiki("http://en.wikipedia.org");
+	Mediawiki wiki=new Mediawiki("http://en.wikipedia.org");
 	String content=wiki.getPageContent("Main Page");
 ```		
 
@@ -62,7 +62,7 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
    */
 	@Test
 	public void testSampleQuery() throws Exception {
-		JMediawiki wiki=new JMediawiki("http://en.wikipedia.org");
+		Mediawiki wiki=new Mediawiki("http://en.wikipedia.org");
 		String content=wiki.getPageContent("Main Page");
 		assertTrue(content.contains("Wikipedia"));
 	}
@@ -96,20 +96,11 @@ wiki.logout();
 ```		
 
 ## Design decisions
-The Mediawiki API supports XML and Json encoding of API calls. The XML version of things will be deprecated soon. The
-original idea to create a schema was dropped in 2014 see:
-* https://phabricator.wikimedia.org/T16025
-  
-Still it would be nice to generate the code for the API access. JAXB is choosen to attempt this. 
-There is a bash script createschema which
-* runs a sample query
-* stores the resulting xml
-* generates xsd from the xml
-* generates java code from the xml
+[Jaxb-Generator](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Jaxbgenerator)
 
 This is a semi-automatic process. The resulting java code needs to be adapted to be workable. For a start
 15 Java classes have been generated that allow some 12 JUnit tests to pass.
   
 ## Version history
-* 0.0.1 - 2015-01-01: first version
-* 0.0.2 - 2015-01-02: not published via maven central yet
+* 0.0.1 - 2015-01-01: first version as JMediawiki
+* 0.0.2 - 2015-01-02: renamed to Mediawiki-Japi (not release yet)
