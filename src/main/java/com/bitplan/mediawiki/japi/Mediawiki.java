@@ -23,6 +23,10 @@ import java.util.logging.Level;
 
 import javax.ws.rs.core.MediaType;
 
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
@@ -49,6 +53,11 @@ public class Mediawiki implements MediawikiApi {
 	protected static final String VERSION="0.0.2";
 	
 	/**
+	 * if true main can be called without calling system.exit() when finished
+	 */
+	public static boolean testMode = false;
+	
+	/**
 	 * see <a href='https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Identifying your client:User-Agent</a>
 	 */
 	protected static final String USER_AGENT = "Mediawiki-Japi/"+VERSION+" (https://github.com/WolfgangFahl/Mediawiki-Japi; support@bitplan.com)";
@@ -58,10 +67,6 @@ public class Mediawiki implements MediawikiApi {
 	 */
 	public static final String DEFAULT_SCRIPTPATH = "/w";
 
-	/**
-	 * set to true for debugging
-	 */
-	protected boolean debug = false;
 	
 	/**
 	 * set to true if exceptions should be thrown on Error
@@ -89,7 +94,7 @@ public class Mediawiki implements MediawikiApi {
 	protected General siteinfo;
 
 	/**
-	 * enabel debugging
+	 * enable debugging
 	 * 
 	 * @param debug
 	 */
@@ -390,22 +395,108 @@ public class Mediawiki implements MediawikiApi {
 		Edit result=api.getEdit();
 		return result;
 	}
-	
+
+	/**
+	 * handle the given Throwable (in commandline mode)
+	 * 
+	 * @param t
+	 */
+	public void handle(Throwable t) {
+		System.out.flush();
+		System.err.println(t.getClass().getSimpleName()+":"+t.getMessage());
+		if (debug)
+			t.printStackTrace();
+	}
+
+	/**
+	 * show the Version
+	 */
+	public static void showVersion() {
+		System.err.println("Mediawiki-Japi Version: " + VERSION);
+		System.err.println();
+		System.err
+				.println(" github: https://github.com/WolfgangFahl/Mediawiki-Japi");
+		System.err.println("");
+	}
+
 	/**
 	 * show a usage
 	 */
-	public static void usage() {
-		System.err.println("Mediawiki-Japi version "+VERSION+" has no command line interface");
-		System.err.println("Please visit http://mediawiki-japi.bitplan.com for usage instructions");
-		System.exit(1);
+	public void usage(String msg) {
+    System.err.println(msg);
+    
+		showVersion();
+		System.err
+				.println("  usage: java com.bitplan.mediawiki.japi.Mediawiki");
+		parser.printUsage(System.err);
+		exitCode = 1;
+	}
+	
+	/**
+	 * show Help
+	 */
+	public void showHelp() {
+		String msg="Help\n"+"Mediawiki-Japi version "+VERSION+" has no functional command line interface\n"
+		+"Please visit http://mediawiki-japi.bitplan.com for usage instructions";
+		usage(msg);
 	}
 
+	private CmdLineParser parser;
+	static int exitCode;
+	/**
+	 * set to true for debugging
+	 */
+	@Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
+	protected boolean debug = false;
+	
+	@Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
+	boolean showHelp = false;
+	
+	@Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
+	boolean showVersion = false;
+
+	/**
+	 * main instance
+	 * @param args
+	 * @return
+	 */
+	protected int maininstance(String[] args) {
+		parser = new CmdLineParser(this);
+		try {
+			parser.parseArgument(args);
+			if (debug)
+				showVersion();
+			if (this.showVersion)  {
+				showVersion();
+			} else if (this.showHelp) {
+				showHelp();
+			} else {
+				// FIXME - do something
+				// implement actions
+				System.err.println("Commandline interface is not functional in "+VERSION+" yet");
+				exitCode=1;
+				// exitCode = 0;
+			}
+		} catch (CmdLineException e) {
+			// handling of wrong arguments
+			usage(e.getMessage());
+		} catch (Exception e) {
+			handle(e);
+			exitCode = 1;
+		}
+		return exitCode;
+	}
+
+	
 	/**
 	 * command line interface
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		usage();
+		Mediawiki wiki=new Mediawiki();
+		int result = wiki.maininstance(args);
+		if (!testMode && result != 0)
+			System.exit(result);
 	}
 
 }

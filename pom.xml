@@ -47,6 +47,7 @@
 		<mockito.version>1.10.16</mockito.version>
 		<commons.io.version>2.4</commons.io.version>
 		<moxy.version>2.5.1</moxy.version>
+		<args4j.version>2.0.29</args4j.version>
 	</properties>
 	<dependencies>
 		<!-- commons io -->
@@ -93,6 +94,13 @@
 			<version>${junit4.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- args4j command line utility -->
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+			<version>${args4j.version}</version>
+		</dependency>
+		<!-- Mockito -->
 		<dependency>
 	    <groupId>org.mockito</groupId>
 	    <artifactId>mockito-core</artifactId>
