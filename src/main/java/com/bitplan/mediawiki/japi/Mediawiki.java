@@ -133,6 +133,14 @@ public class Mediawiki implements MediawikiApi {
 	public void setScriptPath(String scriptPath) {
 		this.scriptPath = scriptPath;
 	}
+	
+	/**
+	 * construct me with no siteurl set
+	 */
+	public Mediawiki() {
+		this(null);
+	}
+
 
 	/**
 	 * construct a Mediawiki for the given url using the default Script path 
@@ -155,8 +163,6 @@ public class Mediawiki implements MediawikiApi {
 		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
 		client = ApacheHttpClient.create(config);
 	}
-
-	
 
 	/**
 	 * get the result for the given action and aprams
