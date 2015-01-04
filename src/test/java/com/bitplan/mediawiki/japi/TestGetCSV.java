@@ -82,7 +82,7 @@ public class TestGetCSV extends APITestbase {
 
 	@Test
 	public void testGetCSV() throws IOException {
-		boolean debug=true;
+		boolean debug=false;
 		String urlString="http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/mainlabel%3Dwiki/format%3Dcsv/sep%3D;/offset%3D0";
 		File csvFile=new File("/tmp/ExampleWikis.csv");
 		getCSVAsFile(urlString, csvFile);
