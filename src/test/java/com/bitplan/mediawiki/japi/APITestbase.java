@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  * @author wf
  *
  */
-public class TestAPI {
+public class APITestbase {
 
 	/**
 	 * set to true for debugging
@@ -43,16 +43,16 @@ public class TestAPI {
 	/**
 	 * construct a Test
 	 */
-	public TestAPI() {
+	public APITestbase() {
 		wiki=ExampleWiki.get(MAIN_TESTWIKI_ID);
 		wikis=ExampleWiki.exampleWikis.values();
 	}
 
 	/**
 	 * get a query Result
-	 * 
-	 * @param query
-	 * @return
+	 * @param pWiki - the example wiki to ge the result for
+	 * @param query - the query to use
+	 * @return the query result
 	 * @throws Exception
 	 */
 	public Api getQueryResult(ExampleWiki pWiki,String query) throws Exception {
@@ -62,10 +62,10 @@ public class TestAPI {
 	}
 	
 	/**
-	 * get a query Result
+	 * get a query Result for the default exampleWiki
 	 * 
-	 * @param query
-	 * @return
+	 * @param query - the query to use
+	 * @return the query result
 	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {

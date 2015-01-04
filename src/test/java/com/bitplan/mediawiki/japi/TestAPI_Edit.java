@@ -23,7 +23,7 @@ import com.bitplan.mediawiki.japi.api.Api;
  * @author wf
  *
  */
-public class TestAPI_Edit extends TestAPI {
+public class TestAPI_Edit extends APITestbase {
 
 	/**
 	 * test getting the edit token

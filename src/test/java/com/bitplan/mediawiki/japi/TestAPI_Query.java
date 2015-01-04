@@ -29,7 +29,7 @@ import com.bitplan.mediawiki.japi.api.Rev;
  * @author wf
  *
  */
-public class TestAPI_Query extends TestAPI {
+public class TestAPI_Query extends APITestbase {
 
 	/**
 	 * test the Allpages API call http://www.mediawiki.org/wiki/API:Allpages

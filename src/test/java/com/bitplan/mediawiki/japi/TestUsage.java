@@ -10,7 +10,6 @@
 package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 /**

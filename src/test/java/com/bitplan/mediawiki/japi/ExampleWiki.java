@@ -101,7 +101,7 @@ public class ExampleWiki extends Mediawiki {
 	/**
 	 * get the WikiUser for this example Wiki
 	 * 
-	 * @return
+	 * @return the wiki user
 	 */
 	public WikiUser getWikiUser() {
 		if (wikiuser == null) {
@@ -143,8 +143,8 @@ public class ExampleWiki extends Mediawiki {
 	/**
 	 * return the example Page for the given testId
 	 * 
-	 * @param testId
-	 * @return
+	 * @param testId - the key for looking up the example page
+	 * @return - the example page with the given testId
 	 */
 	public List<ExamplePage> getExamplePages(String testId) {
 		List<ExamplePage> result = examplePages.get(testId);
@@ -170,7 +170,7 @@ public class ExampleWiki extends Mediawiki {
 	 * get the given Example wiki
 	 * 
 	 * @param wikiId
-	 * @return
+	 * @return - the example wiki for the given wikiId
 	 */
 	public static ExampleWiki get(String wikiId) {
 		if (exampleWikis.size() == 0) {

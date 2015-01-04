@@ -26,7 +26,7 @@ import com.bitplan.mediawiki.japi.api.Statistics;
 /**
  * Test for http://www.mediawiki.org/wiki/API:Meta
  */
-public class TestAPI_Meta extends TestAPI {
+public class TestAPI_Meta extends APITestbase {
 
 	/**
 	 * http://www.mediawiki.org/wiki/API:Meta#siteinfo_.2F_si

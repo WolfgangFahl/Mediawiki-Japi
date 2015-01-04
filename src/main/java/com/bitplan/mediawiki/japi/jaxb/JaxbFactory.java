@@ -75,7 +75,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 	
 	/**
 	 * get a marshaller for the given <T> instance 
-	 * @param type
+	 * @param instance - the instance to get a marshaller for
 	 * @return a marshaller for <T>
 	 * @throws JAXBException
 	 */

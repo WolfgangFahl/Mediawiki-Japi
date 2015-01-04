@@ -60,7 +60,7 @@ public class WikiUser {
 	/**
 	 * get input from standard in
 	 * @param name
-	 * @return
+	 * @return the input returned
 	 * @throws IOException 
 	 */
 	public static String getInput(String name) throws IOException {
@@ -77,7 +77,7 @@ public class WikiUser {
 	/**
 	 * get the property file for the given wiki
 	 * @param wikiId
-	 * @return
+	 * @return the property File
 	 */
 	public static File getPropertyFile(String wikiId) {
 		String user = System.getProperty("user.name");
@@ -185,7 +185,7 @@ public class WikiUser {
 	 * help text
 	 * @param wikiId
 	 * @param siteurl
-	 * @return
+	 * @return - the help text
 	 */
 	public static String help(String wikiId, String siteurl) {
 		File propFile=getPropertyFile(wikiId);

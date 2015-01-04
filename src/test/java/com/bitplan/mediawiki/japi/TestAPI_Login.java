@@ -23,7 +23,7 @@ import com.bitplan.mediawiki.japi.user.WikiUser;
  * @author wf
  *
  */
-public class TestAPI_Login extends TestAPI {
+public class TestAPI_Login extends APITestbase {
 
 	/**
 	 * test secret access to user data
@@ -39,10 +39,7 @@ public class TestAPI_Login extends TestAPI {
 
 	/**
 	 * http://www.mediawiki.org/wiki/API:Login
-	 * 
-	 * @author wf
-	 *
-	 */
+   */
 	@Test
 	public void testLoginToken() throws Exception {
 		for (ExampleWiki lwiki : wikis) {

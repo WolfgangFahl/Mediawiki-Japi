@@ -48,7 +48,7 @@ public class Crypt {
 	
 	/**
 	 * return the salt
-	 * @return
+	 * @return the salt
 	 */
 	public String getSalt() {
 		return new String(salt);
@@ -75,7 +75,7 @@ public class Crypt {
 	/**
 	 * generate a Random key
 	 * @param pLength
-	 * @return
+	 * @return the reandom key with the given length
 	 */
 	public static String generateRandomKey(int pLength) {
     int asciiFirst = 48;
@@ -100,7 +100,7 @@ public class Crypt {
 
 	/**
 	 * get a random Crypt
-	 * @return
+	 * @return a new crypt with a 32 byte random key and 8byte salt 
 	 */
 	public static Crypt getRandomCrypt() {
 	  String lCypher=generateRandomKey(32);

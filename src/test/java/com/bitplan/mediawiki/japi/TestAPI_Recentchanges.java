@@ -23,7 +23,7 @@ import com.bitplan.mediawiki.japi.api.Rc;
  * @author wf
  *
  */
-public class TestAPI_Recentchanges extends TestAPI {
+public class TestAPI_Recentchanges extends APITestbase {
 	/**
 	 * test http://www.mediawiki.org/wiki/API:Recentchanges
 	 * 
