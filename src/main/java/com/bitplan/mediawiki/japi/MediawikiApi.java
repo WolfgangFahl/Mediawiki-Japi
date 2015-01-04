@@ -31,8 +31,9 @@ public interface MediawikiApi {
 	/**
 	 * set the siteurl
 	 * @param siteurl
+	 * @throws Exception - if the url is not o.k.
 	 */
-	public void setSiteurl(String siteurl);
+	public void setSiteurl(String siteurl) throws Exception;
 	
 	/**
 	 * get the Version of this Mediawiki

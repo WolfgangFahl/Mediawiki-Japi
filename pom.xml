@@ -44,6 +44,7 @@
 		<!-- versions of other libraries to be used -->
 		<jersey.version>1.18</jersey.version>
 		<junit4.version>4.11</junit4.version>
+		<mockito.version>1.10.16</mockito.version>
 		<commons.io.version>2.4</commons.io.version>
 		<moxy.version>2.5.1</moxy.version>
 	</properties>
@@ -92,6 +93,12 @@
 			<version>${junit4.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+	    <groupId>org.mockito</groupId>
+	    <artifactId>mockito-core</artifactId>
+	    <version>${mockito.version}</version>
+	    <scope>test</scope>
+	</dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -101,8 +108,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source />
-					<target />
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<!-- jar creation -->
