@@ -2,20 +2,20 @@
 
 <rss version="0.91">
   <channel>
-    <title>BITPlan-jmediawiki - Checkstyle report</title>
-    <link>https://github.com/WolfgangFahl/jmediawiki</link>
-    <description>BITPlan-jmediawiki - Checkstyle report</description>
+    <title>BITPlan-Mediawiki-Japi - Checkstyle report</title>
+    <link>https://github.com/WolfgangFahl/Mediawiki-Japi</link>
+    <description>BITPlan-Mediawiki-Japi - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2015</copyright>
     <item>
-      <title>File: 18,
-             Errors: 1849,
+      <title>File: 23,
+             Errors: 2184,
              Warnings: 0,
              Infos: 0
       </title>
-            <link>https://github.com/WolfgangFahl/jmediawiki/checkstyle.html</link>
+            <link>https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html</link>
       <description>
-        <p>Click <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Query.java">com/bitplan/jmediawiki/api/Query.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.Mediawiki.java">com/bitplan/mediawiki/japi/Mediawiki.java</a>
                 </td>
                 <td>
                   0
@@ -38,40 +38,12 @@
                   0
                 </td>
                 <td>
-                  95
+                  434
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Snapshots.java">com/bitplan/jmediawiki/api/Snapshots.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  22
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.P.java">com/bitplan/jmediawiki/api/P.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  54
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Limit.java">com/bitplan/jmediawiki/api/Limit.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Error.java">com/bitplan/mediawiki/japi/api/Error.java</a>
                 </td>
                 <td>
                   0
@@ -85,133 +57,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Rc.java">com/bitplan/jmediawiki/api/Rc.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  143
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Thumblimits.java">com/bitplan/jmediawiki/api/Thumblimits.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  22
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Statistics.java">com/bitplan/jmediawiki/api/Statistics.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  120
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.JMediawiki.java">com/bitplan/jmediawiki/JMediawiki.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  378
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Page.java">com/bitplan/jmediawiki/api/Page.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  62
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Extensiondistributor.java">com/bitplan/jmediawiki/api/Extensiondistributor.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  33
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Rev.java">com/bitplan/jmediawiki/api/Rev.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  43
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Imagelimits.java">com/bitplan/jmediawiki/api/Imagelimits.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  25
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.MediawikiApi.java">com/bitplan/jmediawiki/MediawikiApi.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  84
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Login.java">com/bitplan/jmediawiki/api/Login.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Login.java">com/bitplan/mediawiki/japi/api/Login.java</a>
                 </td>
                 <td>
                   0
@@ -225,7 +71,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Api.java">com/bitplan/jmediawiki/api/Api.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Rc.java">com/bitplan/mediawiki/japi/api/Rc.java</a>
                 </td>
                 <td>
                   0
@@ -234,12 +80,68 @@
                   0
                 </td>
                 <td>
-                  145
+                  143
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.General.java">com/bitplan/jmediawiki/api/General.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Imagelimits.java">com/bitplan/mediawiki/japi/api/Imagelimits.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  25
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Thumblimits.java">com/bitplan/mediawiki/japi/api/Thumblimits.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  22
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Snapshots.java">com/bitplan/mediawiki/japi/api/Snapshots.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  22
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Api.java">com/bitplan/mediawiki/japi/api/Api.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  167
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.General.java">com/bitplan/mediawiki/japi/api/General.java</a>
                 </td>
                 <td>
                   0
@@ -253,7 +155,21 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.package-info.java">com/bitplan/jmediawiki/api/package-info.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Limit.java">com/bitplan/mediawiki/japi/api/Limit.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  43
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.package-info.java">com/bitplan/mediawiki/japi/api/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -267,7 +183,119 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/jmediawiki/checkstyle.html#com.bitplan.jmediawiki.api.Error.java">com/bitplan/jmediawiki/api/Error.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Query.java">com/bitplan/mediawiki/japi/api/Query.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  95
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.MediawikiApi.java">com/bitplan/mediawiki/japi/MediawikiApi.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  109
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.package-info.java">com/bitplan/mediawiki/japi/jaxb/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.P.java">com/bitplan/mediawiki/japi/api/P.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  54
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Extensiondistributor.java">com/bitplan/mediawiki/japi/api/Extensiondistributor.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbFactory.java">com/bitplan/mediawiki/japi/jaxb/JaxbFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  145
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Page.java">com/bitplan/mediawiki/japi/api/Page.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  62
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbFactoryApi.java">com/bitplan/mediawiki/japi/jaxb/JaxbFactoryApi.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  48
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Rev.java">com/bitplan/mediawiki/japi/api/Rev.java</a>
                 </td>
                 <td>
                   0
@@ -277,6 +305,48 @@
                 </td>
                 <td>
                   43
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Statistics.java">com/bitplan/mediawiki/japi/api/Statistics.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  120
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbPersistenceApi.java">com/bitplan/mediawiki/japi/jaxb/JaxbPersistenceApi.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.package-info.java">com/bitplan/mediawiki/japi/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
                 </td>
               </tr>
                       </tbody>

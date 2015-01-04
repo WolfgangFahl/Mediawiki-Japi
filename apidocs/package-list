@@ -1,2 +1,3 @@
-com.bitplan.jmediawiki
-com.bitplan.jmediawiki.api
+com.bitplan.mediawiki.japi
+com.bitplan.mediawiki.japi.api
+com.bitplan.mediawiki.japi.jaxb
