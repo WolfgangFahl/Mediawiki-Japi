@@ -303,6 +303,51 @@ public class Mediawiki implements MediawikiApi {
 		return content;
 	}
 	
+	enum TokenMode { token1_19, token1_20_23,token1_24  }
+	/**
+	 * get an edit token for the given page Title
+	 * @param pageTitle
+	 * @return
+	 * @throws Exception 
+	 */
+	public String getEditToken(String pageTitle) throws Exception {
+		pageTitle=normalize(pageTitle);
+		String editversion = "";
+		String action = "query";
+		String params = "&meta=tokens";
+		TokenMode tokenMode;
+		if (getVersion().compareToIgnoreCase("Mediawiki 1.24") >= 0) {
+			editversion = "Versions 1.24 and later";
+			tokenMode=TokenMode.token1_24;
+		} else if (getVersion().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
+			editversion = "Versions 1.20-1.23";
+			tokenMode=TokenMode.token1_20_23;
+			action = "tokens";
+			params = "";
+		} else {
+			editversion = "Version 1.19 and earlier";
+			tokenMode=TokenMode.token1_19;
+			params = "&prop=info&7Crevisions&intoken=edit&titles="+pageTitle;
+		}
+		if (debug) {
+			LOGGER.log(Level.INFO,
+					"handling edit for wiki version " + getVersion() + " as "
+							+ editversion + " with action=" + action + params);
+		}
+		Api api = getActionResult(action, params);
+		String token=null;
+		switch (tokenMode) {
+		  case token1_19:
+		  	token=api.getQuery().getPages().get(0).getEdittoken();
+			break;
+		  case token1_20_23:
+		  	token=api.getTokens().getEdittoken();
+		default:
+			break;
+		}
+		return token;
+	}
+	
 	/**
 	 * show a usage
 	 */

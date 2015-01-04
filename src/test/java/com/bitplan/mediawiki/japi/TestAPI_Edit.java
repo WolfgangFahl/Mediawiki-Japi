@@ -9,13 +9,13 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.logging.Level;
+import java.util.List;
 
 import org.junit.Test;
 
-import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.ExampleWiki.ExamplePage;
 
 /**
  * test https://www.mediawiki.org/wiki/API:Edit
@@ -33,29 +33,16 @@ public class TestAPI_Edit extends APITestbase {
 	@Test
 	public void testGetEditToken() throws Exception {
 		for (ExampleWiki lwiki : wikis) {
-			lwiki.login();
-			lwiki.setDebug(true);
-			String editversion = "";
-			String action="query";
-			String params="&meta=tokens";
-			if (lwiki.getVersion().compareToIgnoreCase("Mediawiki 1.24") >= 0) {
-				editversion = "Versions 1.24 and later";
-			} else if (lwiki.getVersion().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
-				editversion = "Versions 1.20-1.23";
-				action="tokens";
-				params="";
-			} else {
-				editversion = "Version 1.19 and earlier";
-				// FIXME title specific?
-				params="&prop=info&7Crevisions&intoken=edit&titles=Main%20Page";
+			List<ExamplePage> exampleEditPages = lwiki
+					.getExamplePages("testEditPages");
+			if (exampleEditPages.size() > 0) {
+				lwiki.login();
+				lwiki.setDebug(true);
+				for (ExamplePage examplePage : exampleEditPages) {
+					String token = lwiki.getEditToken(examplePage.getTitle());
+					assertNotNull(token);
+				}
 			}
-			if (debug) {
-				LOGGER.log(Level.INFO,
-						"handling edit for wiki version " + lwiki.getVersion() + " as "
-								+ editversion+" with action="+action+params);
-			}
-			Api api = lwiki.getActionResult(action, params);
-			assertNotNull(api);
 		}
 	}
 }

@@ -15,6 +15,7 @@ package com.bitplan.mediawiki.japi.api;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bitplan.mediawiki.japi.jaxb.JaxbFactory;
@@ -24,7 +25,8 @@ import com.bitplan.mediawiki.japi.jaxb.JaxbPersistenceApi;
 /**
  * Mediawiki Api Jaxb wrapper
  * 
- * see <a href='https://www.mediawiki.org/wiki/API:Main_page'>Mediawiki API:Main_page</a>
+ * see <a href='https://www.mediawiki.org/wiki/API:Main_page'>Mediawiki
+ * API:Main_page</a>
  * 
  * @author wf
  *
@@ -36,6 +38,7 @@ public class Api implements JaxbPersistenceApi<Api> {
 	protected Query query;
 	protected Login login;
 	protected Error error;
+	protected Tokens tokens;
 
 	/**
 	 * @return the servedby
@@ -109,19 +112,42 @@ public class Api implements JaxbPersistenceApi<Api> {
 	public void setError(Error value) {
 		this.error = value;
 	}
-	
+
 	/**
-	 * allows typed / non static access to JaxbFactory features for 
+	 * Gets the value of the tokens property.
+	 * 
+	 * @return possible object is {@link Tokens }
+	 * 
+	 */
+	public Tokens getTokens() {
+		return tokens;
+	}
+
+	/**
+	 * Sets the value of the tokens property.
+	 * 
+	 * @param value
+	 *          allowed object is {@link Tokens }
+	 * 
+	 */
+	public void setTokens(Tokens value) {
+		this.tokens = value;
+	}
+
+	/**
+	 * allows typed / non static access to JaxbFactory features for
 	 * 
 	 * @author wf
 	 *
 	 */
-	public static class ApiFactory  extends JaxbFactory<Api> {
-		public ApiFactory() {			super(Api.class);}
+	public static class ApiFactory extends JaxbFactory<Api> {
+		public ApiFactory() {
+			super(Api.class);
+		}
 	}
 
-	private static ApiFactory apifactory=new ApiFactory();
-	
+	private static ApiFactory apifactory = new ApiFactory();
+
 	/**
 	 * create a Api from an XML string
 	 * 
@@ -137,6 +163,7 @@ public class Api implements JaxbPersistenceApi<Api> {
 
 	/**
 	 * get my factory
+	 * 
 	 * @return the factory
 	 */
 	public JaxbFactoryApi<Api> getFactory() {

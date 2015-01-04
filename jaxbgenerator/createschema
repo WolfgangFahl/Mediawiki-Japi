@@ -10,10 +10,11 @@ queries() {
   local l_query="http://www.mediawiki.org/w/api.php?action=query"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
+file:edittoken_23.xml
 # set your own username and password here
 # change curl furhter down to -X POST
 #http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml
-http://capri.bitplan.com/mediawiki/api.php?&action=query&titles=2011_Wikimedia_fundraiser%7C2012_Wikimedia_fundraiser&prop=revisions&rvprop=content&format=xml
+#http://capri.bitplan.com/mediawiki/api.php?&action=query&titles=2011_Wikimedia_fundraiser%7C2012_Wikimedia_fundraiser&prop=revisions&rvprop=content&format=xml
 #$l_query&list=recentchanges&rcprop=title|ids|sizes|flags|user&rclimit=3$l_format
 #http://www.mediawiki.org/w/api.php?&action=query&titles=Main%20Page&prop=revisions&rvprop=content$l_format
 #http://www.mediawiki.org/w/api.php?&action=query&titles=2011_Wikimedia_fundraiser|2011_Wikimedia_fundraiser&prop=revisions&rvprop=content$l_format

@@ -121,6 +121,7 @@ public class ExampleWiki extends Mediawiki {
 	 */
 	public class ExamplePage extends Page {
 		String contentPart;
+		boolean forEdit=false;
 
 		/**
 		 * construct an example Page with the given title and the given part of the
@@ -128,10 +129,16 @@ public class ExampleWiki extends Mediawiki {
 		 * 
 		 * @param title
 		 * @param contentPart
+		 * @param forEdit
 		 */
-		public ExamplePage(String title, String contentPart) {
+		public ExamplePage(String title, String contentPart,boolean forEdit) {
 			this.title = title;
 			this.contentPart = contentPart;
+			this.forEdit=forEdit;
+		}
+		
+		public ExamplePage(String title, String contentPart) {
+			this(title,contentPart,false);
 		}
 
 		public String getContentPart() {
@@ -143,11 +150,14 @@ public class ExampleWiki extends Mediawiki {
 	/**
 	 * return the example Page for the given testId
 	 * 
-	 * @param testId - the key for looking up the example page
-	 * @return - the example page with the given testId
+	 * @param testId
+	 *          - the key for looking up the example page
+	 * @return - the list of example pages with the given testId - or an empty list if there was nothing found
 	 */
 	public List<ExamplePage> getExamplePages(String testId) {
 		List<ExamplePage> result = examplePages.get(testId);
+		if (result==null)
+			return new ArrayList<ExamplePage>();
 		return result;
 	}
 
@@ -173,7 +183,7 @@ public class ExampleWiki extends Mediawiki {
 	 * @return - the example wiki for the given wikiId
 	 */
 	public static ExampleWiki get(String wikiId) {
-	    //this code should be replaced by csv-access
+		// this code should be (partly?) replaced by csv-access
 		if (exampleWikis.size() == 0) {
 			// Mediawiki site
 			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
@@ -191,15 +201,18 @@ public class ExampleWiki extends Mediawiki {
 			// test sites on mediawiki-japi.bitplan.com
 			// uncommment to enable
 			// /**
-			wiki = new ExampleWiki("mediawiki-japi-test1_19",
-					"http://mediawiki-japi.bitplan.com", "/mw1_19");
-			wiki.setLogo("http://localhost/mediawiki-test2/images/4/4e/BITPlanLogo2012_197x118.png");
-			wiki.setExpectedPages(3);
-			testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1");
-			wiki.addExamplePage("testGetPages", testPage1);
-			testPage2 = wiki.new ExamplePage("Testpage 2", "This is test page 2");
-			wiki.addExamplePage("testGetPages", testPage2);
-
+			String versions[] = { "1_19", "1_23" }; // "1_24" };
+			for (String version : versions) {
+				wiki = new ExampleWiki("mediawiki-japi-test" + version,
+						"http://mediawiki-japi.bitplan.com", "/mw" + version);
+				wiki.setLogo("http://localhost/mediawiki-test2/images/4/4e/BITPlanLogo2012_197x118.png");
+				wiki.setExpectedPages(3);
+				testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1",true);
+				wiki.addExamplePage("testGetPages", testPage1);
+				wiki.addExamplePage("testEditPages", testPage1);
+				testPage2 = wiki.new ExamplePage("Testpage 2", "This is test page 2");
+				wiki.addExamplePage("testGetPages", testPage2);
+			}
 			// bitplan internal wiki
 			// wiki = new
 			// ExampleWiki("capri_bitplan","http://capri.bitplan.com","/mediawiki");
