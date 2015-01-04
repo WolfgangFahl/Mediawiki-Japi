@@ -13,9 +13,9 @@
  */
 package com.bitplan.mediawiki.japi.api;
 
+
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bitplan.mediawiki.japi.jaxb.JaxbFactory;
@@ -39,6 +39,7 @@ public class Api implements JaxbPersistenceApi<Api> {
 	protected Login login;
 	protected Error error;
 	protected Tokens tokens;
+	protected Edit edit;
 
 	/**
 	 * @return the servedby
@@ -132,6 +133,27 @@ public class Api implements JaxbPersistenceApi<Api> {
 	 */
 	public void setTokens(Tokens value) {
 		this.tokens = value;
+	}
+
+	/**
+	 * Gets the value of the edit property.
+	 * 
+	 * @return possible object is {@link Edit }
+	 * 
+	 */
+	public Edit getEdit() {
+		return edit;
+	}
+
+	/**
+	 * Sets the value of the edit property.
+	 * 
+	 * @param value
+	 *          allowed object is {@link Edit }
+	 * 
+	 */
+	public void setEdit(Edit value) {
+		this.edit = value;
 	}
 
 	/**

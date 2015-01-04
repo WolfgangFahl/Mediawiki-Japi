@@ -13,6 +13,7 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 
@@ -76,6 +77,19 @@ public interface MediawikiApi {
 	 * @throws Exception
 	 */
 	public String getPageContent(String pageTitle) throws Exception;
+	
+	 /**
+   *  Edits a page by setting its text to the supplied value. 
+   *
+   *  @param text the text of the page
+   *  @param title the title of the page
+   *  @param summary the edit summary. Summaries
+   *  longer than 200 characters are truncated server-side.
+	 * @return 
+	 *  @throws Exception - if the edit fails
+   *  @see #getPageContent
+   */
+  public Edit edit(String pagetitle, String text, String summary) throws Exception;
 	
 	/**
 	 * are exceptions thrown when an api error code is received?

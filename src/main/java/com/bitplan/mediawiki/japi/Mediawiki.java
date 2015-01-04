@@ -14,10 +14,17 @@
 package com.bitplan.mediawiki.japi;
 
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
+import javax.ws.rs.core.MediaType;
+
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
@@ -163,6 +170,18 @@ public class Mediawiki implements MediawikiApi {
 		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
 		client = ApacheHttpClient.create(config);
 	}
+	
+	/**
+	 * get a current IsoTimeStamp
+	 * @return
+	 */
+	public String getIsoTimeStamp() {
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+		df.setTimeZone(tz);
+		String nowAsISO = df.format(new Date());
+		return nowAsISO;
+	}
 
 	/**
 	 * get the result for the given action and aprams
@@ -181,7 +200,9 @@ public class Mediawiki implements MediawikiApi {
 		String xml;
 		// decide for the method to use for api access
 		if ("login".equals(action)) {
-			xml = resource.header("USER-AGENT", USER_AGENT).post(String.class);
+			xml = resource.header("USER-AGENT", USER_AGENT).post(String.class); 
+		} else if ("edit".equals(action)) {
+			xml = resource.header("USER-AGENT", USER_AGENT).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class); 
 		} else {
 			xml = resource.header("USER-AGENT", USER_AGENT).get(String.class);
 		}
@@ -352,6 +373,22 @@ public class Mediawiki implements MediawikiApi {
 			break;
 		}
 		return token;
+	}
+	
+	/**
+	 * https://www.mediawiki.org/wiki/API:Edit
+	 */
+	@Override
+	public Edit edit(String pagetitle, String text, String summary)
+			throws Exception {
+		String token=getEditToken(pagetitle);
+		String params="&title="+encode(pagetitle)+
+				"&text="+encode(text)+
+				"&summary="+encode(summary)+
+				"&token="+encode(token);
+		Api api = this.getActionResult("edit", params);
+		Edit result=api.getEdit();
+		return result;
 	}
 	
 	/**

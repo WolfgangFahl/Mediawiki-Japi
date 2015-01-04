@@ -205,13 +205,14 @@ public class ExampleWiki extends Mediawiki {
 			for (String version : versions) {
 				wiki = new ExampleWiki("mediawiki-japi-test" + version,
 						"http://mediawiki-japi.bitplan.com", "/mw" + version);
-				wiki.setLogo("http://localhost/mediawiki-test2/images/4/4e/BITPlanLogo2012_197x118.png");
+				wiki.setLogo("http://mediawiki-japi.bitplan.com/mw1_23/skins/common/images/wiki.png");
 				wiki.setExpectedPages(3);
 				testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1",true);
 				wiki.addExamplePage("testGetPages", testPage1);
 				wiki.addExamplePage("testEditPages", testPage1);
-				testPage2 = wiki.new ExamplePage("Testpage 2", "This is test page 2");
+				testPage2 = wiki.new ExamplePage("Testpage 2", "This is test page 2",true);
 				wiki.addExamplePage("testGetPages", testPage2);
+				wiki.addExamplePage("testEditPages", testPage2);
 			}
 			// bitplan internal wiki
 			// wiki = new

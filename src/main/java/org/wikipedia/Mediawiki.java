@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 
 import com.bitplan.mediawiki.japi.MediawikiApi;
+import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 
@@ -80,6 +81,14 @@ public class Mediawiki implements MediawikiApi {
 	@Override
 	public void logout() throws Exception {
 		wiki.logout();
+	}
+
+	@Override
+	public Edit edit(String pagetitle, String text, String summary) throws Exception {
+		wiki.edit(pagetitle, text, summary);		
+		Edit result=new Edit();
+		// FIXME - set edit parameters
+		return result;
 	}
 
 }

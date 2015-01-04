@@ -10,7 +10,7 @@ queries() {
   local l_query="http://www.mediawiki.org/w/api.php?action=query"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
-file:edittoken_23.xml
+file:editresult23.xml
 # set your own username and password here
 # change curl furhter down to -X POST
 #http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml

@@ -36,15 +36,15 @@ public class TestAPI_Meta extends APITestbase {
 	@Test
 	public void testGeneralSiteInfo() throws Exception {
 		for (ExampleWiki lwiki : wikis) {
+			// lwiki.setDebug(true);
 			General general = lwiki.getSiteInfo();
 			assertNotNull(general);
 			boolean mayBeNull = true;
 			check("generator", general.getGenerator());
 			check("logo", general.getLogo(), mayBeNull);
 			if (general.getGenerator().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
-				assertEquals(lwiki.getLogo(), general.getLogo());
+				assertEquals(lwiki.siteurl+"/"+lwiki.scriptPath,lwiki.getLogo(), general.getLogo());
 				check("favicon", general.getFavicon());
-				check("githash", general.getGitHash());
 				check("langconversion", general.getLangconversion());
 				check("linkprefix", general.getLinkprefix());
 				check("linkprefixcharset", general.getLinkprefixcharset());
@@ -65,7 +65,9 @@ public class TestAPI_Meta extends APITestbase {
 						check("snapshot", snapshot.trim());
 					}
 				}
-
+				if (general.getGenerator().compareToIgnoreCase("Mediawiki 1.24") >= 0) {
+					check("githash", general.getGitHash());				
+				}
 			}
 			check("language", general.getLang());
 			check("articlepath", general.getArticlepath());
