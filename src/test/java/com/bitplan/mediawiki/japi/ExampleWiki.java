@@ -173,6 +173,7 @@ public class ExampleWiki extends Mediawiki {
 	 * @return - the example wiki for the given wikiId
 	 */
 	public static ExampleWiki get(String wikiId) {
+	    //this code should be replaced by csv-access
 		if (exampleWikis.size() == 0) {
 			// Mediawiki site
 			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
