@@ -302,7 +302,22 @@ public class Mediawiki implements MediawikiApi {
 		String content=page.getRevisions().get(0).getValue();	
 		return content;
 	}
-
 	
+	/**
+	 * show a usage
+	 */
+	public static void usage() {
+		System.err.println("Mediawiki-Japi version "+VERSION+" has no command line interface");
+		System.err.println("Please visit http://mediawiki-japi.bitplan.com for usage instructions");
+		System.exit(1);
+	}
+
+	/**
+	 * command line interface
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		usage();
+	}
 
 }

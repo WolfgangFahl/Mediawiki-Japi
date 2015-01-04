@@ -24,7 +24,7 @@ import com.bitplan.mediawiki.japi.jaxb.JaxbPersistenceApi;
 /**
  * Mediawiki Api Jaxb wrapper
  * 
- * https://www.mediawiki.org/wiki/API:Main_page
+ * see <a href='https://www.mediawiki.org/wiki/API:Main_page'>Mediawiki API:Main_page</a>
  * 
  * @author wf
  *
@@ -111,6 +111,7 @@ public class Api implements JaxbPersistenceApi<Api> {
 	}
 	
 	/**
+	 * allows typed / non static access to JaxbFactory features for 
 	 * 
 	 * @author wf
 	 *
