@@ -82,10 +82,10 @@ public interface MediawikiApi {
    *  Edits a page by setting its text to the supplied value. 
    *
    *  @param text the text of the page
-   *  @param title the title of the page
+   *  @param pagetitle the title of the page
    *  @param summary the edit summary. Summaries
    *  longer than 200 characters are truncated server-side.
-	 * @return 
+	 *  @return the edit stage as a wrapped Edit API response 
 	 *  @throws Exception - if the edit fails
    *  @see #getPageContent
    */

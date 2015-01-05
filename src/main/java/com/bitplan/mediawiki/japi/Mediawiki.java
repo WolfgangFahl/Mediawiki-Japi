@@ -178,7 +178,7 @@ public class Mediawiki implements MediawikiApi {
 	
 	/**
 	 * get a current IsoTimeStamp
-	 * @return
+	 * @return - the current timestamp
 	 */
 	public String getIsoTimeStamp() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
@@ -339,7 +339,7 @@ public class Mediawiki implements MediawikiApi {
 	/**
 	 * get an edit token for the given page Title
 	 * @param pageTitle
-	 * @return
+	 * @return the edit token for the page title
 	 * @throws Exception 
 	 */
 	public String getEditToken(String pageTitle) throws Exception {
@@ -456,9 +456,11 @@ public class Mediawiki implements MediawikiApi {
 	boolean showVersion = false;
 
 	/**
-	 * main instance
-	 * @param args
-	 * @return
+	 * main instance - this is the non-static version of main - it will
+	 * run as a static main would but return it's exitCode to the static main
+	 * the static main will then decide whether to do a System.exit(exitCode) or not.
+	 * @param args - command line arguments
+	 * @return - the exit Code to be used by the static main program
 	 */
 	protected int maininstance(String[] args) {
 		parser = new CmdLineParser(this);
@@ -489,7 +491,8 @@ public class Mediawiki implements MediawikiApi {
 
 	
 	/**
-	 * command line interface
+	 * entry point e.g. for java -jar called
+	 * provides a command line interface
 	 * @param args
 	 */
 	public static void main(String args[]) {
