@@ -29,10 +29,8 @@ public class APITestbase {
 	 */
 	protected boolean debug = false;
 
-	protected ExampleWiki wiki;
-	protected Collection<ExampleWiki> wikis;
-	// the wiki to use for single tests / write access
-	private static final String MAIN_TESTWIKI_ID = "mediawiki_org"; // "mediawiki_test2"; //
+	private ExampleWiki wiki;
+	private Collection<ExampleWiki> wikis;
 
 	/**
 	 * Logging may be enabled by setting debug to true
@@ -44,8 +42,8 @@ public class APITestbase {
 	 * construct a Test
 	 */
 	public APITestbase() {
-		wiki=ExampleWiki.get(MAIN_TESTWIKI_ID);
-		wikis=ExampleWiki.exampleWikis.values();
+		setWiki(ExampleWiki.get(ExampleWiki.MAIN_TESTWIKI_ID));
+		setWikis(ExampleWiki.getExampleWikis().values());
 	}
 
 	/**
@@ -69,7 +67,7 @@ public class APITestbase {
 	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {
-		Api api = getQueryResult(wiki,query);
+		Api api = getQueryResult(getWiki(),query);
 		return api;
 	}
 
@@ -94,6 +92,34 @@ public class APITestbase {
 	 */
 	protected void check(String name, Object value) {
 		check(name,value,false);
+	}
+
+	/**
+	 * @return the wikis
+	 */
+	public Collection<ExampleWiki> getWikis() {
+		return wikis;
+	}
+
+	/**
+	 * @param wikis the wikis to set
+	 */
+	public void setWikis(Collection<ExampleWiki> wikis) {
+		this.wikis = wikis;
+	}
+
+	/**
+	 * @return the wiki
+	 */
+	public ExampleWiki getWiki() {
+		return wiki;
+	}
+
+	/**
+	 * @param wiki the wiki to set
+	 */
+	public void setWiki(ExampleWiki wiki) {
+		this.wiki = wiki;
 	}
 	
 }

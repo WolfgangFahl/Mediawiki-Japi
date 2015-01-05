@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
@@ -33,6 +34,8 @@ import com.bitplan.mediawiki.japi.api.Error;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Page;
+import com.bitplan.mediawiki.japi.api.Tokens;
+import com.bitplan.mediawiki.japi.api.Warnings;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.client.apache.ApacheHttpClient;
@@ -48,30 +51,33 @@ import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 public class Mediawiki implements MediawikiApi {
 
 	/**
-	 *  current Version 
+	 * current Version
 	 */
-	protected static final String VERSION="0.0.2";
-	
+	protected static final String VERSION = "0.0.2";
+
 	/**
 	 * if true main can be called without calling system.exit() when finished
 	 */
 	public static boolean testMode = false;
-	
+
 	/**
-	 * see <a href='https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Identifying your client:User-Agent</a>
+	 * see <a href=
+	 * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Identifyin
+	 * g your client:User-Agent</a>
 	 */
-	protected static final String USER_AGENT = "Mediawiki-Japi/"+VERSION+" (https://github.com/WolfgangFahl/Mediawiki-Japi; support@bitplan.com)";
+	protected static final String USER_AGENT = "Mediawiki-Japi/"
+			+ VERSION
+			+ " (https://github.com/WolfgangFahl/Mediawiki-Japi; support@bitplan.com)";
 
 	/**
 	 * default script path
 	 */
 	public static final String DEFAULT_SCRIPTPATH = "/w";
 
-	
 	/**
 	 * set to true if exceptions should be thrown on Error
 	 */
-	protected boolean throwExceptionOnError=true;
+	protected boolean throwExceptionOnError = true;
 
 	/**
 	 * Logging may be enabled by setting debug to true
@@ -110,7 +116,8 @@ public class Mediawiki implements MediawikiApi {
 	}
 
 	/**
-	 * @param throwExceptionOnError the throwExceptionOnError to set
+	 * @param throwExceptionOnError
+	 *          the throwExceptionOnError to set
 	 */
 	public void setThrowExceptionOnError(boolean throwExceptionOnError) {
 		this.throwExceptionOnError = throwExceptionOnError;
@@ -145,7 +152,7 @@ public class Mediawiki implements MediawikiApi {
 	public void setScriptPath(String scriptPath) {
 		this.scriptPath = scriptPath;
 	}
-	
+
 	/**
 	 * construct me with no siteurl set
 	 */
@@ -153,31 +160,36 @@ public class Mediawiki implements MediawikiApi {
 		this(null);
 	}
 
-
 	/**
-	 * construct a Mediawiki for the given url using the default Script path 
+	 * construct a Mediawiki for the given url using the default Script path
 	 * 
-	 * @param siteurl - the url to use
+	 * @param siteurl
+	 *          - the url to use
 	 */
 	public Mediawiki(String siteurl) {
-		this(siteurl,DEFAULT_SCRIPTPATH);
+		this(siteurl, DEFAULT_SCRIPTPATH);
 	}
-	
+
 	/**
 	 * construct a Mediawiki for the given url and scriptpath
-	 * @param siteurl - the url to use
-	 * @param scriptpath - the scriptpath to use
+	 * 
+	 * @param siteurl
+	 *          - the url to use
+	 * @param scriptpath
+	 *          - the scriptpath to use
 	 */
 	public Mediawiki(String siteurl, String scriptpath) {
 		this.siteurl = siteurl;
-		this.scriptPath=scriptpath;
+		this.scriptPath = scriptpath;
 		ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
-		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
+		config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES,
+				true);
 		client = ApacheHttpClient.create(config);
 	}
-	
+
 	/**
 	 * get a current IsoTimeStamp
+	 * 
 	 * @return - the current timestamp
 	 */
 	public String getIsoTimeStamp() {
@@ -205,9 +217,10 @@ public class Mediawiki implements MediawikiApi {
 		String xml;
 		// decide for the method to use for api access
 		if ("login".equals(action)) {
-			xml = resource.header("USER-AGENT", USER_AGENT).post(String.class); 
+			xml = resource.header("USER-AGENT", USER_AGENT).post(String.class);
 		} else if ("edit".equals(action)) {
-			xml = resource.header("USER-AGENT", USER_AGENT).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class); 
+			xml = resource.header("USER-AGENT", USER_AGENT)
+					.type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class);
 		} else {
 			xml = resource.header("USER-AGENT", USER_AGENT).get(String.class);
 		}
@@ -221,15 +234,11 @@ public class Mediawiki implements MediawikiApi {
 		// check whether an error code was sent
 		Error error = api.getError();
 		// if there is an error - handle it
-		if (error!=null) {
+		if (error != null) {
 			// prepare the error message
-			String errMsg="error code="+error.getCode()+" info:'"+error.getInfo()+"'";
-			// log it
-			LOGGER.log(Level.SEVERE,errMsg);
-			// and throw an error if this is configured
-			if (this.isThrowExceptionOnError()) {
-				throw new Exception(errMsg);
-			}
+			String errMsg = "error code=" + error.getCode() + " info:'"
+					+ error.getInfo() + "'";
+			this.handleError(errMsg);
 		}
 		return api;
 	}
@@ -239,160 +248,257 @@ public class Mediawiki implements MediawikiApi {
 	 * 
 	 * @param query
 	 * @return the API result for the query
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {
 		Api result = this.getActionResult("query", query);
 		return result;
 	}
-	
+
 	/**
 	 * request parameter encoding
+	 * 
 	 * @param param
 	 * @return an encoded url parameter
 	 */
 	protected String encode(String param) {
 		@SuppressWarnings("deprecation")
-		String result=URLEncoder.encode(param);
+		String result = URLEncoder.encode(param);
 		return result;
 	}
 
 	/**
 	 * normalize the given page title
+	 * 
 	 * @param title
-	 * @return the normalized title e.g. replacing blanks
-	 * FIXME encode is not good enough
+	 * @return the normalized title e.g. replacing blanks FIXME encode is not good
+	 *         enough
 	 */
 	protected String normalize(String title) {
-		String result=encode(title);
+		String result = encode(title);
 		return result;
 	}
-	
+
+	/**
+	 * get a normalized | delimited (encoded as %7C) string of titles
+	 * 
+	 * @param examplePages
+	 *          - the list of pages to get the titles for
+	 * @return a string with all the titles e.g. Main%20Page%7CSome%20Page
+	 */
+	public String getTitles(List<String> titleList) {
+		String titles = "";
+		String delim = "";
+		for (String title : titleList) {
+			titles = titles + delim + normalize(title);
+			delim = "%7C";
+		}
+		return titles;
+	}
+
 	/**
 	 * get the general siteinfo
+	 * 
 	 * @return the siteinfo
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public General getSiteInfo() throws Exception {
-		if (siteinfo==null) {
+		if (siteinfo == null) {
 			Api api = getQueryResult("&meta=siteinfo");
-			siteinfo=api.getQuery().getGeneral();
+			siteinfo = api.getQuery().getGeneral();
 		}
 		return siteinfo;
 	}
 
 	/**
 	 * get the Version of this wiki
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public String getVersion() throws Exception {
-		if (mediawikiVersion==null) {
-			General lGeneral=getSiteInfo();
-			mediawikiVersion=lGeneral.getGenerator();
+		if (mediawikiVersion == null) {
+			General lGeneral = getSiteInfo();
+			mediawikiVersion = lGeneral.getGenerator();
 		}
 		return mediawikiVersion;
 	}
-	
+
 	// login implementation
 	public Login login(String username, String password) throws Exception {
-		username=encode(username);
-		password=encode(password);
+		username = encode(username);
+		password = encode(password);
 		Api apiResult = getActionResult("login", "&lgname=" + username
 				+ "&lgpassword=" + password);
 		Login login = apiResult.getLogin();
 		String token = login.getToken();
 		apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
 				+ password + "&lgtoken=" + token);
-		login= apiResult.getLogin();
+		login = apiResult.getLogin();
 		return login;
 	}
-	
+
 	/**
 	 * end the session
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void logout() throws Exception {
-		Api apiResult=getActionResult("logout","");
-		if (apiResult!=null) {
-			// FIXME check apiResult			
+		Api apiResult = getActionResult("logout", "");
+		if (apiResult != null) {
+			// FIXME check apiResult
 		}
-		if (cookies!=null) {
+		if (cookies != null) {
 			cookies.clear();
-			cookies=null;
+			cookies = null;
 		}
 	}
 
 	/**
 	 * get the page Content for the given page Title
+	 * 
 	 * @param pageTitle
 	 * @return the page Content
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public String getPageContent(String pageTitle) throws Exception {
-		Api api = getQueryResult("&prop=revisions&rvprop=content&titles="+normalize(pageTitle));
-		Page page=api.getQuery().getPages().get(0);
-		String content=page.getRevisions().get(0).getValue();	
+		Api api = getQueryResult("&prop=revisions&rvprop=content&titles="
+				+ normalize(pageTitle));
+		Page page = api.getQuery().getPages().get(0);
+		String content = null;
+		if (page != null) {
+			content = page.getRevisions().get(0).getValue();
+		} else {
+			String errMsg = "pageTitle '" + pageTitle + "' not found";
+			// log it
+			LOGGER.log(Level.SEVERE, errMsg);
+			// and throw an error if this is configured
+			if (this.isThrowExceptionOnError()) {
+				throw new Exception(errMsg);
+			}
+		}
 		return content;
 	}
-	
-	enum TokenMode { token1_19, token1_20_23,token1_24  }
+
+	/**
+	 * get a list of pages for the given titles see <a
+	 * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
+	 * 
+	 * @param titleList
+	 * @return the list of pages retrieved
+	 * @throws Exception
+	 * 
+	 *           FIXME should be part of the Java Interface
+	 */
+	public List<Page> getPages(List<String> titleList) throws Exception {
+		String titles = this.getTitles(titleList);
+		Api api = getQueryResult("&titles=" + titles
+				+ "&prop=revisions&rvprop=content");
+		List<Page> pages = api.getQuery().getPages();
+		return pages;
+	}
+
+	enum TokenMode {
+		token1_19, token1_20_23, token1_24
+	}
+
 	/**
 	 * get an edit token for the given page Title
+	 * 
 	 * @param pageTitle
 	 * @return the edit token for the page title
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public String getEditToken(String pageTitle) throws Exception {
-		pageTitle=normalize(pageTitle);
+		pageTitle = normalize(pageTitle);
 		String editversion = "";
 		String action = "query";
 		String params = "&meta=tokens";
 		TokenMode tokenMode;
 		if (getVersion().compareToIgnoreCase("Mediawiki 1.24") >= 0) {
 			editversion = "Versions 1.24 and later";
-			tokenMode=TokenMode.token1_24;
+			tokenMode = TokenMode.token1_24;
 		} else if (getVersion().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
 			editversion = "Versions 1.20-1.23";
-			tokenMode=TokenMode.token1_20_23;
+			tokenMode = TokenMode.token1_20_23;
 			action = "tokens";
 			params = "";
 		} else {
 			editversion = "Version 1.19 and earlier";
-			tokenMode=TokenMode.token1_19;
-			params = "&prop=info&7Crevisions&intoken=edit&titles="+pageTitle;
+			tokenMode = TokenMode.token1_19;
+			params = "&prop=info&7Crevisions&intoken=edit&titles=" + pageTitle;
 		}
 		if (debug) {
-			LOGGER.log(Level.INFO,
-					"handling edit for wiki version " + getVersion() + " as "
-							+ editversion + " with action=" + action + params);
+			LOGGER.log(Level.INFO, "handling edit for wiki version " + getVersion()
+					+ " as " + editversion + " with action=" + action + params);
 		}
 		Api api = getActionResult(action, params);
-		String token=null;
+		if (api.getWarnings()!=null) {
+			Warnings warnings=api.getWarnings();
+			if (warnings.getTokens()!=null) {
+				Tokens warningTokens = warnings.getTokens();
+				String errMsg=warningTokens.getValue();
+				handleError(errMsg);
+			}
+		}
+		String token = null;
 		switch (tokenMode) {
-		  case token1_19:
-		  	token=api.getQuery().getPages().get(0).getEdittoken();
+		case token1_19:
+			token = api.getQuery().getPages().get(0).getEdittoken();
 			break;
-		  case token1_20_23:
-		  	token=api.getTokens().getEdittoken();
+		case token1_20_23:
+			token = api.getTokens().getEdittoken();
 		default:
 			break;
 		}
 		return token;
 	}
-	
+
+	/**
+	 * handle the given error Message according to the exception setting
+	 * @param errMsg
+	 * @throws Exception 
+	 */
+	private void handleError(String errMsg) throws Exception {
+		// log it
+		LOGGER.log(Level.SEVERE, errMsg);
+		// and throw an error if this is configured
+		if (this.isThrowExceptionOnError()) {
+			throw new Exception(errMsg);
+		}
+	}
+
 	/**
 	 * https://www.mediawiki.org/wiki/API:Edit
 	 */
 	@Override
 	public Edit edit(String pagetitle, String text, String summary)
 			throws Exception {
-		String token=getEditToken(pagetitle);
-		String params="&title="+encode(pagetitle)+
-				"&text="+encode(text)+
-				"&summary="+encode(summary)+
-				"&token="+encode(token);
+		String token = getEditToken(pagetitle);
+		String params = "&title=" + encode(pagetitle) + "&text=" + encode(text)
+				+ "&summary=" + encode(summary) + "&token=" + encode(token);
 		Api api = this.getActionResult("edit", params);
-		Edit result=api.getEdit();
+		Edit result = api.getEdit();
+		return result;
+	}
+
+	/**
+	 * copy the page for a given title from this wiki to the given target Wiki
+	 * uses https://www.mediawiki.org/wiki/API:Edit FIXME - make this an API
+	 * interface function FIXME - create a multi title version
+	 * 
+	 * @param targetWiki
+	 *          - the other wiki (could use a different API implementation ...)
+	 * @param pageTitle
+	 *          - the title of the page to copy
+	 * @param summary
+	 *          - the summary to use
+	 * @return - the Edit result
+	 * @throws Exception
+	 */
+	public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
+			String summary) throws Exception {
+		String content = this.getPageContent(pageTitle);
+		Edit result = targetWiki.edit(pageTitle, content, summary);
 		return result;
 	}
 
@@ -403,7 +509,7 @@ public class Mediawiki implements MediawikiApi {
 	 */
 	public void handle(Throwable t) {
 		System.out.flush();
-		System.err.println(t.getClass().getSimpleName()+":"+t.getMessage());
+		System.err.println(t.getClass().getSimpleName() + ":" + t.getMessage());
 		if (debug)
 			t.printStackTrace();
 	}
@@ -423,21 +529,23 @@ public class Mediawiki implements MediawikiApi {
 	 * show a usage
 	 */
 	public void usage(String msg) {
-    System.err.println(msg);
-    
+		System.err.println(msg);
+
 		showVersion();
-		System.err
-				.println("  usage: java com.bitplan.mediawiki.japi.Mediawiki");
+		System.err.println("  usage: java com.bitplan.mediawiki.japi.Mediawiki");
 		parser.printUsage(System.err);
 		exitCode = 1;
 	}
-	
+
 	/**
 	 * show Help
 	 */
 	public void showHelp() {
-		String msg="Help\n"+"Mediawiki-Japi version "+VERSION+" has no functional command line interface\n"
-		+"Please visit http://mediawiki-japi.bitplan.com for usage instructions";
+		String msg = "Help\n"
+				+ "Mediawiki-Japi version "
+				+ VERSION
+				+ " has no functional command line interface\n"
+				+ "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
 		usage(msg);
 	}
 
@@ -448,18 +556,20 @@ public class Mediawiki implements MediawikiApi {
 	 */
 	@Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
 	protected boolean debug = false;
-	
+
 	@Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
 	boolean showHelp = false;
-	
+
 	@Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
 	boolean showVersion = false;
 
 	/**
-	 * main instance - this is the non-static version of main - it will
-	 * run as a static main would but return it's exitCode to the static main
-	 * the static main will then decide whether to do a System.exit(exitCode) or not.
-	 * @param args - command line arguments
+	 * main instance - this is the non-static version of main - it will run as a
+	 * static main would but return it's exitCode to the static main the static
+	 * main will then decide whether to do a System.exit(exitCode) or not.
+	 * 
+	 * @param args
+	 *          - command line arguments
 	 * @return - the exit Code to be used by the static main program
 	 */
 	protected int maininstance(String[] args) {
@@ -468,15 +578,16 @@ public class Mediawiki implements MediawikiApi {
 			parser.parseArgument(args);
 			if (debug)
 				showVersion();
-			if (this.showVersion)  {
+			if (this.showVersion) {
 				showVersion();
 			} else if (this.showHelp) {
 				showHelp();
 			} else {
 				// FIXME - do something
 				// implement actions
-				System.err.println("Commandline interface is not functional in "+VERSION+" yet");
-				exitCode=1;
+				System.err.println("Commandline interface is not functional in "
+						+ VERSION + " yet");
+				exitCode = 1;
 				// exitCode = 0;
 			}
 		} catch (CmdLineException e) {
@@ -489,14 +600,13 @@ public class Mediawiki implements MediawikiApi {
 		return exitCode;
 	}
 
-	
 	/**
-	 * entry point e.g. for java -jar called
-	 * provides a command line interface
+	 * entry point e.g. for java -jar called provides a command line interface
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		Mediawiki wiki=new Mediawiki();
+		Mediawiki wiki = new Mediawiki();
 		int result = wiki.maininstance(args);
 		if (!testMode && result != 0)
 			System.exit(result);

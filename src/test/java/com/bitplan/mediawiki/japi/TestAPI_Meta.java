@@ -35,7 +35,7 @@ public class TestAPI_Meta extends APITestbase {
 	 */
 	@Test
 	public void testGeneralSiteInfo() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			// lwiki.setDebug(true);
 			General general = lwiki.getSiteInfo();
 			assertNotNull(general);
@@ -99,7 +99,7 @@ public class TestAPI_Meta extends APITestbase {
 	 * @throws Exception
 	 */
 	public void testStatistics() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			Api api = getQueryResult(lwiki, "&meta=siteinfo&siprop=statistics");
 			assertNotNull(api);
 			Query query = api.getQuery();

@@ -13,7 +13,6 @@
  */
 package com.bitplan.mediawiki.japi.api;
 
-
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,6 +37,7 @@ public class Api implements JaxbPersistenceApi<Api> {
 	protected Query query;
 	protected Login login;
 	protected Error error;
+  protected Warnings warnings;
 	protected Tokens tokens;
 	protected Edit edit;
 
@@ -113,6 +113,30 @@ public class Api implements JaxbPersistenceApi<Api> {
 	public void setError(Error value) {
 		this.error = value;
 	}
+	
+   /**
+    * Ruft den Wert der warnings-Eigenschaft ab.
+    * 
+    * @return
+    *     possible object is
+    *     {@link Warnings }
+    *     
+    */
+   public Warnings getWarnings() {
+       return warnings;
+   }
+
+   /**
+    * Legt den Wert der warnings-Eigenschaft fest.
+    * 
+    * @param value
+    *     allowed object is
+    *     {@link Warnings }
+    *     
+    */
+   public void setWarnings(Warnings value) {
+       this.warnings = value;
+   }
 
 	/**
 	 * Gets the value of the tokens property.

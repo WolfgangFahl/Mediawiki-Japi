@@ -10,7 +10,8 @@ queries() {
   local l_query="http://www.mediawiki.org/w/api.php?action=query"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
-file:editresult23.xml
+https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
+#file:editnotallowed.xml
 # set your own username and password here
 # change curl furhter down to -X POST
 #http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml
@@ -61,9 +62,9 @@ codegen() {
   # remove problematic notes (e.g. duplicate stuff)
   cat $l_xsd \
     | xmlstarlet ed -d "//xs:element[@name='query-continue']" \
-    | xmlstarlet ed -d "/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='warnings']" \
     | xmlstarlet ed -d "//xs:attribute[@ref='xml:space']" > $l_tmpcleanxsd
   xjc -b binding.xml -p com.bitplan.mediawiki.japi.api -d src $l_tmpcleanxsd 
+    #| xmlstarlet ed -d "/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='warnings']" \
 	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
 }
 

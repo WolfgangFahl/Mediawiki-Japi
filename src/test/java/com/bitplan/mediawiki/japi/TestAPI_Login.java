@@ -32,7 +32,7 @@ public class TestAPI_Login extends APITestbase {
 	 */
 	@Test
 	public void testGetUser() throws Exception {
-		WikiUser wuser = wiki.getWikiUser();
+		WikiUser wuser = getWiki().getWikiUser();
 		check("email",wuser.getEmail());
 		assertNotNull(wuser.getPassword());
 	}
@@ -42,7 +42,7 @@ public class TestAPI_Login extends APITestbase {
    */
 	@Test
 	public void testLoginToken() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			WikiUser wuser = lwiki.getWikiUser();
 			// do not keep uncommented - password will be visible in log
 			// lwiki.setDebug(true);
@@ -64,7 +64,7 @@ public class TestAPI_Login extends APITestbase {
 	 */
 	@Test
 	public void testLogin() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			WikiUser wuser = lwiki.getWikiUser();
 			if (wuser==null) {
 				fail(WikiUser.help(lwiki.wikiId,lwiki.siteurl));
@@ -83,7 +83,7 @@ public class TestAPI_Login extends APITestbase {
 
 	@Test
 	public void testLoginNotExists() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			Login login = lwiki.login("someUserThatDoesNotExist", "somePassword");
 			assertEquals("NotExists", login.getResult());
 		}

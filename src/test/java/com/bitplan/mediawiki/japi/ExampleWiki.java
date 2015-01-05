@@ -32,7 +32,8 @@ public class ExampleWiki extends Mediawiki {
 	/**
 	 * Map of example Wikis
 	 */
-	public static Map<String, ExampleWiki> exampleWikis = new HashMap<String, ExampleWiki>();
+	private static Map<String, ExampleWiki> exampleWikis = new HashMap<String, ExampleWiki>();
+	protected static Map<String,String> aliases=new HashMap<String,String>();
 
 	/**
 	 * the id of the wiki
@@ -95,7 +96,7 @@ public class ExampleWiki extends Mediawiki {
 	public ExampleWiki(String wikiId, String siteurl, String scriptpath) {
 		super(siteurl, scriptpath);
 		this.wikiId = wikiId;
-		exampleWikis.put(wikiId, this);
+		getExampleWikis().put(wikiId, this);
 	}
 
 	/**
@@ -176,6 +177,13 @@ public class ExampleWiki extends Mediawiki {
 		pages.add(page);
 	}
 
+	public void initFromCVSLine(String csvLine) {
+		  this.setLogo("logo"); // FIXME ...
+	}
+	
+  //the wiki to use for single tests / write access
+	public static final String MAIN_TESTWIKI_ID = "mediawiki_org"; // "mediawiki_test2"; //
+	
 	/**
 	 * get the given Example wiki
 	 * 
@@ -184,7 +192,7 @@ public class ExampleWiki extends Mediawiki {
 	 */
 	public static ExampleWiki get(String wikiId) {
 		// this code should be (partly?) replaced by csv-access
-		if (exampleWikis.size() == 0) {
+		if (getExampleWikis().size() == 0) {
 			// Mediawiki site
 			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
 					"http://www.mediawiki.org", Mediawiki.DEFAULT_SCRIPTPATH);
@@ -218,8 +226,25 @@ public class ExampleWiki extends Mediawiki {
 			// wiki = new
 			// ExampleWiki("capri_bitplan","http://capri.bitplan.com","/mediawiki");
 			// */
+			// Please modify this code according to the wikis you used ...
+			// this is for a copy test - you need read access to the SOURCE_WIKI and write access
+			// to the TARGET_WIKI
+			final String SOURCE_WIKI="mediawiki-japi-test1_19";
+			final String TARGET_WIKI="mediawiki-japi-test1_23";
+			aliases.put("sourceWiki",SOURCE_WIKI);
+		  aliases.put("targetWiki",TARGET_WIKI);
+		  
+			ExampleWiki sourceWiki = getExampleWikis().get(SOURCE_WIKI);
+			ExamplePage testPage3 = wiki.new ExamplePage("Testpage 3", "This is test page 3",true);
+			// this page will by copied so it's only in one wiki for a start
+			sourceWiki.addExamplePage("testEditPages", testPage3);
+			sourceWiki.addExamplePage("testCopy",testPage3);
 		}
-		ExampleWiki result = exampleWikis.get(wikiId);
+		// check whether the id is an alias
+		if (aliases.containsKey(wikiId)) {
+			wikiId=aliases.get(wikiId);
+		}
+		ExampleWiki result = getExampleWikis().get(wikiId);
 		return result;
 	}
 
@@ -231,6 +256,33 @@ public class ExampleWiki extends Mediawiki {
 	public void login() throws Exception {
 		WikiUser lwikiuser = this.getWikiUser();
 		super.login(lwikiuser.getUsername(), lwikiuser.getPassword());
+	}
+
+	/**
+	 * get list of titles for the given example pages
+	 * @param examplePages
+	 * @return
+	 */
+	public List<String> getTitleList(List<ExamplePage> examplePages) {
+		List<String> titles=new ArrayList<String>();
+		for (ExamplePage page:examplePages) {
+			titles.add(page.getTitle());
+		}
+		return titles;
+	}
+
+	/**
+	 * @return the exampleWikis
+	 */
+	public static Map<String, ExampleWiki> getExampleWikis() {
+		return exampleWikis;
+	}
+
+	/**
+	 * @param exampleWikis the exampleWikis to set
+	 */
+	public static void setExampleWikis(Map<String, ExampleWiki> exampleWikis) {
+		ExampleWiki.exampleWikis = exampleWikis;
 	}
 
 }

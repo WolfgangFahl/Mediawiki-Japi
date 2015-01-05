@@ -38,7 +38,7 @@ public class TestAPI_Query extends APITestbase {
 	 */
 	@Test
 	public void testGetAllPages() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			Api api = getQueryResult(lwiki, "&list=allpages&apfrom=Kre&aplimit=3");
 			List<P> pageRefList = api.getQuery().getAllpages();
 			assertEquals(lwiki.getSiteurl(),3, pageRefList.size());
@@ -47,18 +47,11 @@ public class TestAPI_Query extends APITestbase {
 
 	@Test
 	public void testGetPages() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
-			String titles="";
-			String delim="";
-			for (ExamplePage page:examplePages) {
-				titles=titles+delim+wiki.normalize(page.getTitle());
-				delim="%7C";
-			}
-			Api api = getQueryResult(lwiki,
-					"&titles=" + titles
-							+ "&prop=revisions&rvprop=content");
-			List<Page> pages = api.getQuery().getPages();
+			List<String> titles=lwiki.getTitleList(examplePages);
+			List<Page> pages=lwiki.getPages(titles);
+			
 			assertEquals(2, pages.size());
 			int index=0;
 			for (Page page : pages) {

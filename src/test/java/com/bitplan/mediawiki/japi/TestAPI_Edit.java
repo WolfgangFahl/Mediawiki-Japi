@@ -33,7 +33,7 @@ public class TestAPI_Edit extends APITestbase {
 	 */
 	@Test
 	public void testGetEditToken() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
+		for (ExampleWiki lwiki : getWikis()) {
 			List<ExamplePage> exampleEditPages = lwiki
 					.getExamplePages("testEditPages");
 			if (exampleEditPages.size() > 0) {
@@ -54,9 +54,8 @@ public class TestAPI_Edit extends APITestbase {
 	 */
 	@Test
 	public void TestEdit() throws Exception {
-		for (ExampleWiki lwiki : wikis) {
-			List<ExamplePage> exampleEditPages = lwiki
-					.getExamplePages("testEditPages");
+		for (ExampleWiki lwiki : getWikis()) {
+			List<ExamplePage> exampleEditPages = lwiki.getExamplePages("testEditPages");
 			if (exampleEditPages.size() > 0) {
 				lwiki.login();
 				// lwiki.setDebug(true);
@@ -69,6 +68,31 @@ public class TestAPI_Edit extends APITestbase {
 					assertEquals("Success",edit.getResult());
 				}
 			}
+		}
+	}
+	
+	// FIXME need TestEditNoLogin - should throw an Exception with Message Action 'edit' is not allowed for
+	// current user
+	
+	/**
+	 * test copying a page from a source Wiki to a target Wiki
+	 * @throws Exception
+	 */
+	@Test
+	public void TestCopy() throws Exception {
+		ExampleWiki sourceWiki = ExampleWiki.get("sourceWiki");
+		// sourceWiki.setDebug(true);
+		ExampleWiki targetWiki = ExampleWiki.get("targetWiki");
+		targetWiki.login();
+		// targetWiki.setDebug(true);
+		List<ExamplePage> examplePages = sourceWiki.getExamplePages("testCopy");
+		// List<String> titles=sourceWiki.getTitleList(examplePages);
+		for (ExamplePage examplePage:examplePages) {
+			String summary="created/edited by TestAPI_Edit at "+sourceWiki.getIsoTimeStamp();
+			String sourceContent=sourceWiki.getPageContent(examplePage.getTitle());
+			sourceWiki.copyToWiki(targetWiki,examplePage.getTitle(), summary);
+			String targetContent=targetWiki.getPageContent(examplePage.getTitle());
+			assertEquals(sourceContent,targetContent);
 		}
 	}
 }
