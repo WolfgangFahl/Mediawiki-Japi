@@ -1,0 +1,7 @@
+<api>
+<warnings>
+<tokens xml:space="preserve">
+Action 'edit' is not allowed for the current user</tokens>
+</warnings>
+<tokens />
+</api>
