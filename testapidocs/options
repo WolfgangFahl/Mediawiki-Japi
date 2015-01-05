@@ -17,6 +17,8 @@
 -doctitle
 'BITPlan-Mediawiki-Japi 0.0.2 Test API'
 -link
+'../apidocs'
+-link
 'http://java.sun.com/javase/6/docs/api'
 -use
 -version
