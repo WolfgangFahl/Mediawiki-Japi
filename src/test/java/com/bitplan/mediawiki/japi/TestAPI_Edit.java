@@ -9,13 +9,16 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import com.bitplan.mediawiki.japi.ExampleWiki.ExamplePage;
+import com.bitplan.mediawiki.japi.Mediawiki.TokenResult;
 import com.bitplan.mediawiki.japi.api.Edit;
 
 /**
@@ -26,6 +29,13 @@ import com.bitplan.mediawiki.japi.api.Edit;
  */
 public class TestAPI_Edit extends APITestbase {
 
+	@Test
+	public void testSplitParams() {
+		Mediawiki wiki=new Mediawiki();
+		String params="&a=1&b=2";
+		Map<String, String> paramMap = wiki.getParamMap(params);
+		assertEquals(2,paramMap.size());
+	}
 	/**
 	 * test getting the edit token
 	 * 
@@ -40,8 +50,9 @@ public class TestAPI_Edit extends APITestbase {
 				lwiki.login();
 				// lwiki.setDebug(true);
 				for (ExamplePage examplePage : exampleEditPages) {
-					String token = lwiki.getEditToken(examplePage.getTitle());
-					assertNotNull(token);
+					TokenResult token = lwiki.getEditToken(examplePage.getTitle());
+					assertNotNull(lwiki.getWikiId(),token);
+					assertEquals("token",token.tokenName);
 				}
 			}
 		}
@@ -58,13 +69,13 @@ public class TestAPI_Edit extends APITestbase {
 			List<ExamplePage> exampleEditPages = lwiki.getExamplePages("testEditPages");
 			if (exampleEditPages.size() > 0) {
 				lwiki.login();
-				// lwiki.setDebug(true);
+				lwiki.setDebug(true);
 				for (ExamplePage examplePage : exampleEditPages) {
 					String summary = "edit by TestAPI_Edit at "+lwiki.getIsoTimeStamp();
 					Edit edit=lwiki.edit(examplePage.getTitle(), examplePage.getContentPart(),
 							summary);
 					// FIXME - check when there is no success e.g. for a page that is protected
-					// the Sucess check should be in the Mediawiki class and throw an exception if not successful
+					// the Success check should be in the Mediawiki class and throw an exception if not successful
 					assertEquals("Success",edit.getResult());
 				}
 			}
@@ -95,4 +106,7 @@ public class TestAPI_Edit extends APITestbase {
 			assertEquals(sourceContent,targetContent);
 		}
 	}
+	
+	
+	
 }

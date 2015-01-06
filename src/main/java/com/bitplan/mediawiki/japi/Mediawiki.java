@@ -18,11 +18,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -37,10 +40,13 @@ import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.api.Tokens;
 import com.bitplan.mediawiki.japi.api.Warnings;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
  * access to Mediawiki api
@@ -62,8 +68,8 @@ public class Mediawiki implements MediawikiApi {
 
 	/**
 	 * see <a href=
-	 * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Identifyin
-	 * g your client:User-Agent</a>
+	 * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Iden
+	 * t i f y i n g your client:User-Agent</a>
 	 */
 	protected static final String USER_AGENT = "Mediawiki-Japi/"
 			+ VERSION
@@ -201,29 +207,166 @@ public class Mediawiki implements MediawikiApi {
 	}
 
 	/**
-	 * get the result for the given action and aprams
+	 * get the given Builder for the given queryUrl this is a wrapper to be able
+	 * to debug all QueryUrl
+	 * 
+	 * @param queryUrl
+	 *          - either a relative or absolute path
+	 * @return
+	 * @throws Exception
+	 */
+	public Builder getResource(String queryUrl) throws Exception {
+		if (debug)
+			LOGGER.log(Level.INFO, queryUrl);
+		WebResource wrs = client.resource(queryUrl);
+		Builder result = wrs.header("USER-AGENT", USER_AGENT);
+		return result;
+	}
+
+	/**
+	 * get a Post response
+	 * 
+	 * @param queryUrl
+	 * @param pFormData
+	 * @return - the client Response
+	 * @throws Exception
+	 */
+	public ClientResponse getPostResponse(String queryUrl,
+			Map<String, String> pFormData) throws Exception {
+		MultivaluedMap<String, String> lFormData = new MultivaluedMapImpl();
+		for (String key : pFormData.keySet()) {
+			lFormData.add(key, pFormData.get(key));
+		}
+		Builder resource = getResource(queryUrl);
+		// FIXME allow to specify contenttype (not needed for Mediawiki itself but
+		// could be good for interfacing )
+		ClientResponse response = resource.type(
+				MediaType.APPLICATION_FORM_URLENCODED_TYPE).post(ClientResponse.class,
+				lFormData);
+		return response;
+	}
+
+	private enum Method {
+		PostForm,Post, Get
+	};
+
+	/**
+	 * get the response for the given queryUrl
+	 * 
+	 * @param queryUrl
+	 *          - the url to query
+	 * @param method
+	 *          - the Method to use Post or Get
+	 * @return - a client Response
+	 * @throws Exception
+	 */
+	protected ClientResponse getResponse(String queryUrl, Method method)
+			throws Exception {
+		Builder resource = getResource(queryUrl);
+		ClientResponse result;
+		switch (method) {
+		case PostForm:
+			result=resource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class);
+			break;
+		case Post:
+			result = resource.post(ClientResponse.class);
+			break;
+		case Get:
+			result = resource.get(ClientResponse.class);
+			break;
+		default:
+			throw new Exception("unsupported method " + method);
+		}
+		return result;
+	}
+
+	/**
+	 * get a response with or without a null token
+	 * 
+	 * @param queryUrl
+	 * @param params
+	 * @param token
+	 * @param method
+	 * @return
+	 * @throws Exception
+	 */
+	protected ClientResponse getResponse(String queryUrl, String params,
+			TokenResult token, Method method) throws Exception {
+		if (token != null) {
+			params += token.asParam();
+		}
+		ClientResponse result = getResponse(queryUrl + params, method);
+		return result;
+	}
+
+	/**
+	 * get the Response string
+	 * 
+	 * @param response
+	 * @return the String representation of a response
+	 * @throws Exception
+	 */
+	public String getResponseString(ClientResponse response) throws Exception {
+		if (debug)
+			LOGGER.log(Level.INFO, "status: " + response.getStatus());
+		String responseText = response.getEntity(String.class);
+		if (response.getStatus() != 200) {
+			handleError(responseText);
+		}
+		return responseText;
+	}
+
+	/**
+	 * get a Map of parameter from a & delimited parameter list
+	 * 
+	 * @param params
+	 *          - the list of parameters
+	 * @return the map FIXME - should check that split creates and even number of
+	 *         entries - add test case for this
+	 */
+	public Map<String, String> getParamMap(String params) {
+		Map<String, String> result = new HashMap<String, String>();
+		String[] paramlist = params.split("&");
+		for (int i = 0; i < paramlist.length; i ++) {
+			String[] parts=paramlist[i].split("=");
+			if (parts.length==2)
+				result.put(parts[0], parts[1]);
+		}
+		return result;
+	}
+
+	/**
+	 * get the result for the given action and params
 	 * 
 	 * @param action
 	 * @param params
+	 * @param token
+	 *          (may be null)
 	 * @return the API result for the action
 	 * @throws Exception
 	 */
-	public Api getActionResult(String action, String params) throws Exception {
+	public Api getActionResult(String action, String params, TokenResult token)
+			throws Exception {
 		String queryUrl = siteurl + scriptPath + apiPath + "&action=" + action
-				+ params + "&format=" + format;
-		if (debug)
-			LOGGER.log(Level.INFO, queryUrl);
-		WebResource resource = client.resource(queryUrl);
+				+ "&format=" + format;
 		String xml;
+		ClientResponse response;
 		// decide for the method to use for api access
-		if ("login".equals(action)) {
-			xml = resource.header("USER-AGENT", USER_AGENT).post(String.class);
-		} else if ("edit".equals(action)) {
-			xml = resource.header("USER-AGENT", USER_AGENT)
-					.type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class);
+		if ("edit".equals(action)) {
+			switch (token.tokenMode) {
+			case token1_24:
+				Map<String, String> lFormData = this.getParamMap(token.asParam());
+				response = this.getPostResponse(queryUrl + params, lFormData);
+				break;
+			default:
+				response=this.getResponse(queryUrl,params,token,Method.Post);
+			}
+		} else if ("login".equals(action)) {
+			response = this.getResponse(queryUrl, params, token, Method.Post);
 		} else {
-			xml = resource.header("USER-AGENT", USER_AGENT).get(String.class);
+			response = this.getResponse(queryUrl, params, token, Method.Get);
 		}
+		xml = this.getResponseString(response);
 		if (debug) {
 			// convert the xml to a more readable format
 			String xmlDebug = xml.replace(">", ">\n");
@@ -244,6 +387,19 @@ public class Mediawiki implements MediawikiApi {
 	}
 
 	/**
+	 * get the result for the given action and params
+	 * 
+	 * @param action
+	 * @param params
+	 * @return the API result for the action
+	 * @throws Exception
+	 */
+	public Api getActionResult(String action, String params) throws Exception {
+		Api result = this.getActionResult(action, params, null);
+		return result;
+	}
+
+	/**
 	 * get the Result for the given query
 	 * 
 	 * @param query
@@ -251,7 +407,7 @@ public class Mediawiki implements MediawikiApi {
 	 * @throws Exception
 	 */
 	public Api getQueryResult(String query) throws Exception {
-		Api result = this.getActionResult("query", query);
+		Api result = this.getActionResult("query", query, null);
 		return result;
 	}
 
@@ -260,10 +416,10 @@ public class Mediawiki implements MediawikiApi {
 	 * 
 	 * @param param
 	 * @return an encoded url parameter
+	 * @throws Exception 
 	 */
-	protected String encode(String param) {
-		@SuppressWarnings("deprecation")
-		String result = URLEncoder.encode(param);
+	protected String encode(String param) throws Exception {
+		String result = URLEncoder.encode(param,"UTF-8");
 		return result;
 	}
 
@@ -273,8 +429,9 @@ public class Mediawiki implements MediawikiApi {
 	 * @param title
 	 * @return the normalized title e.g. replacing blanks FIXME encode is not good
 	 *         enough
+	 * @throws Exception 
 	 */
-	protected String normalize(String title) {
+	protected String normalize(String title) throws Exception {
 		String result = encode(title);
 		return result;
 	}
@@ -285,8 +442,9 @@ public class Mediawiki implements MediawikiApi {
 	 * @param examplePages
 	 *          - the list of pages to get the titles for
 	 * @return a string with all the titles e.g. Main%20Page%7CSome%20Page
+	 * @throws Exception 
 	 */
-	public String getTitles(List<String> titleList) {
+	public String getTitles(List<String> titleList) throws Exception {
 		String titles = "";
 		String delim = "";
 		for (String title : titleList) {
@@ -328,11 +486,14 @@ public class Mediawiki implements MediawikiApi {
 		username = encode(username);
 		password = encode(password);
 		Api apiResult = getActionResult("login", "&lgname=" + username
-				+ "&lgpassword=" + password);
+				+ "&lgpassword=" + password, null);
 		Login login = apiResult.getLogin();
-		String token = login.getToken();
+		TokenResult token = new TokenResult();
+		token.token = login.getToken();
+		token.tokenName = "lgtoken";
+		token.tokenMode = TokenMode.token1_19;
 		apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
-				+ password + "&lgtoken=" + token);
+				+ password, token);
 		login = apiResult.getLogin();
 		return login;
 	}
@@ -343,7 +504,7 @@ public class Mediawiki implements MediawikiApi {
 	 * @throws Exception
 	 */
 	public void logout() throws Exception {
-		Api apiResult = getActionResult("logout", "");
+		Api apiResult = getActionResult("logout", "", null);
 		if (apiResult != null) {
 			// FIXME check apiResult
 		}
@@ -401,14 +562,47 @@ public class Mediawiki implements MediawikiApi {
 		token1_19, token1_20_23, token1_24
 	}
 
+	class TokenResult {
+		String tokenName;
+		String token;
+		TokenMode tokenMode;
+
+    /**
+		 * set my token - remove trailing backslash or +\ if necessary
+		 * @param pToken - the token to set
+		 */
+		public void setToken(String pToken) {
+			token=pToken;
+		}
+
+    /**
+		 * get me as a param string e.g. &lgtoken=1234
+		 * make sure the trailing \ or +\ are handled correctly
+		 * see <a href='https://www.mediawiki.org/wiki/Manual:Edit_token'>Manual:Edit_token</a>
+		 * @return - the resulting string
+     * @throws Exception 
+		 */
+		public String asParam() throws Exception {
+			String lToken=token;
+			// lToken=lToken.replace("+","%2B");
+			// pToken.replace("\\","");
+		  // token=pToken+"%2B%5C"; 
+			// http://wikimedia.7.x6.nabble.com/Error-badtoken-Info-Invalid-token-td4977853.html
+			String result = "&" + tokenName + "=" + encode(lToken);
+		  if (debug)
+		  	LOGGER.log(Level.INFO, "token "+token+"=>"+result);
+			return result;
+		}
+	}
+
 	/**
 	 * get an edit token for the given page Title
-	 * 
+	 * see <a href='https://www.mediawiki.org/wiki/API:Tokens'>API:Tokens</a> 
 	 * @param pageTitle
 	 * @return the edit token for the page title
 	 * @throws Exception
 	 */
-	public String getEditToken(String pageTitle) throws Exception {
+	public TokenResult getEditToken(String pageTitle) throws Exception {
 		pageTitle = normalize(pageTitle);
 		String editversion = "";
 		String action = "query";
@@ -417,11 +611,12 @@ public class Mediawiki implements MediawikiApi {
 		if (getVersion().compareToIgnoreCase("Mediawiki 1.24") >= 0) {
 			editversion = "Versions 1.24 and later";
 			tokenMode = TokenMode.token1_24;
+		  params = "&meta=tokens";
 		} else if (getVersion().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
 			editversion = "Versions 1.20-1.23";
 			tokenMode = TokenMode.token1_20_23;
 			action = "tokens";
-			params = "";
+			params = "&type=edit";
 		} else {
 			editversion = "Version 1.19 and earlier";
 			tokenMode = TokenMode.token1_19;
@@ -432,22 +627,26 @@ public class Mediawiki implements MediawikiApi {
 					+ " as " + editversion + " with action=" + action + params);
 		}
 		Api api = getActionResult(action, params);
-		if (api.getWarnings()!=null) {
-			Warnings warnings=api.getWarnings();
-			if (warnings.getTokens()!=null) {
+		if (api.getWarnings() != null) {
+			Warnings warnings = api.getWarnings();
+			if (warnings.getTokens() != null) {
 				Tokens warningTokens = warnings.getTokens();
-				String errMsg=warningTokens.getValue();
+				String errMsg = warningTokens.getValue();
 				handleError(errMsg);
 			}
 		}
-		String token = null;
+		TokenResult token = new TokenResult();
+		token.tokenMode=tokenMode;
+		token.tokenName = "token";
 		switch (tokenMode) {
 		case token1_19:
-			token = api.getQuery().getPages().get(0).getEdittoken();
+			token.setToken(api.getQuery().getPages().get(0).getEdittoken());
 			break;
 		case token1_20_23:
-			token = api.getTokens().getEdittoken();
+			token.setToken(api.getTokens().getEdittoken());
+			break;
 		default:
+			token.setToken(api.getQuery().getTokens().getCsrftoken());
 			break;
 		}
 		return token;
@@ -455,8 +654,9 @@ public class Mediawiki implements MediawikiApi {
 
 	/**
 	 * handle the given error Message according to the exception setting
+	 * 
 	 * @param errMsg
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void handleError(String errMsg) throws Exception {
 		// log it
@@ -473,10 +673,10 @@ public class Mediawiki implements MediawikiApi {
 	@Override
 	public Edit edit(String pagetitle, String text, String summary)
 			throws Exception {
-		String token = getEditToken(pagetitle);
+		TokenResult token = getEditToken(pagetitle);
 		String params = "&title=" + encode(pagetitle) + "&text=" + encode(text)
-				+ "&summary=" + encode(summary) + "&token=" + encode(token);
-		Api api = this.getActionResult("edit", params);
+				+ "&summary=" + encode(summary);
+		Api api = this.getActionResult("edit", params, token);
 		Edit result = api.getEdit();
 		return result;
 	}

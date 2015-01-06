@@ -209,7 +209,7 @@ public class ExampleWiki extends Mediawiki {
 			// test sites on mediawiki-japi.bitplan.com
 			// uncommment to enable
 			// /**
-			String versions[] = { "1_19", "1_23" }; // "1_24" };
+			String versions[] = { "1_19", "1_23" }; // , "1_24" };
 			for (String version : versions) {
 				wiki = new ExampleWiki("mediawiki-japi-test" + version,
 						"http://mediawiki-japi.bitplan.com", "/mw" + version);

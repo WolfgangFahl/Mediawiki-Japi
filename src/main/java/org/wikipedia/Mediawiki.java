@@ -1,6 +1,6 @@
 package org.wikipedia;
 
-import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 
 import com.bitplan.mediawiki.japi.MediawikiApi;
@@ -46,10 +46,16 @@ public class Mediawiki implements MediawikiApi {
 
 	@Override
 	public void setSiteurl(String siteurl) throws Exception {
-		URI uri = new URI(siteurl);
-		String domain = uri.getHost();
+		URL url = new URL(siteurl);
+		String domain = url.getHost();
 		domain = domain.startsWith("www.") ? domain.substring(4) : domain;
-		wiki = new Wiki(domain);
+		String scriptPath=url.getPath();
+		if ("".equals(scriptPath)) {
+			scriptPath="/w";
+		}
+		Wiki.PROT=url.getProtocol();
+		
+		wiki = new Wiki(domain,scriptPath);
 	}
 
 	@Override

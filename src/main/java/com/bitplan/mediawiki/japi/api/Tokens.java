@@ -42,6 +42,33 @@ public class Tokens {
     protected String value;
     @XmlAttribute
     protected String edittoken;
+    @XmlAttribute(name = "csrftoken")
+    protected String csrftoken;
+
+
+    /**
+     * Ruft den Wert der csrftoken-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCsrftoken() {
+        return csrftoken;
+    }
+
+    /**
+     * Legt den Wert der csrftoken-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCsrftoken(String value) {
+        this.csrftoken = value;
+    }
 
     /**
      * Gets the value of the value property.

@@ -496,6 +496,8 @@ public class Wiki implements Serializable
         log(Level.CONFIG, "<init>", "Using Wiki.java " + version);
         initVars();
     }
+    
+    public static String PROT="https";
 
     /**
      *  Edit this if you need to change the API and human interface
@@ -509,7 +511,7 @@ public class Wiki implements Serializable
      */
     protected void initVars()
     {
-        StringBuilder basegen = new StringBuilder("https://");
+        StringBuilder basegen = new StringBuilder(PROT+"://");
         basegen.append(domain);
         basegen.append(scriptPath);
         StringBuilder apigen = new StringBuilder(basegen);        

@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2015.01.05 um 04:52:15 PM CET 
+// Generiert: 2015.01.05 um 05:42:37 PM CET 
 //
 
 
@@ -25,101 +25,21 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="paraminfo">
+ *         &lt;element name="query">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="modules">
+ *                   &lt;element name="tokens">
  *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;sequence>
- *                             &lt;element name="module" maxOccurs="unbounded" minOccurs="0">
- *                               &lt;complexType>
- *                                 &lt;complexContent>
- *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                     &lt;sequence>
- *                                       &lt;element name="helpurls">
- *                                         &lt;complexType>
- *                                           &lt;complexContent>
- *                                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                               &lt;sequence>
- *                                                 &lt;element name="helpurl">
- *                                                   &lt;simpleType>
- *                                                     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                                                       &lt;enumeration value="https://www.mediawiki.org/wiki/API:Parsing_wikitext#parse"/>
- *                                                       &lt;enumeration value="https://www.mediawiki.org/wiki/API:Data_formats"/>
- *                                                       &lt;enumeration value="https://www.mediawiki.org/wiki/API:Allpages"/>
- *                                                       &lt;enumeration value="https://www.mediawiki.org/wiki/API:Meta#siteinfo_.2F_si"/>
- *                                                     &lt;/restriction>
- *                                                   &lt;/simpleType>
- *                                                 &lt;/element>
- *                                               &lt;/sequence>
- *                                             &lt;/restriction>
- *                                           &lt;/complexContent>
- *                                         &lt;/complexType>
- *                                       &lt;/element>
- *                                       &lt;element name="parameters">
- *                                         &lt;complexType>
- *                                           &lt;complexContent>
- *                                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                               &lt;sequence>
- *                                                 &lt;element name="param" maxOccurs="unbounded" minOccurs="0">
- *                                                   &lt;complexType>
- *                                                     &lt;complexContent>
- *                                                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                                         &lt;sequence>
- *                                                           &lt;element name="type" minOccurs="0">
- *                                                             &lt;complexType>
- *                                                               &lt;complexContent>
- *                                                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                                                   &lt;sequence>
- *                                                                     &lt;element name="t" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
- *                                                                   &lt;/sequence>
- *                                                                 &lt;/restriction>
- *                                                               &lt;/complexContent>
- *                                                             &lt;/complexType>
- *                                                           &lt;/element>
- *                                                         &lt;/sequence>
- *                                                         &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                                         &lt;attribute name="type" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                                         &lt;attribute name="default" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                                         &lt;attribute name="multi" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                                         &lt;attribute name="limit" type="{http://www.w3.org/2001/XMLSchema}byte" />
- *                                                         &lt;attribute name="lowlimit" type="{http://www.w3.org/2001/XMLSchema}byte" />
- *                                                         &lt;attribute name="highlimit" type="{http://www.w3.org/2001/XMLSchema}short" />
- *                                                         &lt;attribute name="max" type="{http://www.w3.org/2001/XMLSchema}short" />
- *                                                         &lt;attribute name="highmax" type="{http://www.w3.org/2001/XMLSchema}short" />
- *                                                         &lt;attribute name="min" type="{http://www.w3.org/2001/XMLSchema}byte" />
- *                                                       &lt;/restriction>
- *                                                     &lt;/complexContent>
- *                                                   &lt;/complexType>
- *                                                 &lt;/element>
- *                                               &lt;/sequence>
- *                                             &lt;/restriction>
- *                                           &lt;/complexContent>
- *                                         &lt;/complexType>
- *                                       &lt;/element>
- *                                     &lt;/sequence>
- *                                     &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="classname" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="path" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="group" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="prefix" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="readrights" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="generator" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                   &lt;/restriction>
- *                                 &lt;/complexContent>
- *                               &lt;/complexType>
- *                             &lt;/element>
- *                           &lt;/sequence>
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
+ *                       &lt;simpleContent>
+ *                         &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
+ *                           &lt;attribute name="csrftoken" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                         &lt;/extension>
+ *                       &lt;/simpleContent>
  *                     &lt;/complexType>
  *                   &lt;/element>
  *                 &lt;/sequence>
- *                 &lt;attribute name="helpformat" type="{http://www.w3.org/2001/XMLSchema}string" />
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
@@ -134,36 +54,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "paraminfo"
+    "query"
 })
 @XmlRootElement(name = "api")
 public class Api {
 
     @XmlElement(required = true)
-    protected Paraminfo paraminfo;
+    protected Query query;
 
     /**
-     * Ruft den Wert der paraminfo-Eigenschaft ab.
+     * Ruft den Wert der query-Eigenschaft ab.
      * 
      * @return
      *     possible object is
-     *     {@link Paraminfo }
+     *     {@link Query }
      *     
      */
-    public Paraminfo getParaminfo() {
-        return paraminfo;
+    public Query getQuery() {
+        return query;
     }
 
     /**
-     * Legt den Wert der paraminfo-Eigenschaft fest.
+     * Legt den Wert der query-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
-     *     {@link Paraminfo }
+     *     {@link Query }
      *     
      */
-    public void setParaminfo(Paraminfo value) {
-        this.paraminfo = value;
+    public void setQuery(Query value) {
+        this.query = value;
     }
 
 }
