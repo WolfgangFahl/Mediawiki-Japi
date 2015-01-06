@@ -103,4 +103,24 @@ public interface MediawikiApi {
 	 * @param throwExceptionOnError the throwExceptionOnError to set
 	 */
 	public void setThrowExceptionOnError(boolean throwExceptionOnError);
+	
+	/**
+	 * get an ISO time stamp (utility function)
+	 * FIXME may have to move out of the main API
+	 * @return
+	 */
+	public String getIsoTimeStamp();
+	
+	/**
+	 * set the debug mode
+	 * @param pDebug
+	 */
+	public void setDebug(boolean pDebug);
+	
+	/**
+	 * get the state of the debug mode
+	 * @return - true if debugging is activated
+	 * @return
+	 */
+	public boolean isDebug();
 }

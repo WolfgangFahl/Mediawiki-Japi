@@ -113,6 +113,11 @@ public class Mediawiki implements MediawikiApi {
 	public void setDebug(boolean debug) {
 		this.debug = debug;
 	}
+	
+	@Override
+	public boolean isDebug() {
+		return this.debug;
+	}
 
 	/**
 	 * @return the throwExceptionOnError
@@ -840,5 +845,7 @@ public class Mediawiki implements MediawikiApi {
 		if (!testMode && result != 0)
 			System.exit(result);
 	}
+
+
 
 }

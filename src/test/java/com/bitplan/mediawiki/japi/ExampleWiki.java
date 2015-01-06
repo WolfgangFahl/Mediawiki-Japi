@@ -190,7 +190,9 @@ public class ExampleWiki extends Mediawiki {
 			String lWikiId = st.nextToken();
 			new ExampleWiki(lWikiId,lSiteurl,Mediawiki.DEFAULT_SCRIPTPATH); // FIXME ...
 			st.nextToken(); // what is to do with the version?
-			this.setExpectedPages(Integer.valueOf(st.nextToken()).intValue());
+			String pages=st.nextToken();
+			pages=pages.replace(",","");
+			this.setExpectedPages(Integer.valueOf(pages).intValue());
 			this.setLogo("logo"); // FIXME ...
 		}
 	}
@@ -223,7 +225,8 @@ public class ExampleWiki extends Mediawiki {
 		// this code should be (partly?) replaced by csv-access
 		if (getExampleWikis().size() == 0) {
 			String urlString="http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/-3FMwMinExpectedPages/format%3Dcsv/sep%3D;/offset%3D0";
-			readCSV(urlString);
+			// FIXME uncomment to activate
+			// readCSV(urlString);
 			// Mediawiki site
 			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
 					"http://www.mediawiki.org",

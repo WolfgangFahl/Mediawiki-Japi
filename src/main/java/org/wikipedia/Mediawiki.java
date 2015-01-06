@@ -1,7 +1,11 @@
 package org.wikipedia;
 
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import com.bitplan.mediawiki.japi.MediawikiApi;
 import com.bitplan.mediawiki.japi.api.Edit;
@@ -95,6 +99,30 @@ public class Mediawiki implements MediawikiApi {
 		Edit result=new Edit();
 		// FIXME - set edit parameters
 		return result;
+	}
+
+	@Override
+	/**
+	 * get a current IsoTimeStamp
+	 * FIXME redundant implementation same functioin com.bitplan.mediawiki.japi.api
+	 * @return - the current timestamp
+	 */
+	public String getIsoTimeStamp() {
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+		df.setTimeZone(tz);
+		String nowAsISO = df.format(new Date());
+		return nowAsISO;
+	}
+
+	@Override
+	public void setDebug(boolean pDebug) {
+		// FIXME implement
+	}
+
+	@Override
+	public boolean isDebug() {
+		return false;
 	}
 
 }
