@@ -195,7 +195,9 @@ public class ExampleWiki extends Mediawiki {
 		if (getExampleWikis().size() == 0) {
 			// Mediawiki site
 			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
-					"http://www.mediawiki.org", Mediawiki.DEFAULT_SCRIPTPATH);
+					"http://www.mediawiki.org",
+					// "http://test.wikipedia.org",
+					Mediawiki.DEFAULT_SCRIPTPATH);
 			wiki.setExpectedPages(290000);
 			wiki.setLogo("//upload.wikimedia.org/wikipedia/mediawiki/b/bc/Wiki.png");
 			ExamplePage testPage1 = wiki.new ExamplePage("2011 Wikimedia fundraiser",
@@ -205,15 +207,22 @@ public class ExampleWiki extends Mediawiki {
 			ExamplePage testPage2 = wiki.new ExamplePage("2012 Wikimedia fundraiser",
 					"{{Wikimedia engineering project information");
 			wiki.addExamplePage("testGetPages", testPage2);
-
+			
+			/* ExamplePage testPage1b = wiki.new ExamplePage("Testpage 1", "This is test page 1",true);
+			wiki.addExamplePage("testGetPages", testPage1b);
+			wiki.addExamplePage("testEditPages", testPage1b);
+      */
 			// test sites on mediawiki-japi.bitplan.com
 			// uncommment to enable
 			// /**
-			String versions[] = { "1_19", "1_23" }; // , "1_24" };
+			String versions[] = { 
+					"1_19", 
+					"1_23" , 
+					"1_24" };
 			for (String version : versions) {
 				wiki = new ExampleWiki("mediawiki-japi-test" + version,
 						"http://mediawiki-japi.bitplan.com", "/mw" + version);
-				wiki.setLogo("http://mediawiki-japi.bitplan.com/mw1_23/skins/common/images/wiki.png");
+				wiki.setLogo("http://mediawiki-japi.bitplan.com/images/BITPlanLogo2012_197x118.png");
 				wiki.setExpectedPages(3);
 				testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1",true);
 				wiki.addExamplePage("testGetPages", testPage1);

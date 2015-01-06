@@ -247,7 +247,7 @@ public class Mediawiki implements MediawikiApi {
 	}
 
 	private enum Method {
-		PostForm,Post, Get
+		PostForm, Post, Get
 	};
 
 	/**
@@ -266,7 +266,8 @@ public class Mediawiki implements MediawikiApi {
 		ClientResponse result;
 		switch (method) {
 		case PostForm:
-			result=resource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class);
+			result = resource.type(MediaType.APPLICATION_FORM_URLENCODED).post(
+					ClientResponse.class);
 			break;
 		case Post:
 			result = resource.post(ClientResponse.class);
@@ -327,9 +328,9 @@ public class Mediawiki implements MediawikiApi {
 	public Map<String, String> getParamMap(String params) {
 		Map<String, String> result = new HashMap<String, String>();
 		String[] paramlist = params.split("&");
-		for (int i = 0; i < paramlist.length; i ++) {
-			String[] parts=paramlist[i].split("=");
-			if (parts.length==2)
+		for (int i = 0; i < paramlist.length; i++) {
+			String[] parts = paramlist[i].split("=");
+			if (parts.length == 2)
 				result.put(parts[0], parts[1]);
 		}
 		return result;
@@ -355,11 +356,12 @@ public class Mediawiki implements MediawikiApi {
 		if ("edit".equals(action)) {
 			switch (token.tokenMode) {
 			case token1_24:
-				Map<String, String> lFormData = this.getParamMap(token.asParam());
-				response = this.getPostResponse(queryUrl + params, lFormData);
+				// Map<String, String> lFormData = this.getParamMap(token.asParam());
+				//response = this.getPostResponse(queryUrl + params, lFormData);
+				response = this.getResponse(queryUrl, params, token, Method.Post);
 				break;
 			default:
-				response=this.getResponse(queryUrl,params,token,Method.Post);
+				response = this.getResponse(queryUrl, params, token, Method.Post);
 			}
 		} else if ("login".equals(action)) {
 			response = this.getResponse(queryUrl, params, token, Method.Post);
@@ -416,10 +418,10 @@ public class Mediawiki implements MediawikiApi {
 	 * 
 	 * @param param
 	 * @return an encoded url parameter
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected String encode(String param) throws Exception {
-		String result = URLEncoder.encode(param,"UTF-8");
+		String result = URLEncoder.encode(param, "UTF-8");
 		return result;
 	}
 
@@ -429,7 +431,7 @@ public class Mediawiki implements MediawikiApi {
 	 * @param title
 	 * @return the normalized title e.g. replacing blanks FIXME encode is not good
 	 *         enough
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected String normalize(String title) throws Exception {
 		String result = encode(title);
@@ -442,7 +444,7 @@ public class Mediawiki implements MediawikiApi {
 	 * @param examplePages
 	 *          - the list of pages to get the titles for
 	 * @return a string with all the titles e.g. Main%20Page%7CSome%20Page
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public String getTitles(List<String> titleList) throws Exception {
 		String titles = "";
@@ -567,37 +569,47 @@ public class Mediawiki implements MediawikiApi {
 		String token;
 		TokenMode tokenMode;
 
-    /**
+		/**
 		 * set my token - remove trailing backslash or +\ if necessary
-		 * @param pToken - the token to set
+		 * 
+		 * @param pToken
+		 *          - the token to set
 		 */
 		public void setToken(String pToken) {
-			token=pToken;
+			token = pToken;
 		}
 
-    /**
-		 * get me as a param string e.g. &lgtoken=1234
-		 * make sure the trailing \ or +\ are handled correctly
-		 * see <a href='https://www.mediawiki.org/wiki/Manual:Edit_token'>Manual:Edit_token</a>
+		/**
+		 * get me as a param string e.g. &lgtoken=1234 make sure the trailing \ or
+		 * +\ are handled correctly see <a href=
+		 * 'https://www.mediawiki.org/wiki/Manual:Edit_token'>Manual:Edit_token</a>
+		 * 
 		 * @return - the resulting string
-     * @throws Exception 
+		 * @throws Exception
 		 */
 		public String asParam() throws Exception {
-			String lToken=token;
-			// lToken=lToken.replace("+","%2B");
-			// pToken.replace("\\","");
-		  // token=pToken+"%2B%5C"; 
+			String lToken = token;
+			/*switch (tokenMode) {
+			case token1_24:
+				lToken=lToken.replace("+","");
+				lToken=lToken.replace("\\","");
+				break;
+			default:
+
+			}*/
+			// token=pToken+"%2B%5C";
 			// http://wikimedia.7.x6.nabble.com/Error-badtoken-Info-Invalid-token-td4977853.html
 			String result = "&" + tokenName + "=" + encode(lToken);
-		  if (debug)
-		  	LOGGER.log(Level.INFO, "token "+token+"=>"+result);
+			if (debug)
+				LOGGER.log(Level.INFO, "token " + token + "=>" + result);
 			return result;
 		}
 	}
 
 	/**
-	 * get an edit token for the given page Title
-	 * see <a href='https://www.mediawiki.org/wiki/API:Tokens'>API:Tokens</a> 
+	 * get an edit token for the given page Title see <a
+	 * href='https://www.mediawiki.org/wiki/API:Tokens'>API:Tokens</a>
+	 * 
 	 * @param pageTitle
 	 * @return the edit token for the page title
 	 * @throws Exception
@@ -611,7 +623,7 @@ public class Mediawiki implements MediawikiApi {
 		if (getVersion().compareToIgnoreCase("Mediawiki 1.24") >= 0) {
 			editversion = "Versions 1.24 and later";
 			tokenMode = TokenMode.token1_24;
-		  params = "&meta=tokens";
+			params = "&meta=tokens";
 		} else if (getVersion().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
 			editversion = "Versions 1.20-1.23";
 			tokenMode = TokenMode.token1_20_23;
@@ -636,7 +648,7 @@ public class Mediawiki implements MediawikiApi {
 			}
 		}
 		TokenResult token = new TokenResult();
-		token.tokenMode=tokenMode;
+		token.tokenMode = tokenMode;
 		token.tokenName = "token";
 		switch (tokenMode) {
 		case token1_19:

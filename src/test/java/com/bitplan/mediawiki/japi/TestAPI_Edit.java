@@ -69,7 +69,7 @@ public class TestAPI_Edit extends APITestbase {
 			List<ExamplePage> exampleEditPages = lwiki.getExamplePages("testEditPages");
 			if (exampleEditPages.size() > 0) {
 				lwiki.login();
-				lwiki.setDebug(true);
+				//lwiki.setDebug(true);
 				for (ExamplePage examplePage : exampleEditPages) {
 					String summary = "edit by TestAPI_Edit at "+lwiki.getIsoTimeStamp();
 					Edit edit=lwiki.edit(examplePage.getTitle(), examplePage.getContentPart(),
