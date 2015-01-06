@@ -205,7 +205,24 @@ public class Mediawiki implements MediawikiApi {
 		String nowAsISO = df.format(new Date());
 		return nowAsISO;
 	}
+	
+	/**
+	 * get a String from a given URL
+	 * @param urlString
+	 * @return
+	 */
+	public static String getStringFromUrl(String urlString) { 
+		ApacheHttpClient lclient = ApacheHttpClient.create();
+		WebResource webResource = lclient.resource(urlString);
+		ClientResponse response = webResource.get(ClientResponse.class);
 
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("HTTP error code : " + response.getStatus());
+		}
+		String result=response.getEntity(String.class);
+		return result;
+	}
+	
 	/**
 	 * get the given Builder for the given queryUrl this is a wrapper to be able
 	 * to debug all QueryUrl

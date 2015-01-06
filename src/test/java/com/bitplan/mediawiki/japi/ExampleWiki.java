@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bitplan.mediawiki.japi.Mediawiki;
 import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.user.WikiUser;
 
@@ -177,8 +177,37 @@ public class ExampleWiki extends Mediawiki {
 		pages.add(page);
 	}
 
-	public void initFromCVSLine(String csvLine) {
-		  this.setLogo("logo"); // FIXME ...
+	/**
+	 * creates an ExampleWiki from the given csvLine
+	 * 
+	 * @param csvLine
+	 */
+	public ExampleWiki (String csvLine) {
+		StringTokenizer st = new StringTokenizer (csvLine,";");
+		if (st.hasMoreTokens()) { 
+			st.nextToken(); // what is to do with the first column?
+			String lSiteurl = st.nextToken();
+			String lWikiId = st.nextToken();
+			new ExampleWiki(lWikiId,lSiteurl,Mediawiki.DEFAULT_SCRIPTPATH); // FIXME ...
+			st.nextToken(); // what is to do with the version?
+			this.setExpectedPages(Integer.valueOf(st.nextToken()).intValue());
+			this.setLogo("logo"); // FIXME ...
+		}
+	}
+	
+	/**
+	 * get the CSV data
+	 * @param urlString
+	 */
+	public static void readCSV(String urlString) {
+		// get csv-String
+		String csv=Mediawiki.getStringFromUrl(urlString);
+		String[] csvlines = csv.split("\n");
+		int lineIndex=0;
+		for (String csvline:csvlines) {
+			if (lineIndex++ > 0)
+				new ExampleWiki(csvline);
+		}
 	}
 	
   //the wiki to use for single tests / write access
@@ -193,6 +222,8 @@ public class ExampleWiki extends Mediawiki {
 	public static ExampleWiki get(String wikiId) {
 		// this code should be (partly?) replaced by csv-access
 		if (getExampleWikis().size() == 0) {
+			String urlString="http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/-3FMwMinExpectedPages/format%3Dcsv/sep%3D;/offset%3D0";
+			readCSV(urlString);
 			// Mediawiki site
 			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
 					"http://www.mediawiki.org",
