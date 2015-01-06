@@ -6,3 +6,5 @@ pom.xml.next
 release.properties
 /bin/
 /.settings/
+# vi swap files
+*.swp
