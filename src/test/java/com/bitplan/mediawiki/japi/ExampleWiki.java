@@ -92,8 +92,9 @@ public class ExampleWiki extends Mediawiki {
 	 * @param wikiId
 	 * @param siteurl
 	 * @param scriptpath
+	 * @throws Exception 
 	 */
-	public ExampleWiki(String wikiId, String siteurl, String scriptpath) {
+	public ExampleWiki(String wikiId, String siteurl, String scriptpath) throws Exception {
 		super(siteurl, scriptpath);
 		this.wikiId = wikiId;
 		getExampleWikis().put(wikiId, this);
@@ -181,8 +182,9 @@ public class ExampleWiki extends Mediawiki {
 	 * creates an ExampleWiki from the given csvLine
 	 * 
 	 * @param csvLine
+	 * @throws Exception 
 	 */
-	public ExampleWiki (String csvLine) {
+	public ExampleWiki (String csvLine) throws Exception {
 		StringTokenizer st = new StringTokenizer (csvLine,";");
 		if (st.hasMoreTokens()) { 
 			st.nextToken(); // what is to do with the first column?
@@ -200,8 +202,9 @@ public class ExampleWiki extends Mediawiki {
 	/**
 	 * get the CSV data
 	 * @param urlString
+	 * @throws Exception 
 	 */
-	public static void readCSV(String urlString) {
+	public static void readCSV(String urlString) throws Exception {
 		// get csv-String
 		String csv=Mediawiki.getStringFromUrl(urlString);
 		String[] csvlines = csv.split("\n");
@@ -220,8 +223,9 @@ public class ExampleWiki extends Mediawiki {
 	 * 
 	 * @param wikiId
 	 * @return - the example wiki for the given wikiId
+	 * @throws Exception 
 	 */
-	public static ExampleWiki get(String wikiId) {
+	public static ExampleWiki get(String wikiId) throws Exception {
 		// this code should be (partly?) replaced by csv-access
 		if (getExampleWikis().size() == 0) {
 			String urlString="http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/-3FMwMinExpectedPages/format%3Dcsv/sep%3D;/offset%3D0";

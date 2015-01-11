@@ -40,9 +40,15 @@ public class APITestbase {
 
 	/**
 	 * construct a Test
+	 * @throws Exception 
 	 */
-	public APITestbase() {
-		setWiki(ExampleWiki.get(ExampleWiki.MAIN_TESTWIKI_ID));
+	public APITestbase()  {
+		try {
+      setWiki(ExampleWiki.get(ExampleWiki.MAIN_TESTWIKI_ID));
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 		setWikis(ExampleWiki.getExampleWikis().values());
 	}
 

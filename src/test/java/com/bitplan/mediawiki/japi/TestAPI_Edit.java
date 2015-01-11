@@ -30,7 +30,7 @@ import com.bitplan.mediawiki.japi.api.Edit;
 public class TestAPI_Edit extends APITestbase {
 
 	@Test
-	public void testSplitParams() {
+	public void testSplitParams() throws Exception {
 		Mediawiki wiki=new Mediawiki();
 		String params="&a=1&b=2";
 		Map<String, String> paramMap = wiki.getParamMap(params);
