@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.junit.Test;
 
@@ -81,7 +82,24 @@ public class TestAPI_Edit extends APITestbase {
 			}
 		}
 	}
-	
+	@Test
+	public void TestURLengthLimit() throws Exception {
+	  ExampleWiki lwiki=ExampleWiki.get("mediawiki-japi-test1_24");
+	  lwiki.login();
+	  // lwiki.setDebug(true);
+	  String text="012345678901234567890123456789012345678901234567890123456789\n";
+	  // blow up text upto level 10: len=62464
+	  for (int i=1;i<=10;i++) {
+	    text=text+text;
+	    if (i>=6) { // test from level 6: len=3904 - usual bail out would be at 7808
+	      boolean show=debug;
+	      if (show)
+	        LOGGER.log(Level.INFO,"level "+i+": len="+text.length());
+	      Edit edit=lwiki.edit("urllengthlimit", text, "len:"+text.length());
+	      assertEquals("Success",edit.getResult());
+	    }
+	  }
+	}
 	// FIXME need TestEditNoLogin - should throw an Exception with Message Action 'edit' is not allowed for
 	// current user
 	

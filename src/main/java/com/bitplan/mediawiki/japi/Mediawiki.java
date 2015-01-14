@@ -263,17 +263,22 @@ public class Mediawiki implements MediawikiApi {
    * get a Post response
    * 
    * @param queryUrl
+   * @param token 
    * @param pFormData
    * @return - the client Response
    * @throws Exception
    */
   public ClientResponse getPostResponse(String queryUrl,
-      Map<String, String> pFormData) throws Exception {
+      TokenResult token, Map<String, String> pFormData) throws Exception {
     MultivaluedMap<String, String> lFormData = new MultivaluedMapImpl();
     for (String key : pFormData.keySet()) {
       lFormData.add(key, pFormData.get(key));
     }
-    Builder resource = getResource(queryUrl);
+    String params="";
+    if (token != null) {
+      params += token.asParam();
+    }
+    Builder resource = getResource(queryUrl+params);
     // FIXME allow to specify contenttype (not needed for Mediawiki itself but
     // could be good for interfacing )
     ClientResponse response = resource.type(
@@ -392,9 +397,8 @@ public class Mediawiki implements MediawikiApi {
     if ("edit".equals(action)) {
       switch (token.tokenMode) {
       case token1_24:
-        // Map<String, String> lFormData = this.getParamMap(token.asParam());
-        // response = this.getPostResponse(queryUrl + params, lFormData);
-        response = this.getResponse(queryUrl, params, token, Method.Post);
+        Map<String, String> pFormData=this.getParamMap(params);
+        response=this.getPostResponse(queryUrl,token, pFormData);
         break;
       default:
         response = this.getResponse(queryUrl, params, token, Method.Post);
@@ -402,7 +406,7 @@ public class Mediawiki implements MediawikiApi {
     } else if ("login".equals(action)) {
       response = this.getResponse(queryUrl, params, token, Method.Post);
     } else {
-      response = this.getResponse(queryUrl, params, token, Method.Get);
+      response = this.getResponse(queryUrl, params, token, Method.Post);
     }
     xml = this.getResponseString(response);
     if (debug) {
