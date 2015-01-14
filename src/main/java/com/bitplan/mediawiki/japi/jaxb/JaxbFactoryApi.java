@@ -27,16 +27,17 @@ public interface JaxbFactoryApi<T> {
 	 * @param xml - the xml representation of a <T> instance
 	 * @return a new <T> instance
 	 * @throws JAXBException - if there is an issue with the xml
+	 * @throws Exception 
 	 */
-	public T fromXML(final String xml) throws JAXBException;
+	public T fromXML(final String xml) throws JAXBException, Exception;
 	
 	/**
 	 * get a <T> instance for the given json
 	 * @param json - the json representation of a <T> instance
 	 * @return a new <T> instance
-	 * @throws JAXBException - if there is an issue with the json
+	 * @throws Exception - if there is an issue with the json
 	 */
-	public T fromJson(final String json) throws JAXBException;
+	public T fromJson(final String json) throws Exception;
 	
 	/**
 	 * create a Json representation for the given <T> instance 

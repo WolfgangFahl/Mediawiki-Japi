@@ -200,10 +200,9 @@ public class Api implements JaxbPersistenceApi<Api> {
 	 * @param xml
 	 *          - xml representation of Page Schema
 	 * @return the Api unmarshalled from the given xml
-	 * @throws JAXBException
-	 *           if there's something wrong with the xml input
+	 * @throws Exception 
 	 */
-	public static Api fromXML(final String xml) throws JAXBException {
+	public static Api fromXML(final String xml) throws Exception {
 		return apifactory.fromXML(xml);
 	}
 

@@ -15,6 +15,7 @@ package com.bitplan.mediawiki.japi.jaxb;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.logging.Level;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -32,7 +33,10 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
  */
 public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 	final Class<T> classOfT;
-
+	
+	protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
+      .getLogger("com.bitplan.mediawiki.japi.jaxb");
+	
 	/**
 	 * construct me for the given T class - workaround for java generics type
 	 * erasure
@@ -45,37 +49,51 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 
 	/**
 	 * get an instance of T for the given xml string
-	 * @param xml - the xml representation of the <T> instance
+	 * 
+	 * @param xml
+	 *          - the xml representation of the <T> instance
 	 * @return T
+	 * @throws Exception 
 	 */
 	@SuppressWarnings("unchecked")
-	public T fromXML(String xml) throws JAXBException {
+	public T fromXML(String xml) throws Exception {
 		// unmarshal the xml message to an Mediawiki Api Java object
 		JAXBContext context = JAXBContext.newInstance(classOfT);
 		Unmarshaller u = context.createUnmarshaller();
 		StringReader xmlReader = new StringReader(xml);
-		// this step will convert from xml text to Java Object
-		Object unmarshalResult = u.unmarshal(xmlReader);
 		T result = null;
-		if (classOfT.isInstance(unmarshalResult)) {
-			result = (T) unmarshalResult;
+		// this step will convert from xml text to Java Object
+		try {
+			Object unmarshalResult = u.unmarshal(xmlReader);
+			if (classOfT.isInstance(unmarshalResult)) {
+				result = (T) unmarshalResult;
+			}
+		} catch (JAXBException jex) {
+			String msg="JAXBException: "+jex.getMessage();
+			LOGGER.log(Level.SEVERE,msg);
+			LOGGER.log(Level.SEVERE,xml);
+			throw (new Exception(msg,jex));
 		}
 		return result;
 	}
 
-	
 	/**
 	 * get an instance of T for the given json string
-	 * @param json - the json representation of the <T> instance
+	 * 
+	 * @param json
+	 *          - the json representation of the <T> instance
 	 * @return T
+	 * @throws Exception 
 	 */
-	public T fromJson(String json) throws JAXBException {
+	public T fromJson(String json) throws Exception {
 		return fromXML(json);
 	}
-	
+
 	/**
-	 * get a marshaller for the given <T> instance 
-	 * @param instance - the instance to get a marshaller for
+	 * get a marshaller for the given <T> instance
+	 * 
+	 * @param instance
+	 *          - the instance to get a marshaller for
 	 * @return a marshaller for <T>
 	 * @throws JAXBException
 	 */
@@ -85,9 +103,10 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		return marshaller;
 	}
-	
+
 	/**
 	 * get the string representation of the given marshaller
+	 * 
 	 * @param marshaller
 	 * @return the string representation for the given marshaller
 	 * @throws JAXBException
@@ -98,31 +117,35 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 		String result = sw.toString();
 		return result;
 	}
-	
+
 	/**
-	 * create a Json representation for the given <T> instance 
-	 * @param instance - the instance to convert to json
+	 * create a Json representation for the given <T> instance
+	 * 
+	 * @param instance
+	 *          - the instance to convert to json
 	 * @return a Json representation of the given <T>
 	 * @throws JAXBException
 	 */
 	public String asJson(T instance) throws JAXBException {
-		Marshaller marshaller=getMarshaller(instance);
+		Marshaller marshaller = getMarshaller(instance);
 		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 		marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
-		String result=getString(marshaller);
+		String result = getString(marshaller);
 		return result;
 	}
 
 	/**
 	 * create an xml representation for the given <T> instance
-	 * @param instance - the instance to convert to xml
+	 * 
+	 * @param instance
+	 *          - the instance to convert to xml
 	 * @return a xml representation of the given <T> instance
 	 * @throws JAXBException
 	 */
 	public String asXml(T instance) throws JAXBException {
-		Marshaller marshaller=getMarshaller(instance);
+		Marshaller marshaller = getMarshaller(instance);
 		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/xml");
-		String result=getString(marshaller);
+		String result = getString(marshaller);
 		return result;
 	}
 }
