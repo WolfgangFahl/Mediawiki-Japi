@@ -263,22 +263,27 @@ public class Mediawiki implements MediawikiApi {
    * get a Post response
    * 
    * @param queryUrl
-   * @param token 
+   * @param params
+   *          - direct query parameters
+   * @param token
+   *          - a token if any
    * @param pFormData
+   *          - the form data
    * @return - the client Response
    * @throws Exception
    */
-  public ClientResponse getPostResponse(String queryUrl,
+  public ClientResponse getPostResponse(String queryUrl, String params,
       TokenResult token, Map<String, String> pFormData) throws Exception {
     MultivaluedMap<String, String> lFormData = new MultivaluedMapImpl();
-    for (String key : pFormData.keySet()) {
-      lFormData.add(key, pFormData.get(key));
+    if (pFormData != null) {
+      for (String key : pFormData.keySet()) {
+        lFormData.add(key, pFormData.get(key));
+      }
     }
-    String params="";
     if (token != null) {
       params += token.asParam();
     }
-    Builder resource = getResource(queryUrl+params);
+    Builder resource = getResource(queryUrl + params);
     // FIXME allow to specify contenttype (not needed for Mediawiki itself but
     // could be good for interfacing )
     ClientResponse response = resource.type(
@@ -290,56 +295,6 @@ public class Mediawiki implements MediawikiApi {
   public enum Method {
     PostForm, Post, Get
   };
-
-  /**
-   * get the response for the given queryUrl
-   * 
-   * @param queryUrl
-   *          - the url to query
-   * @param method
-   *          - the Method to use Post or Get
-   * @return - a client Response
-   * @throws Exception
-   */
-  protected ClientResponse getResponse(String queryUrl, Method method)
-      throws Exception {
-    Builder resource = getResource(queryUrl);
-    ClientResponse result;
-    switch (method) {
-    case PostForm:
-      result = resource.type(MediaType.APPLICATION_FORM_URLENCODED).post(
-          ClientResponse.class);
-      break;
-    case Post:
-      result = resource.post(ClientResponse.class);
-      break;
-    case Get:
-      result = resource.get(ClientResponse.class);
-      break;
-    default:
-      throw new Exception("unsupported method " + method);
-    }
-    return result;
-  }
-
-  /**
-   * get a response with or without a null token
-   * 
-   * @param queryUrl
-   * @param params
-   * @param token
-   * @param method
-   * @return
-   * @throws Exception
-   */
-  protected ClientResponse getResponse(String queryUrl, String params,
-      TokenResult token, Method method) throws Exception {
-    if (token != null) {
-      params += token.asParam();
-    }
-    ClientResponse result = getResponse(queryUrl + params, method);
-    return result;
-  }
 
   /**
    * get the Response string
@@ -387,27 +342,14 @@ public class Mediawiki implements MediawikiApi {
    * @return the API result for the action
    * @throws Exception
    */
-  public Api getActionResult(String action, String params, TokenResult token)
-      throws Exception {
+  public Api getActionResult(String action, String params, TokenResult token,
+      Map<String, String> pFormData) throws Exception {
     String queryUrl = siteurl + scriptPath + apiPath + "&action=" + action
         + "&format=" + format;
     String xml;
     ClientResponse response;
     // decide for the method to use for api access
-    if ("edit".equals(action)) {
-      switch (token.tokenMode) {
-      case token1_24:
-        Map<String, String> pFormData=this.getParamMap(params);
-        response=this.getPostResponse(queryUrl,token, pFormData);
-        break;
-      default:
-        response = this.getResponse(queryUrl, params, token, Method.Post);
-      }
-    } else if ("login".equals(action)) {
-      response = this.getResponse(queryUrl, params, token, Method.Post);
-    } else {
-      response = this.getResponse(queryUrl, params, token, Method.Post);
-    }
+    response = this.getPostResponse(queryUrl, params, token, pFormData);
     xml = this.getResponseString(response);
     if (debug) {
       // convert the xml to a more readable format
@@ -429,7 +371,7 @@ public class Mediawiki implements MediawikiApi {
   }
 
   /**
-   * get the result for the given action and params
+   * get the result for the given action and query
    * 
    * @param action
    * @param params
@@ -437,7 +379,7 @@ public class Mediawiki implements MediawikiApi {
    * @throws Exception
    */
   public Api getActionResult(String action, String params) throws Exception {
-    Api result = this.getActionResult(action, params, null);
+    Api result = this.getActionResult(action, params, null, null);
     return result;
   }
 
@@ -449,7 +391,7 @@ public class Mediawiki implements MediawikiApi {
    * @throws Exception
    */
   public Api getQueryResult(String query) throws Exception {
-    Api result = this.getActionResult("query", query, null);
+    Api result = this.getActionResult("query", query, null, null);
     return result;
   }
 
@@ -528,14 +470,14 @@ public class Mediawiki implements MediawikiApi {
     username = encode(username);
     password = encode(password);
     Api apiResult = getActionResult("login", "&lgname=" + username
-        + "&lgpassword=" + password, null);
+        + "&lgpassword=" + password, null, null);
     Login login = apiResult.getLogin();
     TokenResult token = new TokenResult();
     token.token = login.getToken();
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
     apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
-        + password, token);
+        + password, token, null);
     login = apiResult.getLogin();
     return login;
   }
@@ -546,7 +488,7 @@ public class Mediawiki implements MediawikiApi {
    * @throws Exception
    */
   public void logout() throws Exception {
-    Api apiResult = getActionResult("logout", "", null);
+    Api apiResult = getActionResult("logout", "", null, null);
     if (apiResult != null) {
       // FIXME check apiResult
     }
@@ -724,9 +666,12 @@ public class Mediawiki implements MediawikiApi {
   public Edit edit(String pagetitle, String text, String summary)
       throws Exception {
     TokenResult token = getEditToken(pagetitle);
-    String params = "&title=" + encode(pagetitle) + "&text=" + encode(text)
-        + "&summary=" + encode(summary);
-    Api api = this.getActionResult("edit", params, token);
+    Map<String, String> lFormData = new HashMap<String, String>();
+    lFormData.put("text", text);
+    lFormData.put("title", pagetitle);
+    lFormData.put("summary", summary);
+    String params = "";
+    Api api = this.getActionResult("edit", params, token, lFormData);
     Edit result = api.getEdit();
     return result;
   }

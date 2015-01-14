@@ -78,25 +78,31 @@ public class TestAPI_Edit extends APITestbase {
 					// FIXME - check when there is no success e.g. for a page that is protected
 					// the Success check should be in the Mediawiki class and throw an exception if not successful
 					assertEquals("Success",edit.getResult());
+					String newContent=lwiki.getPageContent(examplePage.getTitle());
+					assertEquals(examplePage.getContentPart(),newContent);
 				}
 			}
 		}
 	}
+	
 	@Test
 	public void TestURLengthLimit() throws Exception {
 	  ExampleWiki lwiki=ExampleWiki.get("mediawiki-japi-test1_24");
 	  lwiki.login();
 	  // lwiki.setDebug(true);
 	  String text="012345678901234567890123456789012345678901234567890123456789\n";
-	  // blow up text upto level 10: len=62464
+	  // blow up text up to level 10: len=62464
 	  for (int i=1;i<=10;i++) {
 	    text=text+text;
 	    if (i>=6) { // test from level 6: len=3904 - usual bail out would be at 7808
 	      boolean show=debug;
 	      if (show)
 	        LOGGER.log(Level.INFO,"level "+i+": len="+text.length());
-	      Edit edit=lwiki.edit("urllengthlimit", text, "len:"+text.length());
+	      String title="urllengthlimit";
+	      Edit edit=lwiki.edit(title, text, "len:"+text.length());
 	      assertEquals("Success",edit.getResult());
+	      String newContent=lwiki.getPageContent(title);
+        assertEquals(""+text.length()+"<>"+newContent.length(),text.trim(),newContent.trim());
 	    }
 	  }
 	}
@@ -124,7 +130,5 @@ public class TestAPI_Edit extends APITestbase {
 			assertEquals(sourceContent,targetContent);
 		}
 	}
-	
-	
 	
 }
