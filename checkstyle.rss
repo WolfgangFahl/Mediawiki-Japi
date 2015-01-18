@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2015</copyright>
     <item>
-      <title>File: 28,
-             Errors: 5272,
+      <title>File: 31,
+             Errors: 6232,
              Warnings: 0,
              Infos: 0
       </title>
@@ -46,7 +46,7 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.Mediawiki.java">com/bitplan/mediawiki/japi/Mediawiki.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Warnings.java">com/bitplan/mediawiki/japi/api/Warnings.java</a>
                 </td>
                 <td>
                   0
@@ -55,7 +55,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  744
+                  22
                 </td>
               </tr>
                           <tr>
@@ -74,7 +74,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Rc.java">com/bitplan/mediawiki/japi/api/Rc.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.General.java">com/bitplan/mediawiki/japi/api/General.java</a>
                 </td>
                 <td>
                   0
@@ -83,63 +83,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  143
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Login.java">com/bitplan/mediawiki/japi/api/Login.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  122
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#org.wikipedia.package-info.java">org/wikipedia/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  6
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Imagelimits.java">com/bitplan/mediawiki/japi/api/Imagelimits.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  25
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Thumblimits.java">com/bitplan/mediawiki/japi/api/Thumblimits.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  22
+                  412
                 </td>
               </tr>
                           <tr>
@@ -158,7 +102,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Api.java">com/bitplan/mediawiki/japi/api/Api.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Thumblimits.java">com/bitplan/mediawiki/japi/api/Thumblimits.java</a>
                 </td>
                 <td>
                   0
@@ -167,12 +111,12 @@ under the License.
                   0
                 </td>
                 <td>
-                  223
+                  22
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.General.java">com/bitplan/mediawiki/japi/api/General.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Query.java">com/bitplan/mediawiki/japi/api/Query.java</a>
                 </td>
                 <td>
                   0
@@ -181,21 +125,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  412
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Limit.java">com/bitplan/mediawiki/japi/api/Limit.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  43
+                  158
                 </td>
               </tr>
                           <tr>
@@ -214,7 +144,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Query.java">com/bitplan/mediawiki/japi/api/Query.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Limit.java">com/bitplan/mediawiki/japi/api/Limit.java</a>
                 </td>
                 <td>
                   0
@@ -223,7 +153,161 @@ under the License.
                   0
                 </td>
                 <td>
-                  95
+                  43
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.P.java">com/bitplan/mediawiki/japi/api/P.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  54
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Page.java">com/bitplan/mediawiki/japi/api/Page.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  129
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbFactory.java">com/bitplan/mediawiki/japi/jaxb/JaxbFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  168
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbPersistenceApi.java">com/bitplan/mediawiki/japi/jaxb/JaxbPersistenceApi.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.Mediawiki.java">com/bitplan/mediawiki/japi/Mediawiki.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1022
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Login.java">com/bitplan/mediawiki/japi/api/Login.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  122
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Rc.java">com/bitplan/mediawiki/japi/api/Rc.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  143
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#org.wikipedia.package-info.java">org/wikipedia/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Imagelimits.java">com/bitplan/mediawiki/japi/api/Imagelimits.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  25
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Api.java">com/bitplan/mediawiki/japi/api/Api.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  234
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.user.Crypt.java">com/bitplan/mediawiki/japi/user/Crypt.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  188
                 </td>
               </tr>
                           <tr>
@@ -237,7 +321,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  115
+                  146
                 </td>
               </tr>
                           <tr>
@@ -270,20 +354,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.P.java">com/bitplan/mediawiki/japi/api/P.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  54
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Tokens.java">com/bitplan/mediawiki/japi/api/Tokens.java</a>
                 </td>
                 <td>
@@ -293,7 +363,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  32
+                  42
                 </td>
               </tr>
                           <tr>
@@ -307,7 +377,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  2406
+                  2414
                 </td>
               </tr>
                           <tr>
@@ -326,7 +396,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbFactory.java">com/bitplan/mediawiki/japi/jaxb/JaxbFactory.java</a>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.user.WikiUser.java">com/bitplan/mediawiki/japi/user/WikiUser.java</a>
                 </td>
                 <td>
                   0
@@ -335,35 +405,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  144
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Page.java">com/bitplan/mediawiki/japi/api/Page.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  129
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbFactoryApi.java">com/bitplan/mediawiki/japi/jaxb/JaxbFactoryApi.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  48
+                  281
                 </td>
               </tr>
                           <tr>
@@ -382,6 +424,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbFactoryApi.java">com/bitplan/mediawiki/japi/jaxb/JaxbFactoryApi.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  51
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#org.wikipedia.Mediawiki.java">org/wikipedia/Mediawiki.java</a>
                 </td>
                 <td>
@@ -391,7 +447,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  96
+                  135
                 </td>
               </tr>
                           <tr>
@@ -406,20 +462,6 @@ under the License.
                 </td>
                 <td>
                   120
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.jaxb.JaxbPersistenceApi.java">com/bitplan/mediawiki/japi/jaxb/JaxbPersistenceApi.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  33
                 </td>
               </tr>
                           <tr>
