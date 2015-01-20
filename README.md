@@ -102,9 +102,10 @@ wiki.logout();
 [Jaxb-Generator](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Jaxbgenerator)
 
 This is a semi-automatic process. The resulting java code needs to be adapted to be workable. For a start
-18 Java classes have been generated that allow some 19 JUnit tests to pass.
+18 Java classes have been generated that allow some 19 JUnit tests to pass (to a total of 43 including the 24
+unit tests supplied with Wiki.java).
   
 ## Version history
 * 0.0.1 - 2015-01-01: first version as JMediawiki
 * 0.0.2 - 2015-01-18: fixes issues #1 - #7 
-* 0.0.3 - 2015-01-18: refactors to multi implementation approach with guice
+* 0.0.3 - 2015-01-20: fixes issue #8 refactors to multi implementation approach with guice

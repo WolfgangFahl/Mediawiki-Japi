@@ -36,7 +36,7 @@ public class TestAPI_Meta extends APITestbase {
 	@Test
 	public void testGeneralSiteInfo() throws Exception {
 		for (ExampleWiki lwiki : getWikis()) {
-			lwiki.wiki.setDebug(true);
+			// lwiki.wiki.setDebug(true);
 		  // FIXME add to interface
 			General general = lwiki.getSiteInfo();
 			assertNotNull(general);

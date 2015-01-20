@@ -68,10 +68,9 @@ public class ExampleWikiManager {
    * @throws Exception
    */
   private ExampleWiki add(String wikiId, String siteUrl,
-      String defaultScriptpath) throws Exception {
+      String scriptPath) throws Exception {
     MediawikiApi wiki=injector.getInstance(MediawikiApi.class);
-    wiki.setSiteurl(siteUrl); 
-    wiki.setScriptPath(defaultScriptpath);
+    wiki.init(siteUrl, scriptPath);
     ExampleWiki exampleWiki=new ExampleWiki(wikiId,wiki);
     add(exampleWiki);
     return exampleWiki;
