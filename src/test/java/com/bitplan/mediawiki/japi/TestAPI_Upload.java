@@ -43,9 +43,6 @@ public class TestAPI_Upload extends APITestbase {
 	  
 	}
 	
-	// FIXME need TestEditNoLogin - should throw an Exception with Message Action 'edit' is not allowed for
-	// current user
-	
 	/**
 	 * test copying a page from a source Wiki to a target Wiki
 	 * @throws Exception

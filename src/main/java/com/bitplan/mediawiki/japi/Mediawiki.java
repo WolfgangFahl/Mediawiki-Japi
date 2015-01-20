@@ -34,7 +34,6 @@ import org.kohsuke.args4j.Option;
 
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
-import com.bitplan.mediawiki.japi.api.Error;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Page;
@@ -55,7 +54,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * @author wf
  *
  */
-public class Mediawiki implements MediawikiApi {
+public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * current Version
@@ -80,17 +79,6 @@ public class Mediawiki implements MediawikiApi {
    * default script path
    */
   public static final String DEFAULT_SCRIPTPATH = "/w";
-
-  /**
-   * set to true if exceptions should be thrown on Error
-   */
-  protected boolean throwExceptionOnError = true;
-
-  /**
-   * Logging may be enabled by setting debug to true
-   */
-  protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
-      .getLogger("com.bitplan.mediawiki.japi");
 
   protected String siteurl;
   protected String scriptPath = DEFAULT_SCRIPTPATH;
@@ -118,21 +106,6 @@ public class Mediawiki implements MediawikiApi {
   @Override
   public boolean isDebug() {
     return this.debug;
-  }
-
-  /**
-   * @return the throwExceptionOnError
-   */
-  public boolean isThrowExceptionOnError() {
-    return throwExceptionOnError;
-  }
-
-  /**
-   * @param throwExceptionOnError
-   *          the throwExceptionOnError to set
-   */
-  public void setThrowExceptionOnError(boolean throwExceptionOnError) {
-    this.throwExceptionOnError = throwExceptionOnError;
   }
 
   /**
@@ -195,7 +168,7 @@ public class Mediawiki implements MediawikiApi {
    * @throws Exception
    */
   public Mediawiki(String siteurl, String scriptpath) throws Exception {
-    init(siteurl,scriptPath);
+    init(siteurl, scriptPath);
   }
 
   /**
@@ -364,17 +337,7 @@ public class Mediawiki implements MediawikiApi {
       String xmlDebug = xml.replace(">", ">\n");
       LOGGER.log(Level.INFO, xmlDebug);
     }
-    // retrieve the JAXB wrapper representation from the xml received
-    Api api = Api.fromXML(xml);
-    // check whether an error code was sent
-    Error error = api.getError();
-    // if there is an error - handle it
-    if (error != null) {
-      // prepare the error message
-      String errMsg = "error code=" + error.getCode() + " info:'"
-          + error.getInfo() + "'";
-      this.handleError(errMsg);
-    }
+    Api api = fromXML(xml);
     return api;
   }
 
@@ -659,21 +622,6 @@ public class Mediawiki implements MediawikiApi {
       break;
     }
     return token;
-  }
-
-  /**
-   * handle the given error Message according to the exception setting
-   * 
-   * @param errMsg
-   * @throws Exception
-   */
-  private void handleError(String errMsg) throws Exception {
-    // log it
-    LOGGER.log(Level.SEVERE, errMsg);
-    // and throw an error if this is configured
-    if (this.isThrowExceptionOnError()) {
-      throw new Exception(errMsg);
-    }
   }
 
   /**

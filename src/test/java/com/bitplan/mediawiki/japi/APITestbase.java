@@ -13,7 +13,9 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 import com.bitplan.mediawiki.guice.ComBITPlanWikiModule;
+import com.bitplan.mediawiki.guice.OrgWikiModule;
 import com.bitplan.mediawiki.japi.api.Api;
+import com.google.inject.AbstractModule;
 
 import static org.junit.Assert.*;
 
@@ -47,6 +49,7 @@ public class APITestbase {
 	public APITestbase()  {
 		try {
 		  ComBITPlanWikiModule module = new ComBITPlanWikiModule();
+		  // AbstractModule module=new OrgWikiModule();
 		  ewm=new ExampleWikiManager(module);
       setWiki(ewm.get(ewm.MAIN_TESTWIKI_ID));
       setWikis(ewm.getExampleWikis().values());

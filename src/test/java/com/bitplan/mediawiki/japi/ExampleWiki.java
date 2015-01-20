@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.user.WikiUser;
 
@@ -214,5 +215,14 @@ public class ExampleWiki  {
 		}
 		return titles;
 	}
+
+	/**
+	 * delegate the getSiteinfo call
+	 * @return
+	 * @throws Exception
+	 */
+  public General getSiteInfo() throws Exception {
+    return wiki.getSiteInfo();
+  }
 
 }

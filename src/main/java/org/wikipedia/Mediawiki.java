@@ -17,7 +17,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
+import com.bitplan.mediawiki.japi.MediaWikiApiImpl;
 import com.bitplan.mediawiki.japi.MediawikiApi;
+import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
@@ -28,14 +30,11 @@ import com.bitplan.mediawiki.japi.api.Login;
  * @author wf
  *
  */
-public class Mediawiki implements MediawikiApi {
+public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 	// delegate to the one class Wiki solution
 	Wiki wiki;
 
-	/**
-	 * set to true if exceptions should be thrown on Error
-	 */
-	protected boolean throwExceptionOnError = true;
+	
 
   private String domain;
 
@@ -44,21 +43,6 @@ public class Mediawiki implements MediawikiApi {
   private String siteurl;
 
   private boolean debug;
-
-	/**
-	 * @return the throwExceptionOnError
-	 */
-	public boolean isThrowExceptionOnError() {
-		return throwExceptionOnError;
-	}
-
-	/**
-	 * @param throwExceptionOnError
-	 *          the throwExceptionOnError to set
-	 */
-	public void setThrowExceptionOnError(boolean throwExceptionOnError) {
-		this.throwExceptionOnError = throwExceptionOnError;
-	}
 
 	@Override
 	public String getSiteurl() {
@@ -79,6 +63,8 @@ public class Mediawiki implements MediawikiApi {
     String prot=url.getProtocol();
 
 		wiki.init(prot,domain,scriptPath);
+		// zip doesn't work as of 2015-01-20
+		wiki.setUsingCompressedRequests(false);
 	}
 	
 	/**
@@ -110,9 +96,10 @@ public class Mediawiki implements MediawikiApi {
 	@Override
 	public General getSiteInfo() throws Exception {
 		HashMap<String, Object> siteinfo = wiki.getSiteInfo();
-		General general = new General();
-		general.setGenerator((String) siteinfo.get("generator"));
-		return general;
+		String xml=(String) siteinfo.get("xml");
+		Api api=super.fromXML(xml);
+		General result=api.getQuery().getGeneral();
+		return result;
 	}
 
 	@Override

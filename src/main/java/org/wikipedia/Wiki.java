@@ -657,6 +657,7 @@ public class Wiki implements Serializable
         timezone = parseAttribute(line, "timezone", 0);
         ret.put("timezone", timezone);
         ret.put("version", parseAttribute(line, "generator", 0));
+        ret.put("xml", line);
         initVars();
         return ret;
     }
