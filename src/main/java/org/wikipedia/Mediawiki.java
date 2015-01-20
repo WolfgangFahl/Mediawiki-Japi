@@ -1,5 +1,15 @@
+/**
+ * Copyright (C) 2015 BITPlan GmbH
+ *
+ * Pater-Delp-Str. 1
+ * D-47877 Willich-Schiefbahn
+ *
+ * http://www.bitplan.com
+ * 
+ */
 package org.wikipedia;
 
+import java.io.File;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,13 +29,21 @@ import com.bitplan.mediawiki.japi.api.Login;
  *
  */
 public class Mediawiki implements MediawikiApi {
-	// delegate
+	// delegate to the one class Wiki solution
 	Wiki wiki;
 
 	/**
 	 * set to true if exceptions should be thrown on Error
 	 */
 	protected boolean throwExceptionOnError = true;
+
+  private String domain;
+
+  private String scriptPath;
+
+  private String siteurl;
+
+  private boolean debug;
 
 	/**
 	 * @return the throwExceptionOnError
@@ -44,23 +62,44 @@ public class Mediawiki implements MediawikiApi {
 
 	@Override
 	public String getSiteurl() {
-		// FIXME
-		return null;
+		return siteurl;
 	}
 
 	@Override
 	public void setSiteurl(String siteurl) throws Exception {
+	  this.siteurl=siteurl;
 		URL url = new URL(siteurl);
-		String domain = url.getHost();
+		domain = url.getHost();
 		domain = domain.startsWith("www.") ? domain.substring(4) : domain;
-		String scriptPath=url.getPath();
+		scriptPath=url.getPath();
 		if ("".equals(scriptPath)) {
 			scriptPath="/w";
-		}
-		Wiki.PROT=url.getProtocol();
-		
-		wiki = new Wiki(domain,scriptPath);
+		}	
+		wiki = new Wiki();
+    String prot=url.getProtocol();
+
+		wiki.init(prot,domain,scriptPath);
 	}
+	
+	/**
+   * @return the scriptPath
+   */
+  public String getScriptPath() {
+    return scriptPath;
+  }
+
+  /**
+   * @param scriptPath the scriptPath to set
+   */
+  public void setScriptPath(String scriptPath) {
+    this.scriptPath = scriptPath;
+  }
+
+  @Override
+  public void init(String siteurl, String scriptPath) throws Exception {
+	  setSiteurl(siteurl+"/"+scriptPath);
+  }
+	
 
 	@Override
 	public String getVersion() throws Exception {
@@ -78,8 +117,9 @@ public class Mediawiki implements MediawikiApi {
 
 	@Override
 	public Login login(String username, String password) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		wiki.login(username, password);
+		Login result=new Login();
+		return result;
 	}
 
 	@Override
@@ -97,7 +137,6 @@ public class Mediawiki implements MediawikiApi {
 	public Edit edit(String pagetitle, String text, String summary) throws Exception {
 		wiki.edit(pagetitle, text, summary);		
 		Edit result=new Edit();
-		// FIXME - set edit parameters
 		return result;
 	}
 
@@ -117,12 +156,21 @@ public class Mediawiki implements MediawikiApi {
 
 	@Override
 	public void setDebug(boolean pDebug) {
-		// FIXME implement
+		this.debug=pDebug;
 	}
 
 	@Override
 	public boolean isDebug() {
-		return false;
+		return debug;
 	}
+
+  @Override
+  public void upload(File file, String filename, String contents, String reason)
+      throws Exception {
+    // simply delegate
+    this.wiki.upload(file, filename, contents, reason); 
+  }
+
+  
 
 }

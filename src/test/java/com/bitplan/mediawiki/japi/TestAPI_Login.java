@@ -46,7 +46,7 @@ public class TestAPI_Login extends APITestbase {
 			WikiUser wuser = lwiki.getWikiUser();
 			// do not keep uncommented - password will be visible in log
 			// lwiki.setDebug(true);
-			Api api = lwiki
+			Api api = lwiki.getMediaWikiJapi()
 					.getActionResult("login", "&lgname=" + wuser.getUsername());
 			Login login = api.getLogin();
 			assertNotNull(login);
@@ -67,16 +67,16 @@ public class TestAPI_Login extends APITestbase {
 		for (ExampleWiki lwiki : getWikis()) {
 			WikiUser wuser = lwiki.getWikiUser();
 			if (wuser==null) {
-				fail(WikiUser.help(lwiki.wikiId,lwiki.siteurl));
+				fail(WikiUser.help(lwiki.wikiId,lwiki.wiki.getSiteurl()));
 			}
 			// avoid uncommenting - will show password information ...
 			// lwiki.debug = true;
-			Login login = lwiki.login(wuser.getUsername(), wuser.getPassword());
+			Login login = lwiki.wiki.login(wuser.getUsername(), wuser.getPassword());
 			assertNotNull(login.getLguserid());
 			assertEquals(wuser.getUsername().toLowerCase(), login.getLgusername().toLowerCase());
 			assertNotNull(login.getLgtoken());
 			// make sure logout also works
-			lwiki.logout();
+			lwiki.wiki.logout();
 			// FIXME - test effect of logout
 		}
 	}
@@ -84,7 +84,7 @@ public class TestAPI_Login extends APITestbase {
 	@Test
 	public void testLoginNotExists() throws Exception {
 		for (ExampleWiki lwiki : getWikis()) {
-			Login login = lwiki.login("someUserThatDoesNotExist", "somePassword");
+			Login login = lwiki.wiki.login("someUserThatDoesNotExist", "somePassword");
 			assertEquals("NotExists", login.getResult());
 		}
 	}

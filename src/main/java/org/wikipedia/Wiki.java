@@ -26,6 +26,7 @@ import java.text.Normalizer;
 import java.util.*;
 import java.util.logging.*;
 import java.util.zip.GZIPInputStream;
+
 import javax.security.auth.login.*;
 
 /**
@@ -435,6 +436,8 @@ public class Wiki implements Serializable
 
     // retry flag
     private boolean retry = true;
+
+    private String prot;
    
     // serial version
     private static final long serialVersionUID = -8745212681497643456L;
@@ -483,6 +486,27 @@ public class Wiki implements Serializable
      */
     public Wiki(String domain, String scriptPath)
     {
+      this("https",domain,scriptPath);
+    }
+    
+    /**
+     * initializer with protocol
+     * @param prot
+     * @param domain
+     * @param scriptPath
+     */
+    public Wiki(String prot, String domain,String scriptPath) {
+      init(prot,domain,scriptPath);
+    }
+    
+    /**
+     * initialize me with the given protocol doman and scriptpath
+     * @param prot
+     * @param domain
+     * @param scriptPath
+     */
+    public void init(String prot,String domain,String scriptPath) {
+        this.prot=prot;
         if (domain == null || domain.isEmpty())
             domain = "en.wikipedia.org";
         this.domain = domain;
@@ -496,8 +520,6 @@ public class Wiki implements Serializable
         log(Level.CONFIG, "<init>", "Using Wiki.java " + version);
         initVars();
     }
-    
-    public static String PROT="https";
 
     /**
      *  Edit this if you need to change the API and human interface
@@ -511,7 +533,7 @@ public class Wiki implements Serializable
      */
     protected void initVars()
     {
-        StringBuilder basegen = new StringBuilder(PROT+"://");
+        StringBuilder basegen = new StringBuilder(prot+"://");
         basegen.append(domain);
         basegen.append(scriptPath);
         StringBuilder apigen = new StringBuilder(basegen);        

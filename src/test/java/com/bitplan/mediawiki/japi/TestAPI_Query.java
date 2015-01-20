@@ -41,7 +41,7 @@ public class TestAPI_Query extends APITestbase {
 		for (ExampleWiki lwiki : getWikis()) {
 			Api api = getQueryResult(lwiki, "&list=allpages&apfrom=Kre&aplimit=3");
 			List<P> pageRefList = api.getQuery().getAllpages();
-			assertEquals(lwiki.getSiteurl(),3, pageRefList.size());
+			assertEquals(lwiki.wiki.getSiteurl(),3, pageRefList.size());
 		}
 	}
 
@@ -50,7 +50,7 @@ public class TestAPI_Query extends APITestbase {
 		for (ExampleWiki lwiki : getWikis()) {
 			List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
 			List<String> titles=lwiki.getTitleList(examplePages);
-			List<Page> pages=lwiki.getPages(titles);
+			List<Page> pages=lwiki.getMediaWikiJapi().getPages(titles);
 			
 			assertEquals(2, pages.size());
 			int index=0;
@@ -59,8 +59,9 @@ public class TestAPI_Query extends APITestbase {
 				if (debug) {
 					LOGGER.log(Level.INFO, page.getTitle());
 				}
-				assertEquals(lwiki.getSiteurl(),expected.getTitle(),page.getTitle());
-				assertTrue(lwiki.getSiteurl()+"/"+lwiki.scriptPath+":"+expected.getTitle(),page.getRevisions().size()>0);
+				assertEquals(lwiki.wiki.getSiteurl(),expected.getTitle(),page.getTitle());
+				// FIXME add to interface
+				assertTrue(lwiki.wiki.getSiteurl()+"/"+lwiki.getMediaWikiJapi().getScriptPath()+":"+expected.getTitle(),page.getRevisions().size()>0);
 				Rev rev = page.getRevisions().get(0);
 				if (debug) {
 					LOGGER.log(Level.INFO, rev.getValue());

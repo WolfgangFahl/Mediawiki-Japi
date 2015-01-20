@@ -51,7 +51,7 @@ public class TestAPI_Edit extends APITestbase {
 				lwiki.login();
 				// lwiki.setDebug(true);
 				for (ExamplePage examplePage : exampleEditPages) {
-					TokenResult token = lwiki.getEditToken(examplePage.getTitle());
+					TokenResult token = lwiki.getMediaWikiJapi().getEditToken(examplePage.getTitle());
 					assertNotNull(lwiki.getWikiId(),token);
 					assertEquals("token",token.tokenName);
 				}
@@ -72,13 +72,13 @@ public class TestAPI_Edit extends APITestbase {
 				lwiki.login();
 				//lwiki.setDebug(true);
 				for (ExamplePage examplePage : exampleEditPages) {
-					String summary = "edit by TestAPI_Edit at "+lwiki.getIsoTimeStamp();
-					Edit edit=lwiki.edit(examplePage.getTitle(), examplePage.getContentPart(),
+					String summary = "edit by TestAPI_Edit at "+lwiki.wiki.getIsoTimeStamp();
+					Edit edit=lwiki.wiki.edit(examplePage.getTitle(), examplePage.getContentPart(),
 							summary);
 					// FIXME - check when there is no success e.g. for a page that is protected
 					// the Success check should be in the Mediawiki class and throw an exception if not successful
 					assertEquals("Success",edit.getResult());
-					String newContent=lwiki.getPageContent(examplePage.getTitle());
+					String newContent=lwiki.wiki.getPageContent(examplePage.getTitle());
 					assertEquals(examplePage.getContentPart(),newContent);
 				}
 			}
@@ -87,7 +87,7 @@ public class TestAPI_Edit extends APITestbase {
 	
 	@Test
 	public void TestURLengthLimit() throws Exception {
-	  ExampleWiki lwiki=ExampleWiki.get("mediawiki-japi-test1_24");
+	  ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_24");
 	  lwiki.login();
 	  // lwiki.setDebug(true);
 	  String text="012345678901234567890123456789012345678901234567890123456789\n";
@@ -99,9 +99,9 @@ public class TestAPI_Edit extends APITestbase {
 	      if (show)
 	        LOGGER.log(Level.INFO,"level "+i+": len="+text.length());
 	      String title="urllengthlimit";
-	      Edit edit=lwiki.edit(title, text, "len:"+text.length());
+	      Edit edit=lwiki.wiki.edit(title, text, "len:"+text.length());
 	      assertEquals("Success",edit.getResult());
-	      String newContent=lwiki.getPageContent(title);
+	      String newContent=lwiki.wiki.getPageContent(title);
         assertEquals(""+text.length()+"<>"+newContent.length(),text.trim(),newContent.trim());
 	    }
 	  }
@@ -115,18 +115,18 @@ public class TestAPI_Edit extends APITestbase {
 	 */
 	@Test
 	public void TestCopy() throws Exception {
-		ExampleWiki sourceWiki = ExampleWiki.get("sourceWiki");
+		ExampleWiki sourceWiki = ewm.get("sourceWiki");
 		// sourceWiki.setDebug(true);
-		ExampleWiki targetWiki = ExampleWiki.get("targetWiki");
+		ExampleWiki targetWiki = ewm.get("targetWiki");
 		targetWiki.login();
 		// targetWiki.setDebug(true);
 		List<ExamplePage> examplePages = sourceWiki.getExamplePages("testCopy");
 		// List<String> titles=sourceWiki.getTitleList(examplePages);
 		for (ExamplePage examplePage:examplePages) {
-			String summary="created/edited by TestAPI_Edit at "+sourceWiki.getIsoTimeStamp();
-			String sourceContent=sourceWiki.getPageContent(examplePage.getTitle());
-			sourceWiki.copyToWiki(targetWiki,examplePage.getTitle(), summary);
-			String targetContent=targetWiki.getPageContent(examplePage.getTitle());
+			String summary="created/edited by TestAPI_Edit at "+sourceWiki.wiki.getIsoTimeStamp();
+			String sourceContent=sourceWiki.wiki.getPageContent(examplePage.getTitle());
+			sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki,examplePage.getTitle(), summary);
+			String targetContent=targetWiki.wiki.getPageContent(examplePage.getTitle());
 			assertEquals(sourceContent,targetContent);
 		}
 	}

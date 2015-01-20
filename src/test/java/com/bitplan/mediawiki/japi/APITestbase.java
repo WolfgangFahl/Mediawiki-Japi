@@ -12,6 +12,7 @@ package com.bitplan.mediawiki.japi;
 import java.util.Collection;
 import java.util.logging.Level;
 
+import com.bitplan.mediawiki.guice.ComBITPlanWikiModule;
 import com.bitplan.mediawiki.japi.api.Api;
 
 import static org.junit.Assert.*;
@@ -29,7 +30,7 @@ public class APITestbase {
 	 */
 	protected boolean debug = false;
 
-	private ExampleWiki wiki;
+	protected ExampleWiki wiki;
 	private Collection<ExampleWiki> wikis;
 
 	/**
@@ -37,19 +38,22 @@ public class APITestbase {
 	 */
 	protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
 			.getLogger("com.bitplan.mediawiki.japi");
-
+	protected ExampleWikiManager ewm;
+	
 	/**
 	 * construct a Test
 	 * @throws Exception 
 	 */
 	public APITestbase()  {
 		try {
-      setWiki(ExampleWiki.get(ExampleWiki.MAIN_TESTWIKI_ID));
+		  ComBITPlanWikiModule module = new ComBITPlanWikiModule();
+		  ewm=new ExampleWikiManager(module);
+      setWiki(ewm.get(ewm.MAIN_TESTWIKI_ID));
+      setWikis(ewm.getExampleWikis().values());
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-		setWikis(ExampleWiki.getExampleWikis().values());
 	}
 
 	/**
@@ -60,8 +64,8 @@ public class APITestbase {
 	 * @throws Exception
 	 */
 	public Api getQueryResult(ExampleWiki pWiki,String query) throws Exception {
-		pWiki.setDebug(debug);
-		Api api = pWiki.getQueryResult(query);
+		pWiki.wiki.setDebug(debug);
+	  Api api =pWiki.getMediaWikiJapi().getQueryResult(query);
 		return api;
 	}
 	

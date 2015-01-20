@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,13 +26,29 @@ import com.bitplan.mediawiki.japi.user.WikiUser;
  *
  */
 @XmlRootElement(name = "examplewiki")
-public class ExampleWiki extends Mediawiki {
+public class ExampleWiki  {
+  /**
+   * Logging may be enabled by setting debug to true
+   */
+  protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
+      .getLogger("com.bitplan.mediawiki.japi");
 
-	/**
-	 * Map of example Wikis
-	 */
-	private static Map<String, ExampleWiki> exampleWikis = new HashMap<String, ExampleWiki>();
-	protected static Map<String,String> aliases=new HashMap<String,String>();
+  // the delegate wiki to use
+  MediawikiApi wiki;
+  
+  /**
+   * get the MediaWikiJapi implementation
+   * @return
+   */
+  public Mediawiki getMediaWikiJapi() {
+    Mediawiki result=null;
+    if (wiki instanceof com.bitplan.mediawiki.japi.Mediawiki) {
+      result=(Mediawiki) wiki;
+    } else {
+      LOGGER.log(Level.SEVERE,"trying to get MediaWikiJapi implementation for "+wiki.getClass());
+    }
+    return result;
+  }
 
 	/**
 	 * the id of the wiki
@@ -86,18 +101,15 @@ public class ExampleWiki extends Mediawiki {
 	}
 
 	/**
-	 * creates an ExampleWiki for the given wikiId,site and scriptpath and adds it
+	 * creates an ExampleWiki for the given wikiId,and wiki to be used
 	 * to the map of example Wikis
 	 * 
 	 * @param wikiId
-	 * @param siteurl
-	 * @param scriptpath
 	 * @throws Exception 
 	 */
-	public ExampleWiki(String wikiId, String siteurl, String scriptpath) throws Exception {
-		super(siteurl, scriptpath);
+	public ExampleWiki(String wikiId, MediawikiApi wiki) throws Exception {
+		this.wiki=wiki;
 		this.wikiId = wikiId;
-		getExampleWikis().put(wikiId, this);
 	}
 
 	/**
@@ -107,8 +119,8 @@ public class ExampleWiki extends Mediawiki {
 	 */
 	public WikiUser getWikiUser() {
 		if (wikiuser == null) {
-			wikiuser = WikiUser.getUser(wikiId, this.siteurl);
-			if (debug) {
+			wikiuser = WikiUser.getUser(wikiId, wiki.getSiteurl());
+			if (wiki.isDebug()) {
 				LOGGER.log(Level.INFO, "user=" + wikiuser.getUsername());
 			}
 		}
@@ -176,124 +188,9 @@ public class ExampleWiki extends Mediawiki {
 		}
 		List<ExamplePage> pages = examplePages.get(testId);
 		pages.add(page);
-	}
+	}	
 
-	/**
-	 * creates an ExampleWiki from the given csvLine
-	 * 
-	 * @param csvLine
-	 * @throws Exception 
-	 */
-	public ExampleWiki (String csvLine) throws Exception {
-		StringTokenizer st = new StringTokenizer (csvLine,";");
-		if (st.hasMoreTokens()) { 
-			st.nextToken(); // what is to do with the first column?
-			String lSiteurl = st.nextToken();
-			String lWikiId = st.nextToken();
-			new ExampleWiki(lWikiId,lSiteurl,Mediawiki.DEFAULT_SCRIPTPATH); // FIXME ...
-			st.nextToken(); // what is to do with the version?
-			String pages=st.nextToken();
-			pages=pages.replace(",","");
-			this.setExpectedPages(Integer.valueOf(pages).intValue());
-			this.setLogo("logo"); // FIXME ...
-		}
-	}
 	
-	/**
-	 * get the CSV data
-	 * @param urlString
-	 * @throws Exception 
-	 */
-	public static void readCSV(String urlString) throws Exception {
-		// get csv-String
-		String csv=Mediawiki.getStringFromUrl(urlString);
-		String[] csvlines = csv.split("\n");
-		int lineIndex=0;
-		for (String csvline:csvlines) {
-			if (lineIndex++ > 0)
-				new ExampleWiki(csvline);
-		}
-	}
-	
-  //the wiki to use for single tests / write access
-	public static final String MAIN_TESTWIKI_ID = "mediawiki_org"; // "mediawiki_test2"; //
-	
-	/**
-	 * get the given Example wiki
-	 * 
-	 * @param wikiId
-	 * @return - the example wiki for the given wikiId
-	 * @throws Exception 
-	 */
-	public static ExampleWiki get(String wikiId) throws Exception {
-		// this code should be (partly?) replaced by csv-access
-		if (getExampleWikis().size() == 0) {
-			String urlString="http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/-3FMwMinExpectedPages/format%3Dcsv/sep%3D;/offset%3D0";
-			// FIXME uncomment to activate
-			// readCSV(urlString);
-			// Mediawiki site
-			ExampleWiki wiki = new ExampleWiki("mediawiki_org",
-					"http://www.mediawiki.org",
-					// "http://test.wikipedia.org",
-					Mediawiki.DEFAULT_SCRIPTPATH);
-			wiki.setExpectedPages(290000);
-			wiki.setLogo("//upload.wikimedia.org/wikipedia/mediawiki/b/bc/Wiki.png");
-			ExamplePage testPage1 = wiki.new ExamplePage("2011 Wikimedia fundraiser",
-					"{{Wikimedia engineering project information");
-			wiki.addExamplePage("testGetPages", testPage1);
-
-			ExamplePage testPage2 = wiki.new ExamplePage("2012 Wikimedia fundraiser",
-					"{{Wikimedia engineering project information");
-			wiki.addExamplePage("testGetPages", testPage2);
-			
-			/* ExamplePage testPage1b = wiki.new ExamplePage("Testpage 1", "This is test page 1",true);
-			wiki.addExamplePage("testGetPages", testPage1b);
-			wiki.addExamplePage("testEditPages", testPage1b);
-      */
-			// test sites on mediawiki-japi.bitplan.com
-			// uncommment to enable
-			// /**
-			String versions[] = { 
-					"1_19", 
-					"1_23" , 
-					"1_24" };
-			for (String version : versions) {
-				wiki = new ExampleWiki("mediawiki-japi-test" + version,
-						"http://mediawiki-japi.bitplan.com", "/mw" + version);
-				wiki.setLogo("http://mediawiki-japi.bitplan.com/images/BITPlanLogo2012_197x118.png");
-				wiki.setExpectedPages(3);
-				testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1",true);
-				wiki.addExamplePage("testGetPages", testPage1);
-				wiki.addExamplePage("testEditPages", testPage1);
-				testPage2 = wiki.new ExamplePage("Testpage 2", "This is test page 2",true);
-				wiki.addExamplePage("testGetPages", testPage2);
-				wiki.addExamplePage("testEditPages", testPage2);
-			}
-			// bitplan internal wiki
-			// wiki = new
-			// ExampleWiki("capri_bitplan","http://capri.bitplan.com","/mediawiki");
-			// */
-			// Please modify this code according to the wikis you used ...
-			// this is for a copy test - you need read access to the SOURCE_WIKI and write access
-			// to the TARGET_WIKI
-			final String SOURCE_WIKI="mediawiki-japi-test1_19";
-			final String TARGET_WIKI="mediawiki-japi-test1_23";
-			aliases.put("sourceWiki",SOURCE_WIKI);
-		  aliases.put("targetWiki",TARGET_WIKI);
-		  
-			ExampleWiki sourceWiki = getExampleWikis().get(SOURCE_WIKI);
-			ExamplePage testPage3 = wiki.new ExamplePage("Testpage 3", "This is test page 3",true);
-			// this page will by copied so it's only in one wiki for a start
-			sourceWiki.addExamplePage("testEditPages", testPage3);
-			sourceWiki.addExamplePage("testCopy",testPage3);
-		}
-		// check whether the id is an alias
-		if (aliases.containsKey(wikiId)) {
-			wikiId=aliases.get(wikiId);
-		}
-		ExampleWiki result = getExampleWikis().get(wikiId);
-		return result;
-	}
 
 	/**
 	 * login to the example wiki
@@ -302,7 +199,7 @@ public class ExampleWiki extends Mediawiki {
 	 */
 	public void login() throws Exception {
 		WikiUser lwikiuser = this.getWikiUser();
-		super.login(lwikiuser.getUsername(), lwikiuser.getPassword());
+		wiki.login(lwikiuser.getUsername(), lwikiuser.getPassword());
 	}
 
 	/**
@@ -316,20 +213,6 @@ public class ExampleWiki extends Mediawiki {
 			titles.add(page.getTitle());
 		}
 		return titles;
-	}
-
-	/**
-	 * @return the exampleWikis
-	 */
-	public static Map<String, ExampleWiki> getExampleWikis() {
-		return exampleWikis;
-	}
-
-	/**
-	 * @param exampleWikis the exampleWikis to set
-	 */
-	public static void setExampleWikis(Map<String, ExampleWiki> exampleWikis) {
-		ExampleWiki.exampleWikis = exampleWikis;
 	}
 
 }

@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.2|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.3|jar
 
 Maven dependency:
 
@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
@@ -106,4 +106,5 @@ This is a semi-automatic process. The resulting java code needs to be adapted to
   
 ## Version history
 * 0.0.1 - 2015-01-01: first version as JMediawiki
-* 0.0.2 - 2015-01-14: fixes issues #1 and #2 and #4,#7 (not released yet)
+* 0.0.2 - 2015-01-18: fixes issues #1 - #7 
+* 0.0.3 - 2015-01-18: refactors to multi implementation approach with guice

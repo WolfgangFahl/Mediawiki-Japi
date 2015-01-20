@@ -37,13 +37,15 @@ public class TestAPI_Meta extends APITestbase {
 	public void testGeneralSiteInfo() throws Exception {
 		for (ExampleWiki lwiki : getWikis()) {
 			// lwiki.setDebug(true);
-			General general = lwiki.getSiteInfo();
+		  // FIXME add to interface
+			General general = lwiki.getMediaWikiJapi().getSiteInfo();
 			assertNotNull(general);
 			boolean mayBeNull = true;
 			check("generator", general.getGenerator());
 			check("logo", general.getLogo(), mayBeNull);
 			if (general.getGenerator().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
-				assertEquals(lwiki.siteurl+"/"+lwiki.scriptPath,lwiki.getLogo(), general.getLogo());
+			  Mediawiki mwiki = lwiki.getMediaWikiJapi();
+				assertEquals(mwiki.getSiteurl()+"/"+mwiki.getScriptPath(),lwiki.getLogo(), general.getLogo());
 				check("favicon", general.getFavicon());
 				check("langconversion", general.getLangconversion());
 				check("linkprefix", general.getLinkprefix());
