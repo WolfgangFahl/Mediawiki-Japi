@@ -87,7 +87,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @param xml
    *          - the xml representation of the <T> instance
    * @return T
-   * @throws Exception
+   * @throws Exception - if the conversion fails
    */
   public T fromXML(String xml) throws Exception {
     Unmarshaller u=this.getUnmarshaller();
@@ -166,7 +166,8 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @return a xml representation of the given <T> instance
    * @throws JAXBException
    */
-  public String asXml(T instance) throws JAXBException {
+  @Override
+  public String asXML(T instance) throws JAXBException {
     Marshaller marshaller = getMarshaller(instance);
     marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/xml");
     String result = getString(marshaller, instance);

@@ -225,8 +225,8 @@ public class Api implements JaxbPersistenceApi<Api> {
 	/**
 	 * return me as an Xml string
 	 */
-	public String asXml() throws JAXBException {
-		return getFactory().asXml(this);
+	public String asXML() throws JAXBException {
+		return getFactory().asXML(this);
 	}
 
 }

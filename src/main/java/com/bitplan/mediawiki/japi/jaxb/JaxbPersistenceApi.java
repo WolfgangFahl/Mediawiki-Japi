@@ -39,5 +39,5 @@ public interface JaxbPersistenceApi<T> {
 	 * @return - an xml representation of me
 	 * @throws JAXBException
 	 */
-	public String asXml() throws JAXBException;
+	public String asXML() throws JAXBException;
 }
