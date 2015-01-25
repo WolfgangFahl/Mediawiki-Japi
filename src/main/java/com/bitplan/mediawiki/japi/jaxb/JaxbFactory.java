@@ -108,12 +108,13 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 	 * get the string representation of the given marshaller
 	 * 
 	 * @param marshaller
+	 * @param instance 
 	 * @return the string representation for the given marshaller
 	 * @throws JAXBException
 	 */
-	public String getString(Marshaller marshaller) throws JAXBException {
+	public String getString(Marshaller marshaller, T instance) throws JAXBException {
 		StringWriter sw = new StringWriter();
-		marshaller.marshal(this, sw);
+		marshaller.marshal(instance, sw);
 		String result = sw.toString();
 		return result;
 	}
@@ -130,7 +131,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 		Marshaller marshaller = getMarshaller(instance);
 		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 		marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
-		String result = getString(marshaller);
+		String result = getString(marshaller,instance);
 		return result;
 	}
 
@@ -145,7 +146,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 	public String asXml(T instance) throws JAXBException {
 		Marshaller marshaller = getMarshaller(instance);
 		marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/xml");
-		String result = getString(marshaller);
+		String result = getString(marshaller,instance);
 		return result;
 	}
 }
