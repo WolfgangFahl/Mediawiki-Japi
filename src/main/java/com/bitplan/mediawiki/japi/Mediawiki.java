@@ -163,12 +163,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * 
    * @param siteurl
    *          - the url to use
-   * @param scriptpath
+   * @param pScriptPath
    *          - the scriptpath to use
    * @throws Exception
    */
-  public Mediawiki(String siteurl, String scriptpath) throws Exception {
-    init(siteurl, scriptPath);
+  public Mediawiki(String siteurl, String pScriptPath) throws Exception {
+    init(siteurl, pScriptPath);
   }
 
   /**
