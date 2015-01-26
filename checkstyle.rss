@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2015</copyright>
     <item>
-      <title>File: 31,
-             Errors: 6232,
+      <title>File: 34,
+             Errors: 5390,
              Warnings: 0,
              Infos: 0
       </title>
@@ -74,6 +74,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.MediaWikiApiImpl.java">com/bitplan/mediawiki/japi/MediaWikiApiImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  34
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.General.java">com/bitplan/mediawiki/japi/api/General.java</a>
                 </td>
                 <td>
@@ -116,20 +130,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Query.java">com/bitplan/mediawiki/japi/api/Query.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  158
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.package-info.java">com/bitplan/mediawiki/japi/api/package-info.java</a>
                 </td>
                 <td>
@@ -154,6 +154,20 @@ under the License.
                 </td>
                 <td>
                   43
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Query.java">com/bitplan/mediawiki/japi/api/Query.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  158
                 </td>
               </tr>
                           <tr>
@@ -195,7 +209,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  168
+                  74
                 </td>
               </tr>
                           <tr>
@@ -214,6 +228,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.guice.OrgWikiModule.java">com/bitplan/mediawiki/guice/OrgWikiModule.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.Mediawiki.java">com/bitplan/mediawiki/japi/Mediawiki.java</a>
                 </td>
                 <td>
@@ -223,7 +251,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1022
+                  258
                 </td>
               </tr>
                           <tr>
@@ -321,7 +349,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  146
+                  71
                 </td>
               </tr>
                           <tr>
@@ -377,7 +405,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  2414
+                  2441
                 </td>
               </tr>
                           <tr>
@@ -410,6 +438,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.guice.ComBITPlanWikiModule.java">com/bitplan/mediawiki/guice/ComBITPlanWikiModule.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/checkstyle.html#com.bitplan.mediawiki.japi.api.Rev.java">com/bitplan/mediawiki/japi/api/Rev.java</a>
                 </td>
                 <td>
@@ -433,7 +475,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  51
+                  38
                 </td>
               </tr>
                           <tr>
@@ -447,7 +489,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  135
+                  162
                 </td>
               </tr>
                           <tr>
