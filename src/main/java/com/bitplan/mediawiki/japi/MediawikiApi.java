@@ -149,7 +149,24 @@ public interface MediawikiApi {
    */
   public void upload(File file, String filename, String contents, String reason)
       throws Exception;
-
+  
+  /**
+   * copy the page for a given title from this wiki to the given target Wiki
+   * uses https://www.mediawiki.org/wiki/API:Edit FIXME - make this an API
+   * interface function FIXME - create a multi title version
+   * 
+   * @param targetWiki
+   *          - the other wiki (could use a different API implementation ...)
+   * @param pageTitle
+   *          - the title of the page to copy
+   * @param summary
+   *          - the summary to use
+   * @return - the Edit result
+   * @throws Exception
+   */
+  public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
+      String summary) throws Exception;
+  
   /**
    * are exceptions thrown when an api error code is received?
    * 

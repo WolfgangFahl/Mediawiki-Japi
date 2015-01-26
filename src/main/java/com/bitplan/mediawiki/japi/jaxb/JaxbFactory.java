@@ -34,6 +34,14 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   final Class<T> classOfT;
 
+  /**
+   * allow access to the type that would otherwise not be available due to Java type erasure
+   * @return the classOfT
+   */
+  public Class<T> getClassOfT() {
+    return classOfT;
+  }
+
   protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
       .getLogger("com.bitplan.mediawiki.japi.jaxb");
 

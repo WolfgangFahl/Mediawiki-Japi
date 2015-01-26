@@ -16,6 +16,7 @@ package com.bitplan.mediawiki.japi;
 import java.util.logging.Level;
 
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
 
 /**
@@ -23,7 +24,7 @@ import com.bitplan.mediawiki.japi.api.Error;
  * @author wf
  *
  */
-public abstract class MediaWikiApiImpl  {
+public abstract class MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * Logging may be enabled by setting debug to true
@@ -85,5 +86,26 @@ public abstract class MediaWikiApiImpl  {
       this.handleError(errMsg);
     }
     return api;
+  }
+  
+  /**
+   * copy the page for a given title from this wiki to the given target Wiki
+   * uses https://www.mediawiki.org/wiki/API:Edit FIXME - make this an API
+   * interface function FIXME - create a multi title version
+   * 
+   * @param targetWiki
+   *          - the other wiki (could use a different API implementation ...)
+   * @param pageTitle
+   *          - the title of the page to copy
+   * @param summary
+   *          - the summary to use
+   * @return - the Edit result
+   * @throws Exception
+   */
+  public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
+      String summary) throws Exception {
+    String content = getPageContent(pageTitle);
+    Edit result = targetWiki.edit(pageTitle, content, summary);
+    return result;
   }
 }
