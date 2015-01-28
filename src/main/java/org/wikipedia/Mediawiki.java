@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
+import java.util.logging.Level;
 
 import com.bitplan.mediawiki.japi.MediaWikiApiImpl;
 import com.bitplan.mediawiki.japi.MediawikiApi;
@@ -33,8 +34,6 @@ import com.bitplan.mediawiki.japi.api.Login;
 public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 	// delegate to the one class Wiki solution
 	Wiki wiki;
-
-	
 
   private String domain;
 
@@ -121,9 +120,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 	}
 
 	@Override
-	public Edit edit(String pagetitle, String text, String summary) throws Exception {
-		wiki.edit(pagetitle, text, summary);		
-		Edit result=new Edit();
+	public Edit edit(String pageTitle, String text, String summary) throws Exception {
+    Edit result=new Edit();
+	  String pageContent = getPageContent(pageTitle);
+	  if (pageContent!=null && pageContent.contains(protectionMarker)) {
+	    LOGGER.log(Level.WARNING,"page "+pageTitle+" is protected!");
+	  } else {  
+		  wiki.edit(pageTitle, text, summary);		
+	  }
 		return result;
 	}
 

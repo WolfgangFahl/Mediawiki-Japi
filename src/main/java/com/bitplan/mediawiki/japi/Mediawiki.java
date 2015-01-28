@@ -630,16 +630,22 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * https://www.mediawiki.org/wiki/API:Edit
    */
   @Override
-  public Edit edit(String pagetitle, String text, String summary)
+  public Edit edit(String pageTitle, String text, String summary)
       throws Exception {
-    TokenResult token = getEditToken(pagetitle);
-    Map<String, String> lFormData = new HashMap<String, String>();
-    lFormData.put("text", text);
-    lFormData.put("title", pagetitle);
-    lFormData.put("summary", summary);
-    String params = "";
-    Api api = this.getActionResult("edit", params, token, lFormData);
-    Edit result = api.getEdit();
+    Edit result = new Edit();
+    String pageContent = getPageContent(pageTitle);
+    if (pageContent != null && pageContent.contains(protectionMarker)) {
+      LOGGER.log(Level.WARNING, "page " + pageTitle + " is protected!");
+    } else {
+      TokenResult token = getEditToken(pageTitle);
+      Map<String, String> lFormData = new HashMap<String, String>();
+      lFormData.put("text", text);
+      lFormData.put("title", pageTitle);
+      lFormData.put("summary", summary);
+      String params = "";
+      Api api = this.getActionResult("edit", params, token, lFormData);
+      result = api.getEdit();
+    }
     return result;
   }
 

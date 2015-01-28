@@ -151,6 +151,13 @@ public interface MediawikiApi {
       throws Exception;
   
   /**
+   * set the given protectionMarker for this wiki
+   * if a page has this protectionMarker and edit will not be done
+   * @param protectionMarker
+   */
+  public void setProtectionMarker(String protectionMarker);
+  
+  /**
    * copy the page for a given title from this wiki to the given target Wiki
    * uses https://www.mediawiki.org/wiki/API:Edit FIXME - make this an API
    * interface function FIXME - create a multi title version

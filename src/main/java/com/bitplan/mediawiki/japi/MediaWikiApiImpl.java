@@ -38,6 +38,11 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
   protected boolean throwExceptionOnError = true;
   
   /**
+   * protection Marker - if this shows in  page edits are suppressed and logged with a warning
+   */
+  protected String protectionMarker="<!-- This page is protected against edits by Mediawiki-Japi -->";
+  
+  /**
    * @return the throwExceptionOnError
    */
   public boolean isThrowExceptionOnError() {
@@ -50,6 +55,20 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    */
   public void setThrowExceptionOnError(boolean throwExceptionOnError) {
     this.throwExceptionOnError = throwExceptionOnError;
+  }
+  
+  /**
+   * @return the protectionMarker
+   */
+  public String getProtectionMarker() {
+    return protectionMarker;
+  }
+
+  /**
+   * @param protectionMarker the protectionMarker to set
+   */
+  public void setProtectionMarker(String protectionMarker) {
+    this.protectionMarker = protectionMarker;
   }
   
   /**
