@@ -274,8 +274,36 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   public enum Method {
-    PostForm, Post, Get
+    Post, Get, Head, Put
   };
+
+  /**
+   * get a response for the given url and method
+   * 
+   * @param url
+   * @param method
+   * @return
+   * @throws Exception
+   */
+  public ClientResponse getResponse(String url, Method method) throws Exception {
+    Builder resource = getResource(url);
+    ClientResponse response = null;
+    switch (method) {
+    case Get:
+      response = resource.get(ClientResponse.class);
+      break;
+    case Post:
+      response = resource.post(ClientResponse.class);
+      break;
+    case Head:
+      response = resource.head();
+      break;
+    case Put:  
+      response=resource.put(ClientResponse.class);
+      break;
+    }
+    return response;
+  }
 
   /**
    * get the Response string
