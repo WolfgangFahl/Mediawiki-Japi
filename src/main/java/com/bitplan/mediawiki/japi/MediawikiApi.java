@@ -14,10 +14,12 @@
 package com.bitplan.mediawiki.japi;
 
 import java.io.File;
+import java.util.List;
 
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
+import com.bitplan.mediawiki.japi.api.P;
 
 /**
  * Mediawiki API Interface see <a
@@ -149,6 +151,15 @@ public interface MediawikiApi {
    */
   public void upload(File file, String filename, String contents, String reason)
       throws Exception;
+  
+  /**
+   * getAllPages
+   * @param apfrom - may be null or empty
+   * @param aplimit
+   * @return
+   * @throws Exception 
+   */
+  public List<P> getAllPages(String apfrom,int aplimit) throws Exception;
   
   /**
    * set the given protectionMarker for this wiki

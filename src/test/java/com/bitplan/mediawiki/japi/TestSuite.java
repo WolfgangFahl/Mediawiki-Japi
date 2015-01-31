@@ -19,7 +19,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TestApiJaxb.class, TestAPI_Query.class,
-		TestAPI_Meta.class, TestAPI_Recentchanges.class, TestAPI_Login.class, TestAPI_Edit.class,
+		TestAPI_Meta.class, TestAPI_Recentchanges.class, TestAPI_Login.class, TestAPI_Edit.class,TestAPI_Allpages.class,
 		TestProtectionMarker.class,TestUsage.class,TestCommandLine.class,TestGetCSV.class,org.wikipedia.WikiUnitTest.class})
 public class TestSuite {
 

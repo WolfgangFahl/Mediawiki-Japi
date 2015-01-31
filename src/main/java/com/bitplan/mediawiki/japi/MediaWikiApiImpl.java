@@ -13,11 +13,13 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
+import com.bitplan.mediawiki.japi.api.P;
 
 /**
  * common implementation parts
@@ -127,4 +129,6 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
     Edit result = targetWiki.edit(pageTitle, content, summary);
     return result;
   }
+
+ 
 }

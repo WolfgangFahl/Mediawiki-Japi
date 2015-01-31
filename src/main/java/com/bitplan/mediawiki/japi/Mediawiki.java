@@ -36,6 +36,7 @@ import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
+import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.api.Tokens;
 import com.bitplan.mediawiki.japi.api.Warnings;
@@ -684,6 +685,24 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public void upload(File file, String filename, String contents, String reason)
       throws Exception {
 
+  }
+  
+  /**
+   * getAllPages
+   * @param apfrom - may be null or empty
+   * @param aplimit
+   * @return
+   * @throws Exception 
+   */
+  public List<P> getAllPages(String apfrom,int aplimit) throws Exception {   
+    String query="&list=allpages";
+    if (apfrom!=null && !apfrom.trim().equals("")) {
+      query+="&apfrom="+apfrom;
+    }
+    query+="&aplimit="+aplimit;
+    Api api = getQueryResult(query);
+    List<P> pageRefList = api.getQuery().getAllpages();
+    return pageRefList;
   }
 
   /**

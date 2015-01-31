@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
@@ -24,6 +25,7 @@ import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
+import com.bitplan.mediawiki.japi.api.P;
 
 /**
  * Mediawiki-Japi compatible Wrapper for Wiki.java
@@ -160,6 +162,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       throws Exception {
     // simply delegate
     this.wiki.upload(file, filename, contents, reason); 
+  }
+
+  @Override
+  public List<P> getAllPages(String apfrom, int aplimit) throws Exception {
+    // FIXME - implement
+    return null;
   }
 
   
