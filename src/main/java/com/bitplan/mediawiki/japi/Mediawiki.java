@@ -183,6 +183,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES,
         true);
     client = ApacheHttpClient.create(config);
+    client.setFollowRedirects(true);
     this.siteurl = siteurl;
     this.scriptPath = scriptpath;
   }
