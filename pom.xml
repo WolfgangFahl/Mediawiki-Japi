@@ -47,8 +47,8 @@
 		<guice.version>3.0</guice.version>
 		<mockito.version>1.10.16</mockito.version>
 		<commons.io.version>2.4</commons.io.version>
-		<!-- doesn't work  <moxy.version>2.6.0-M3</moxy.version> -->
-		<moxy.version>2.5.2</moxy.version>
+		<moxy.version>2.6.0-M3</moxy.version>
+		<!--  <moxy.version>2.5.2</moxy.version> -->
 		<args4j.version>2.0.29</args4j.version>
 	</properties>
 	<dependencies>
@@ -87,6 +87,16 @@
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>org.eclipse.persistence.moxy</artifactId>
 			<version>${moxy.version}</version>
+		</dependency>
+		<!--  
+		  needed by eclipse moxy 2.6.0-M3
+		  http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html
+		  http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final 
+		-->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
 		</dependency>
 		<!-- Jersey moxy -->
 		<dependency>

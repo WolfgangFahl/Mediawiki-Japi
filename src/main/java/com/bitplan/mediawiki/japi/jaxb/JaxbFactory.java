@@ -21,6 +21,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
 
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 
@@ -64,6 +66,12 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public Unmarshaller getUnmarshaller() throws JAXBException {
     JAXBContext context = JAXBContext.newInstance(classOfT);
     Unmarshaller u = context.createUnmarshaller();
+    u.setEventHandler(new ValidationEventHandler() {
+      @Override
+      public boolean handleEvent(ValidationEvent event) {
+        return true;
+      }
+    });
     return u;
   }
 
