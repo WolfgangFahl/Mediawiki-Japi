@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.3|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.4|jar
 
 Maven dependency:
 
