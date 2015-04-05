@@ -1,16 +1,13 @@
 package org.wikipedia;
 
+import java.net.URLEncoder;
 import java.util.*;
-
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**
  *  Unit tests for Wiki.java
- *  - with some modifications for tests that didn't run out of the box (e.g. ignored/uncommented)
  *  @author MER-C
  */
 public class WikiUnitTest
@@ -33,9 +30,7 @@ public class WikiUnitTest
         deWiki.setMaxLag(-1);
         arWiki = new Wiki("ar.wikipedia.org");
         arWiki.setMaxLag(-1);
-        // testing grounds for admin stuff
         testWiki = new Wiki("test.wikipedia.org");
-        // org.wikiutils.LoginUtils.guiLogin(testWiki);
         testWiki.setMaxLag(-1);
     }
     
@@ -46,16 +41,16 @@ public class WikiUnitTest
         assertEquals("NS: en, alias", Wiki.PROJECT_NAMESPACE, enWiki.namespace("WP:CSD"));
         assertEquals("NS: main ns fail", Wiki.MAIN_NAMESPACE, enWiki.namespace("Star Wars: The Old Republic"));
         assertEquals("NS: main ns fail2", Wiki.MAIN_NAMESPACE, enWiki.namespace("Some Category: Blah"));
-        assertEquals("NS: i18n fail", Wiki.CATEGORY_NAMESPACE, deWiki.namespace("Kategorie:BegriffsklÃ¤rung"));
-        assertEquals("NS: mixed i18n", Wiki.CATEGORY_NAMESPACE, deWiki.namespace("Category:BegriffsklÃ¤rung"));
-        // assertEquals("NS: rtl fail", Wiki.CATEGORY_NAMESPACE, arWiki.namespace("ØªØµÙ†ÙŠÙ:ØµÙØ­Ø§Øª_Ù„Ù„Ø­Ø°Ù_Ø§Ù„Ø³Ø±ÙŠØ¹"));
+        assertEquals("NS: i18n fail", Wiki.CATEGORY_NAMESPACE, deWiki.namespace("Kategorie:Begriffsklärung"));
+        assertEquals("NS: mixed i18n", Wiki.CATEGORY_NAMESPACE, deWiki.namespace("Category:Begriffsklärung"));
+        assertEquals("NS: rtl fail", Wiki.CATEGORY_NAMESPACE, arWiki.namespace("تصنيف:صفحات_للحذف_السريع"));
     }
     
     @Test
     public void namespaceIdentifier() throws Exception
     {
         assertEquals("NSIdentifier: wrong identifier", "Category", enWiki.namespaceIdentifier(Wiki.CATEGORY_NAMESPACE));
-        assertEquals("NSIdentifier: i18n fail", "Category", deWiki.namespaceIdentifier(Wiki.CATEGORY_NAMESPACE));
+        assertEquals("NSIdentifier: i18n fail", "Kategorie", deWiki.namespaceIdentifier(Wiki.CATEGORY_NAMESPACE));
         assertEquals("NSIdentifier: custom namespace", "Portal", enWiki.namespaceIdentifier(100));
     }
     
@@ -93,13 +88,13 @@ public class WikiUnitTest
         assertTrue("exists", Arrays.equals(expected, enWiki.exists(titles)));
     }
     
-    @Ignore
+    @Test
     public void resolveRedirects() throws Exception
     {
         String[] titles = new String[] { "Main page", "Main Page", "sdkghsdklg", "Hello.jpg", "Main page", "Fish & chips" };
         String[] expected = new String[] { "Main Page", null, null, "Goatse.cx", "Main Page", "Fish and chips" };
         assertArrayEquals("resolveRedirects", expected, enWiki.resolveRedirects(titles)); 
-        assertEquals("resolveRedirects: RTL", "Ø§Ù„ØµÙØ­Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©", arWiki.resolveRedirect("Ø§Ù„ØµÙØ­Ù‡ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠÙ‡"));
+        assertEquals("resolveRedirects: RTL", "الصفحة الرئيسية", arWiki.resolveRedirect("الصفحه الرئيسيه"));
     }
     
     @Test
@@ -160,7 +155,7 @@ public class WikiUnitTest
     @Test
     public void getInterWikiLinks() throws Exception
     {
-        HashMap<String, String> temp = enWiki.getInterWikiLinks("Gkdfkkl&djfdf");
+        Map<String, String> temp = enWiki.getInterWikiLinks("Gkdfkkl&djfdf");
         assertTrue("getInterWikiLinks: non-existent page", temp.isEmpty());
     }
     
@@ -171,9 +166,13 @@ public class WikiUnitTest
         assertArrayEquals("getExternalLinksOnPage: page with no links", new String[0], enWiki.getExternalLinksOnPage("User:MER-C/monobook.js"));
     }
     
-    @Ignore
-    public void getSectionText()
+    @Test
+    public void getSectionText() throws Exception
     {
+        assertEquals("getSectionText(): section 0", "This is section 0.", testWiki.getSectionText("User:MER-C/UnitTests/SectionTest", 0));
+        assertEquals("getSectionText(): section 2", "===Section 3===\nThis is section 2.", 
+            testWiki.getSectionText("User:MER-C/UnitTests/SectionTest", 2));
+        /*
         try
         {
             enWiki.getSectionText("User:MER-C/monobook.css", 4920);
@@ -189,6 +188,7 @@ public class WikiUnitTest
             ex.printStackTrace();
             fail("getSectionText: should throw IllegalArgumentException");
         }
+        */
     }
     
     @Test
@@ -208,7 +208,7 @@ public class WikiUnitTest
     @Test
     public void getSiteInfo() throws Exception
     {
-        HashMap<String, Object> info = enWiki.getSiteInfo();
+        Map<String, Object> info = enWiki.getSiteInfo();
         assertTrue("siteinfo: caplinks true", (Boolean)info.get("usingcapitallinks"));
         assertEquals("siteinfo: scriptpath", "/w", (String)info.get("scriptpath"));
         info = new Wiki("en.wiktionary.org").getSiteInfo();
@@ -223,6 +223,7 @@ public class WikiUnitTest
         assertEquals("normalize", "File:Blah.jpg", enWiki.normalize("File:Blah.jpg"));
         assertEquals("normalize", "File:Blah.jpg", enWiki.normalize("File:blah.jpg"));
         assertEquals("normalize", "Category:Wikipedia:blah", enWiki.normalize("Category:Wikipedia:blah"));
+        assertEquals("normalize", "Hilfe Diskussion:Glossar", deWiki.normalize("Help talk:Glossar"));
     }
     
     @Test
@@ -247,15 +248,15 @@ public class WikiUnitTest
         assertFalse("getRevision: content not deleted", rev.isContentDeleted());
         assertFalse("getRevision: page not deleted", rev.isPageDeleted());
         
-        // revdel
+        // revdel, logged out
         // https://en.wikipedia.org/w/index.php?title=Imran_Khan_%28singer%29&oldid=596714684
         rev = enWiki.getRevision(596714684L);
+        assertNull("getRevision: summary revdeled", rev.getSummary());
+        assertNull("getRevision: user revdeled", rev.getUser());
         assertTrue("getRevision: user revdeled", rev.isUserDeleted());
         assertTrue("getRevision: summary revdeled", rev.isSummaryDeleted());
+        // NOT IMPLEMENTED:
         // assertTrue("getRevision: content revdeled", rev.isContentDeleted());
-        // need to not be an admin to run these tests
-        // assertNull("getRevision: summary revdeled", rev.getSummary());
-        // assertNull("getRevision: user revdeled", rev.getUser());
     }
     
     @Test
@@ -282,27 +283,34 @@ public class WikiUnitTest
         assertEquals("getPageText", text, "This revision is not deleted!\n");
     }
     
-    /**
-     *  See https://test.wikipedia.org/wiki/User:MER-C/UnitTests/Delete
-     *  @throws Exception if something goes wrong
-     */
-    @Ignore
-    public void getDeletedText() throws Exception
+    @Test
+    public void constructNamespaceString() throws Exception
     {
-        // requires admin rights
-        String text = testWiki.getDeletedText("User:MER-C/UnitTests/Delete");
-        assertEquals("getDeletedText", text, "This revision is also deleted!");
+        StringBuilder temp = new StringBuilder();
+        enWiki.constructNamespaceString(temp, "blah", 1, 2, 3);
+        assertEquals("constructNamespaceString", "&blahnamespace=1%7C2%7C3", temp.toString());
     }
     
-    /**
-     *  See https://test.wikipedia.org/wiki/User:MER-C/UnitTests/Delete
-     *  @throws Exception if something goes wrong
-     */
-    @Ignore
-    public void RevisionGetText() throws Exception
+    @Test
+    public void constructTitleString() throws Exception
     {
-        Wiki.Revision deleted = testWiki.getRevision(217078L);
-        assertEquals(deleted.getText(), "This revision is deleted!");
+        String[] titles = new String[101];
+        for (int i = 0; i < titles.length; i++)
+            titles[i] = "a" + i;
+        String[] expected = new String[]
+        {
+            // slowmax == 50 for Wikimedia wikis if not logged in
+            URLEncoder.encode("A0|A1|A2|A3|A4|A5|A6|A7|A8|A9|A10|A11|A12|A13|A14|" +
+                "A15|A16|A17|A18|A19|A20|A21|A22|A23|A24|A25|A26|A27|A28|A29|A30|" +
+                "A31|A32|A33|A34|A35|A36|A37|A38|A39|A40|A41|A42|A43|A44|A45|A46|" +
+                "A47|A48|A49", "UTF-8"),
+            URLEncoder.encode("A50|A51|A52|A53|A54|A55|A56|A57|A58|A59|A60|A61|A62|" +
+                "A63|A64|A65|A66|A67|A68|A69|A70|A71|A72|A73|A74|A75|A76|A77|A78|A79|" +
+                "A80|A81|A82|A83|A84|A85|A86|A87|A88|A89|A90|A91|A92|A93|A94|A95|A96|" + 
+                "A97|A98|A99", "UTF-8"),
+            URLEncoder.encode("A100", "UTF-8")
+        };
+        String[] actual = enWiki.constructTitleString(titles);
+        assertArrayEquals("constructTitleString", expected, actual);
     }
-        
 }

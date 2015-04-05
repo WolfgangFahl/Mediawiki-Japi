@@ -94,6 +94,12 @@ public interface MediawikiApi {
   public Login login(String username, String password) throws Exception;
 
   /**
+   * check whether there is a User logged In
+   * @return
+   */
+  public boolean isLoggedIn();
+  
+  /**
    * 
    * Log the current user out See <a
    * href="https://www.mediawiki.org/wiki/API:Logout">API:Logout</a>
@@ -112,6 +118,15 @@ public interface MediawikiApi {
    * @since 0.0.1
    */
   public String getPageContent(String pageTitle) throws Exception;
+  
+  /**
+   * get the content of the given section
+   * @param pageTitle
+   * @param sectionNumber
+   * @return the content of the section;
+   * @throws Exception
+   */
+  public String getSectionText(String pageTitle, int sectionNumber) throws Exception;
 
   /**
    * Edits a page by setting its text to the supplied value.

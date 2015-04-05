@@ -106,8 +106,14 @@ public class TestAPI_Edit extends APITestbase {
 	    }
 	  }
 	}
+	
+	@Test
+  public void testEditNoLogin() throws Exception {
+	  ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_24");
+    lwiki.login();
 	// FIXME need TestEditNoLogin - should throw an Exception with Message Action 'edit' is not allowed for
 	// current user
+	}
 	
 	/**
 	 * test copying a page from a source Wiki to a target Wiki
@@ -129,6 +135,22 @@ public class TestAPI_Edit extends APITestbase {
 			String targetContent=targetWiki.wiki.getPageContent(examplePage.getTitle());
 			assertEquals(sourceContent,targetContent);
 		}
+	}
+	
+	/**
+	 * test editing a section
+	 * @throws Exception 
+	 */
+	@Test
+	public void testEditSection() throws Exception {
+	  ExampleWiki targetWiki = ewm.get("targetWiki");
+	  ExamplePage editSectionPage=targetWiki.getExamplePages("testSectionEdit").get(0);
+	  String pageTitle=editSectionPage.getTitle();
+    targetWiki.login();
+    String summary="created/edited by TestAPI_Edit at "+targetWiki.wiki.getIsoTimeStamp();
+    targetWiki.wiki.edit(pageTitle, editSectionPage.getContentPart(), summary);
+    String section2=targetWiki.wiki.getSectionText(pageTitle, 2);
+    System.out.println(section2);
 	}
 	
 }

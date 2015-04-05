@@ -89,6 +89,16 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
   }
   
   /**
+   * handle the given api error
+   * @param error
+   * @throws Exception
+   */
+  protected void handleError(Error error) throws Exception {
+    String errMsg="error: "+error.getCode()+" info: "+error.getInfo();
+    handleError(errMsg);
+  }
+  
+  /**
    * return Api from the given xml
    * @param xml - the xml go unmarshal
    * @return

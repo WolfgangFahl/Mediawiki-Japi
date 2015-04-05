@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
@@ -34,8 +35,8 @@ import com.bitplan.mediawiki.japi.api.P;
  *
  */
 public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
-	// delegate to the one class Wiki solution
-	Wiki wiki;
+  // delegate to the one class Wiki solution
+  Wiki wiki;
 
   private String domain;
 
@@ -45,30 +46,30 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   private boolean debug;
 
-	@Override
-	public String getSiteurl() {
-		return siteurl;
-	}
+  @Override
+  public String getSiteurl() {
+    return siteurl;
+  }
 
-	@Override
-	public void setSiteurl(String siteurl) throws Exception {
-	  this.siteurl=siteurl;
-		URL url = new URL(siteurl);
-		domain = url.getHost();
-		domain = domain.startsWith("www.") ? domain.substring(4) : domain;
-		scriptPath=url.getPath();
-		if ("".equals(scriptPath)) {
-			scriptPath="/w";
-		}	
-		wiki = new Wiki();
-    String prot=url.getProtocol();
+  @Override
+  public void setSiteurl(String siteurl) throws Exception {
+    this.siteurl = siteurl;
+    URL url = new URL(siteurl);
+    domain = url.getHost();
+    domain = domain.startsWith("www.") ? domain.substring(4) : domain;
+    scriptPath = url.getPath();
+    if ("".equals(scriptPath)) {
+      scriptPath = "/w";
+    }
+    wiki = new Wiki();
+    String prot = url.getProtocol();
 
-		wiki.init(prot,domain,scriptPath);
-		// zip doesn't work as of 2015-01-20
-		wiki.setUsingCompressedRequests(false);
-	}
-	
-	/**
+    wiki.init(prot, domain, scriptPath);
+    // zip doesn't work as of 2015-01-20
+    wiki.setUsingCompressedRequests(false);
+  }
+
+  /**
    * @return the scriptPath
    */
   public String getScriptPath() {
@@ -76,7 +77,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
-   * @param scriptPath the scriptPath to set
+   * @param scriptPath
+   *          the scriptPath to set
    */
   public void setScriptPath(String scriptPath) {
     this.scriptPath = scriptPath;
@@ -84,84 +86,96 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   @Override
   public void init(String siteurl, String scriptPath) throws Exception {
-	  setSiteurl(siteurl+"/"+scriptPath);
+    setSiteurl(siteurl + "/" + scriptPath);
   }
-	
 
-	@Override
-	public String getVersion() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  @Override
+  public String getVersion() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	@Override
-	public General getSiteInfo() throws Exception {
-		HashMap<String, Object> siteinfo = wiki.getSiteInfo();
-		String xml=(String) siteinfo.get("xml");
-		Api api=super.fromXML(xml);
-		General result=api.getQuery().getGeneral();
-		return result;
-	}
+  @Override
+  public General getSiteInfo() throws Exception {
+    Map<String, Object> siteinfo = wiki.getSiteInfo();
+    String xml = (String) siteinfo.get("xml");
+    Api api = super.fromXML(xml);
+    General result = api.getQuery().getGeneral();
+    return result;
+  }
 
-	@Override
-	public Login login(String username, String password) throws Exception {
-		wiki.login(username, password);
-		Login result=new Login();
-		return result;
-	}
+  @Override
+  public Login login(String username, String password) throws Exception {
+    wiki.login(username, password);
+    Login result = new Login();
+    return result;
+  }
 
-	@Override
-	public String getPageContent(String pageTitle) throws Exception {
-		String result = wiki.getPageText(pageTitle);
-		return result;
-	}
+  @Override
+  public boolean isLoggedIn() {
+    boolean result=wiki.user!=null;
+    return result;
+  }
 
-	@Override
-	public void logout() throws Exception {
-		wiki.logout();
-	}
+  @Override
+  public String getPageContent(String pageTitle) throws Exception {
+    String result = wiki.getPageText(pageTitle);
+    return result;
+  }
+  
+  @Override
+  public String getSectionText(String pageTitle, int sectionNumber)
+      throws Exception {
+    return wiki.getSectionText(pageTitle, sectionNumber);
+  }
 
-	@Override
-	public Edit edit(String pageTitle, String text, String summary) throws Exception {
-    Edit result=new Edit();
-	  String pageContent = getPageContent(pageTitle);
-	  if (pageContent!=null && pageContent.contains(protectionMarker)) {
-	    LOGGER.log(Level.WARNING,"page "+pageTitle+" is protected!");
-	  } else {  
-		  wiki.edit(pageTitle, text, summary);		
-	  }
-		return result;
-	}
+  @Override
+  public void logout() throws Exception {
+    wiki.logout();
+  }
 
-	@Override
-	/**
-	 * get a current IsoTimeStamp
-	 * FIXME redundant implementation same functioin com.bitplan.mediawiki.japi.api
-	 * @return - the current timestamp
-	 */
-	public String getIsoTimeStamp() {
-		TimeZone tz = TimeZone.getTimeZone("UTC");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
-		df.setTimeZone(tz);
-		String nowAsISO = df.format(new Date());
-		return nowAsISO;
-	}
+  @Override
+  public Edit edit(String pageTitle, String text, String summary)
+      throws Exception {
+    Edit result = new Edit();
+    String pageContent = getPageContent(pageTitle);
+    if (pageContent != null && pageContent.contains(protectionMarker)) {
+      LOGGER.log(Level.WARNING, "page " + pageTitle + " is protected!");
+    } else {
+      wiki.edit(pageTitle, text, summary);
+    }
+    return result;
+  }
 
-	@Override
-	public void setDebug(boolean pDebug) {
-		this.debug=pDebug;
-	}
+  @Override
+  /**
+   * get a current IsoTimeStamp
+   * FIXME redundant implementation same functioin com.bitplan.mediawiki.japi.api
+   * @return - the current timestamp
+   */
+  public String getIsoTimeStamp() {
+    TimeZone tz = TimeZone.getTimeZone("UTC");
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+    df.setTimeZone(tz);
+    String nowAsISO = df.format(new Date());
+    return nowAsISO;
+  }
 
-	@Override
-	public boolean isDebug() {
-		return debug;
-	}
+  @Override
+  public void setDebug(boolean pDebug) {
+    this.debug = pDebug;
+  }
+
+  @Override
+  public boolean isDebug() {
+    return debug;
+  }
 
   @Override
   public void upload(File file, String filename, String contents, String reason)
       throws Exception {
     // simply delegate
-    this.wiki.upload(file, filename, contents, reason); 
+    this.wiki.upload(file, filename, contents, reason);
   }
 
   @Override
@@ -170,6 +184,6 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return null;
   }
 
-  
+ 
 
 }

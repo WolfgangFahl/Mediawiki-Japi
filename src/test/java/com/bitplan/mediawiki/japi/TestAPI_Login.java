@@ -71,13 +71,15 @@ public class TestAPI_Login extends APITestbase {
 			}
 			// avoid uncommenting - will show password information ...
 			// lwiki.debug = true;
+			assertFalse(lwiki.wiki.isLoggedIn());
 			Login login = lwiki.wiki.login(wuser.getUsername(), wuser.getPassword());
 			assertNotNull(login.getLguserid());
 			assertEquals(wuser.getUsername().toLowerCase(), login.getLgusername().toLowerCase());
 			assertNotNull(login.getLgtoken());
+			assertTrue(lwiki.wiki.isLoggedIn());
 			// make sure logout also works
 			lwiki.wiki.logout();
-			// FIXME - test effect of logout
+			assertFalse(lwiki.wiki.isLoggedIn());
 		}
 	}
 

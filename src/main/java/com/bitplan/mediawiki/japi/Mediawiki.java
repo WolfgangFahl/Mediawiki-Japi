@@ -13,6 +13,8 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -34,6 +36,7 @@ import org.kohsuke.args4j.Option;
 
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
+import com.bitplan.mediawiki.japi.api.Error;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
@@ -94,6 +97,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   // mediaWikiVersion and site info
   protected String mediawikiVersion;
   protected General siteinfo;
+
+  private String userid;
 
   /**
    * enable debugging
@@ -480,7 +485,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
         + password, token, null);
     login = apiResult.getLogin();
+    userid=login.getLguserid();
     return login;
+  }
+  
+  @Override
+  public boolean isLoggedIn() {
+    boolean result=userid!=null;
+    return result;
   }
 
   /**
@@ -491,6 +503,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public void logout() throws Exception {
     Api apiResult = getActionResult("logout", "", null, null);
     if (apiResult != null) {
+      userid=null;
       // FIXME check apiResult
     }
     if (cookies != null) {
@@ -503,28 +516,55 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * get the page Content for the given page Title
    * 
    * @param pageTitle
+   * @param queryParams - extra query params e.g. for sections
+   * @return the page Content
+   * @throws Exception
+   */
+  public String getPageContent(String pageTitle,String queryParams) throws Exception {
+    Api api = getQueryResult("&prop=revisions&rvprop=content"+queryParams+"&titles="
+        + normalize(pageTitle));
+    if (api.getError()!=null) {
+      this.handleError(api.getError());
+    }
+    List<Page> pages = api.getQuery().getPages();
+    String content=null;
+    if (pages!=null) {
+      Page page = pages.get(0);
+      if (page != null) {
+        if (page.getRevisions().size() > 0) {
+          content = page.getRevisions().get(0).getValue();
+        }
+      }
+    }
+    if (content==null) {
+      String errMsg = "pageTitle '" + pageTitle + "' not found";
+      this.handleError(errMsg);
+    }
+    return content;
+  }
+
+  /**
+   * get the page Content for the given page Title
+   * 
+   * @param pageTitle
    * @return the page Content
    * @throws Exception
    */
   public String getPageContent(String pageTitle) throws Exception {
-    Api api = getQueryResult("&prop=revisions&rvprop=content&titles="
-        + normalize(pageTitle));
-    Page page = api.getQuery().getPages().get(0);
-    String content = null;
-    if (page != null) {
-      if (page.getRevisions().size() > 0) {
-        content = page.getRevisions().get(0).getValue();
-      }
-    } else {
-      String errMsg = "pageTitle '" + pageTitle + "' not found";
-      // log it
-      LOGGER.log(Level.SEVERE, errMsg);
-      // and throw an error if this is configured
-      if (this.isThrowExceptionOnError()) {
-        throw new Exception(errMsg);
-      }
-    }
-    return content;
+    String result=this.getPageContent(pageTitle, "");
+    return result;
+  }
+  
+  /**
+   * get the text for the given section
+   * @param pageTitle
+   * @param sectionNumber
+   * @return
+   * @throws Exception
+   */
+  public String getSectionText(String pageTitle, int sectionNumber) throws Exception {
+    String result=this.getPageContent(pageTitle, "&rvsection="+sectionNumber);
+    return result;
   }
 
   /**
