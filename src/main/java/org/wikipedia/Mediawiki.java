@@ -28,6 +28,7 @@ import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
+import com.bitplan.mediawiki.japi.api.S;
 
 /**
  * Mediawiki-Japi compatible Wrapper for Wiki.java
@@ -191,6 +192,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Override
   public List<P> getAllPages(String apfrom, int aplimit) throws Exception {
     // FIXME - implement
+    return null;
+  }
+
+  @Override
+  public List<S> getSections(String pageTitle) throws Exception {
+    // FIXME implement
     return null;
   }
 

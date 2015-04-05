@@ -13,13 +13,13 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import java.util.List;
 import java.util.logging.Level;
 
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
-import com.bitplan.mediawiki.japi.api.P;
+import com.bitplan.mediawiki.japi.api.Tokens;
+import com.bitplan.mediawiki.japi.api.Warnings;
 
 /**
  * common implementation parts
@@ -96,6 +96,25 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
   protected void handleError(Error error) throws Exception {
     String errMsg="error: "+error.getCode()+" info: "+error.getInfo();
     handleError(errMsg);
+  }
+  
+  /**
+   * 
+   * @param api
+   * @throws Exception
+   */
+  protected void handleError(Api api) throws Exception {
+    if (api.getError() != null) {
+      this.handleError(api.getError());
+    }
+    if (api.getWarnings() != null) {
+      Warnings warnings = api.getWarnings();
+      if (warnings.getTokens() != null) {
+        Tokens warningTokens = warnings.getTokens();
+        String errMsg = warningTokens.getValue();
+        handleError(errMsg);
+      }
+    }
   }
   
   /**

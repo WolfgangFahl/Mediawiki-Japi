@@ -39,8 +39,7 @@ import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
-import com.bitplan.mediawiki.japi.api.Tokens;
-import com.bitplan.mediawiki.japi.api.Warnings;
+import com.bitplan.mediawiki.japi.api.S;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -523,9 +522,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       throws Exception {
     Api api = getQueryResult("&prop=revisions&rvprop=content" + queryParams
         + "&titles=" + normalize(pageTitle));
-    if (api.getError() != null) {
-      this.handleError(api.getError());
-    }
+    handleError(api);
     List<Page> pages = api.getQuery().getPages();
     String content = null;
     if (pages != null) {
@@ -568,6 +565,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String result = this.getPageContent(pageTitle, "&rvsection="
         + sectionNumber);
     return result;
+  }
+  
+  @Override
+  public List<S> getSections(String pageTitle) throws Exception {
+    String action="parse";
+    String params="&prop=sections&page="+pageTitle;
+    Api api = getActionResult(action, params);
+    List<S> sections = api.getParse().getSections();
+    return sections;
   }
 
   /**
@@ -674,14 +680,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
           + " as " + editversion + " with action=" + action + params);
     }
     Api api = getActionResult(action, params);
-    if (api.getWarnings() != null) {
-      Warnings warnings = api.getWarnings();
-      if (warnings.getTokens() != null) {
-        Tokens warningTokens = warnings.getTokens();
-        String errMsg = warningTokens.getValue();
-        handleError(errMsg);
-      }
-    }
+    handleError(api);
     TokenResult token = new TokenResult();
     token.tokenMode = tokenMode;
     token.tokenName = "token";
@@ -698,6 +697,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return token;
   }
+
 
   /**
    * https://www.mediawiki.org/wiki/API:Edit
@@ -890,5 +890,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       e.printStackTrace();
     }
   }
+
+ 
 
 }

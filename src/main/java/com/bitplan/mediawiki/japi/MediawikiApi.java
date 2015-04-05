@@ -21,6 +21,7 @@ import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
+import com.bitplan.mediawiki.japi.api.S;
 
 /**
  * Mediawiki API Interface see <a
@@ -215,6 +216,15 @@ public interface MediawikiApi {
    * @throws Exception
    */
   public List<P> getAllPages(String apfrom, int aplimit) throws Exception;
+  
+  
+  /**
+   * get the sections for the given pageTitle
+   * @param pageTitle
+   * @return
+   * @throws Exception
+   */
+  public List<S> getSections(String pageTitle) throws Exception;
 
   /**
    * set the given protectionMarker for this wiki if a page has this

@@ -31,10 +31,7 @@ public class TestAPI_Parse extends APITestbase {
     // http://stackoverflow.com/questions/16840447/retrieve-the-content-of-a-section-via-mediawiki-api
     Mediawiki wiki=new Mediawiki("http://en.wikipedia.org","/w");
     // wiki.debug=true;
-    String action="parse";
-    String params="&prop=sections&page=License";
-    Api api = wiki.getActionResult(action, params);
-    List<S> sections = api.getParse().getSections();
+    List<S> sections = wiki.getSections("License");
     assertNotNull(sections);
     assertTrue(sections.size()>5);
 	}
