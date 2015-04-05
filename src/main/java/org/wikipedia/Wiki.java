@@ -1683,6 +1683,24 @@ public class Wiki implements Serializable
     {
         edit(title, text, summary, markminor, markbot, section, basetime);
     }
+    
+    
+    /**
+     * call edit with no sectionTitle
+     * @param title
+     * @param text
+     * @param summary
+     * @param minor
+     * @param bot
+     * @param section
+     * @param basetime
+     * @throws IOException
+     * @throws LoginException
+     */
+    public  void edit(String title, String text, String summary, boolean minor, boolean bot,
+        int section, Calendar basetime) throws IOException, LoginException{
+      this.edit(title, text, summary, minor, bot, section,null, basetime);
+    }
 
     /**
      *  Edits a page by setting its text to the supplied value. This method is
@@ -1699,6 +1717,7 @@ public class Wiki implements Serializable
      *  not have the necessary permissions)
      *  @param section the section to edit. Use -1 to specify a new section and
      *  -2 to disable section editing.
+     *  @param sectionTitle - title of the new section (if any) only useful if param section is set to -1
      *  @param basetime the timestamp of the revision on which <tt>text</tt> is
      *  based, used to check for edit conflicts. <tt>null</tt> disables this.
      *  @throws IOException if a network error occurs
@@ -1711,7 +1730,7 @@ public class Wiki implements Serializable
      *  @since 0.17
      */
     public synchronized void edit(String title, String text, String summary, boolean minor, boolean bot,
-        int section, Calendar basetime) throws IOException, LoginException
+        int section, String sectionTitle, Calendar basetime) throws IOException, LoginException
     {
         // @revised 0.16 to use API edit. No more screenscraping - yay!
         // @revised 0.17 section editing

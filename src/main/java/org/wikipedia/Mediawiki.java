@@ -13,6 +13,7 @@ import java.io.File;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +114,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   @Override
   public boolean isLoggedIn() {
-    boolean result=wiki.user!=null;
+    boolean result = wiki.user != null;
     return result;
   }
 
@@ -122,7 +123,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String result = wiki.getPageText(pageTitle);
     return result;
   }
-  
+
   @Override
   public String getSectionText(String pageTitle, int sectionNumber)
       throws Exception {
@@ -137,12 +138,21 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Override
   public Edit edit(String pageTitle, String text, String summary)
       throws Exception {
+    Edit result = this.edit(pageTitle, text, summary, true, false, -2,null,null);
+    return result;
+  }
+
+  @Override
+  public Edit edit(String pageTitle, String text, String summary,
+      boolean minor, boolean bot, int sectionNumber,String sectionTitle, Calendar basetime)
+      throws Exception {
+
     Edit result = new Edit();
     String pageContent = getPageContent(pageTitle);
     if (pageContent != null && pageContent.contains(protectionMarker)) {
       LOGGER.log(Level.WARNING, "page " + pageTitle + " is protected!");
     } else {
-      wiki.edit(pageTitle, text, summary);
+      wiki.edit(pageTitle, text, summary, minor, bot, sectionNumber, sectionTitle,basetime);
     }
     return result;
   }
@@ -183,7 +193,5 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     // FIXME - implement
     return null;
   }
-
- 
 
 }

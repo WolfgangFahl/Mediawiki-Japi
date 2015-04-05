@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 ```
 
@@ -109,3 +109,4 @@ unit tests supplied with Wiki.java).
 * 0.0.1 - 2015-01-01: first version as JMediawiki
 * 0.0.2 - 2015-01-18: fixes issues #1 - #7 
 * 0.0.3 - 2015-01-20: fixes issue #8 refactors to multi implementation approach with guice
+* 0.0.4 - 2015-04-05: adds section handling

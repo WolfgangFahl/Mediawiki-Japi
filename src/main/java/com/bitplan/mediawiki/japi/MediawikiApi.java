@@ -14,6 +14,7 @@
 package com.bitplan.mediawiki.japi;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.List;
 
 import com.bitplan.mediawiki.japi.api.Edit;
@@ -43,15 +44,18 @@ public interface MediawikiApi {
    *           - if the url is not o.k.
    */
   public void setSiteurl(String siteurl) throws Exception;
-  
+
   /**
    * set the scriptPath of this Wiki
-   * @param scriptPath - the scriptPath to set
+   * 
+   * @param scriptPath
+   *          - the scriptPath to set
    */
   public void setScriptPath(String scriptPath);
-  
+
   /**
    * get the script Path
+   * 
    * @return
    */
   public String getScriptPath();
@@ -71,11 +75,14 @@ public interface MediawikiApi {
    * @throws Exception
    */
   public General getSiteInfo() throws Exception;
-  
+
   /**
    * overrideable method to do pre setup stuff
-   * @param siteurl - the url to use
-   * @param scriptPath - the script path to use
+   * 
+   * @param siteurl
+   *          - the url to use
+   * @param scriptPath
+   *          - the script path to use
    * @throws Exception
    */
   public void init(String siteurl, String scriptPath) throws Exception;
@@ -95,10 +102,11 @@ public interface MediawikiApi {
 
   /**
    * check whether there is a User logged In
+   * 
    * @return
    */
   public boolean isLoggedIn();
-  
+
   /**
    * 
    * Log the current user out See <a
@@ -118,15 +126,17 @@ public interface MediawikiApi {
    * @since 0.0.1
    */
   public String getPageContent(String pageTitle) throws Exception;
-  
+
   /**
    * get the content of the given section
+   * 
    * @param pageTitle
    * @param sectionNumber
    * @return the content of the section;
    * @throws Exception
    */
-  public String getSectionText(String pageTitle, int sectionNumber) throws Exception;
+  public String getSectionText(String pageTitle, int sectionNumber)
+      throws Exception;
 
   /**
    * Edits a page by setting its text to the supplied value.
@@ -148,6 +158,34 @@ public interface MediawikiApi {
       throws Exception;
 
   /**
+   * edit
+   * 
+   * @param pageTitle
+   * @param text
+   * @param summary
+   * @param minor
+   *          - true if this is a minor edit
+   * @param bot
+   *          whether to mark the edit as a bot edit (ignored if one does not
+   *          have the necessary permissions)
+   * @param sectionNumber
+   *          the section to edit. Use -1 to specify a new section and -2 to
+   *          disable section editing.
+   * @param sectionTitle
+   *          the title of a new section
+   * @param basetime
+   *          the timestamp of the revision on which <tt>text</tt> is based,
+   *          used to check for edit conflicts. <tt>null</tt> disables this.
+   * @return the edit stage as a wrapped Edit API response * @throws Exception -
+   *         if the edit fails
+   * @see #getPageContent
+   * @since 0.0.4
+   */
+  public Edit edit(String pageTitle, String text, String summary,
+      boolean minor, boolean bot, int sectionNumber, String sectionTitle,
+      Calendar basetime) throws Exception;
+
+  /**
    * Uploads an image. Equivalent to [[Special:Upload]].
    * 
    * @param file
@@ -166,23 +204,26 @@ public interface MediawikiApi {
    */
   public void upload(File file, String filename, String contents, String reason)
       throws Exception;
-  
+
   /**
    * getAllPages
-   * @param apfrom - may be null or empty
+   * 
+   * @param apfrom
+   *          - may be null or empty
    * @param aplimit
    * @return
-   * @throws Exception 
+   * @throws Exception
    */
-  public List<P> getAllPages(String apfrom,int aplimit) throws Exception;
-  
+  public List<P> getAllPages(String apfrom, int aplimit) throws Exception;
+
   /**
-   * set the given protectionMarker for this wiki
-   * if a page has this protectionMarker and edit will not be done
+   * set the given protectionMarker for this wiki if a page has this
+   * protectionMarker and edit will not be done
+   * 
    * @param protectionMarker
    */
   public void setProtectionMarker(String protectionMarker);
-  
+
   /**
    * copy the page for a given title from this wiki to the given target Wiki
    * uses https://www.mediawiki.org/wiki/API:Edit FIXME - make this an API
@@ -199,7 +240,7 @@ public interface MediawikiApi {
    */
   public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
       String summary) throws Exception;
-  
+
   /**
    * are exceptions thrown when an api error code is received?
    * 
@@ -239,5 +280,4 @@ public interface MediawikiApi {
    */
   public boolean isDebug();
 
-  
 }

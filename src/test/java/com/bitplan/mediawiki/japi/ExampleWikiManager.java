@@ -170,7 +170,7 @@ public class ExampleWikiManager {
             true);
         wiki.addExamplePage("testGetPages", testPage2);
         wiki.addExamplePage("testEditPages", testPage2);
-        ExamplePage testPage3=wiki.new ExamplePage("TestEditSection","=== section 1===\n=== section 2===\n",true);
+        ExamplePage testPage3=wiki.new ExamplePage("TestEditSection","=== section 1 ===\n=== section 2 ===\n",true);
         wiki.addExamplePage("testSectionEdit",testPage3);
       }
       // bitplan internal wiki

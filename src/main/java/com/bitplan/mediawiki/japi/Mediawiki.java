@@ -13,13 +13,12 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.File;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +35,6 @@ import org.kohsuke.args4j.Option;
 
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
-import com.bitplan.mediawiki.japi.api.Error;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
@@ -63,7 +61,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.3";
+  protected static final String VERSION = "0.0.4";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -305,8 +303,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     case Head:
       response = resource.head();
       break;
-    case Put:  
-      response=resource.put(ClientResponse.class);
+    case Put:
+      response = resource.put(ClientResponse.class);
       break;
     }
     return response;
@@ -324,7 +322,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       LOGGER.log(Level.INFO, "status: " + response.getStatus());
     String responseText = response.getEntity(String.class);
     if (response.getStatus() != 200) {
-      handleError("status "+response.getStatus()+":'"+responseText+"'");
+      handleError("status " + response.getStatus() + ":'" + responseText + "'");
     }
     return responseText;
   }
@@ -485,13 +483,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
         + password, token, null);
     login = apiResult.getLogin();
-    userid=login.getLguserid();
+    userid = login.getLguserid();
     return login;
   }
-  
+
   @Override
   public boolean isLoggedIn() {
-    boolean result=userid!=null;
+    boolean result = userid != null;
     return result;
   }
 
@@ -503,7 +501,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public void logout() throws Exception {
     Api apiResult = getActionResult("logout", "", null, null);
     if (apiResult != null) {
-      userid=null;
+      userid = null;
       // FIXME check apiResult
     }
     if (cookies != null) {
@@ -516,19 +514,21 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * get the page Content for the given page Title
    * 
    * @param pageTitle
-   * @param queryParams - extra query params e.g. for sections
+   * @param queryParams
+   *          - extra query params e.g. for sections
    * @return the page Content
    * @throws Exception
    */
-  public String getPageContent(String pageTitle,String queryParams) throws Exception {
-    Api api = getQueryResult("&prop=revisions&rvprop=content"+queryParams+"&titles="
-        + normalize(pageTitle));
-    if (api.getError()!=null) {
+  public String getPageContent(String pageTitle, String queryParams)
+      throws Exception {
+    Api api = getQueryResult("&prop=revisions&rvprop=content" + queryParams
+        + "&titles=" + normalize(pageTitle));
+    if (api.getError() != null) {
       this.handleError(api.getError());
     }
     List<Page> pages = api.getQuery().getPages();
-    String content=null;
-    if (pages!=null) {
+    String content = null;
+    if (pages != null) {
       Page page = pages.get(0);
       if (page != null) {
         if (page.getRevisions().size() > 0) {
@@ -536,7 +536,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         }
       }
     }
-    if (content==null) {
+    if (content == null) {
       String errMsg = "pageTitle '" + pageTitle + "' not found";
       this.handleError(errMsg);
     }
@@ -551,19 +551,22 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   public String getPageContent(String pageTitle) throws Exception {
-    String result=this.getPageContent(pageTitle, "");
+    String result = this.getPageContent(pageTitle, "");
     return result;
   }
-  
+
   /**
    * get the text for the given section
+   * 
    * @param pageTitle
    * @param sectionNumber
    * @return
    * @throws Exception
    */
-  public String getSectionText(String pageTitle, int sectionNumber) throws Exception {
-    String result=this.getPageContent(pageTitle, "&rvsection="+sectionNumber);
+  public String getSectionText(String pageTitle, int sectionNumber)
+      throws Exception {
+    String result = this.getPageContent(pageTitle, "&rvsection="
+        + sectionNumber);
     return result;
   }
 
@@ -702,6 +705,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Override
   public Edit edit(String pageTitle, String text, String summary)
       throws Exception {
+    Edit result = this.edit(pageTitle, text, summary, true, false, -2,null, null);
+    return result;
+  }
+
+  @Override
+  public Edit edit(String pageTitle, String text, String summary,
+      boolean minor, boolean bot, int sectionNumber,String sectionTitle, Calendar basetime)
+      throws Exception {
     Edit result = new Edit();
     String pageContent = getPageContent(pageTitle);
     if (pageContent != null && pageContent.contains(protectionMarker)) {
@@ -712,6 +723,22 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       lFormData.put("text", text);
       lFormData.put("title", pageTitle);
       lFormData.put("summary", summary);
+      if (minor)
+        lFormData.put("minor", "1");
+      if (bot)
+        lFormData.put("bot", "1");
+      switch (sectionNumber) {
+      case -1:
+        lFormData.put("section","new");
+        if (sectionTitle!=null)
+          lFormData.put("sectiontitle",sectionTitle);
+        break;
+      case -2:
+        break;
+        default:
+          lFormData.put("section",""+sectionNumber);
+          break;
+      }
       String params = "";
       Api api = this.getActionResult("edit", params, token, lFormData);
       result = api.getEdit();
@@ -727,20 +754,22 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       throws Exception {
 
   }
-  
+
   /**
    * getAllPages
-   * @param apfrom - may be null or empty
+   * 
+   * @param apfrom
+   *          - may be null or empty
    * @param aplimit
    * @return
-   * @throws Exception 
+   * @throws Exception
    */
-  public List<P> getAllPages(String apfrom,int aplimit) throws Exception {   
-    String query="&list=allpages";
-    if (apfrom!=null && !apfrom.trim().equals("")) {
-      query+="&apfrom="+apfrom;
+  public List<P> getAllPages(String apfrom, int aplimit) throws Exception {
+    String query = "&list=allpages";
+    if (apfrom != null && !apfrom.trim().equals("")) {
+      query += "&apfrom=" + apfrom;
     }
-    query+="&aplimit="+aplimit;
+    query += "&aplimit=" + aplimit;
     Api api = getQueryResult(query);
     List<P> pageRefList = api.getQuery().getAllpages();
     return pageRefList;

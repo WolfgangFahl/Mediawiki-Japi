@@ -150,7 +150,15 @@ public class TestAPI_Edit extends APITestbase {
     String summary="created/edited by TestAPI_Edit at "+targetWiki.wiki.getIsoTimeStamp();
     targetWiki.wiki.edit(pageTitle, editSectionPage.getContentPart(), summary);
     String section2=targetWiki.wiki.getSectionText(pageTitle, 2);
-    System.out.println(section2);
+    assertEquals("=== section 2 ===",section2);
+    String section3Title="section 3";
+    String section3Content="section 3 content";
+    targetWiki.wiki.edit(pageTitle, section3Content, summary, true,false,-1,section3Title,null);
+    String section3Edit=targetWiki.wiki.getSectionText(pageTitle, 3);
+    // System.out.println(section3Edit);
+    assertEquals("== section 3 ==\n" + 
+        "\n" + 
+        "section 3 content",section3Edit);
 	}
 	
 }
