@@ -2,18 +2,29 @@
 # Copyright (c) 2015 BITPlan GmbH
 # http://www.bitplan.com
 # WF 2015-01-01
+# WF 2015-04-05
 
+#
+#
+#
+error() {
+  local l_msg="$1"
+  echo "$l_msg" 1>&2
+  exit 1
+}
 #
 # get the example queries
 #
 queries() {
   local l_query="http://www.mediawiki.org/w/api.php?action=query"
+  local l_parse="http://en.wikipedia.org/w/api.php?action=parse"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
-file:csrftoken.xml
+$l_parse&prop=sections&page=License$l_format
+#file:csrftoken.xml
 #https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
 # set your own username and password here
-# change curl furhter down to -X POST
+# change curl further down to -X POST
 #http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml
 #http://capri.bitplan.com/mediawiki/api.php?&action=query&titles=2011_Wikimedia_fundraiser%7C2012_Wikimedia_fundraiser&prop=revisions&rvprop=content&format=xml
 #$l_query&list=recentchanges&rcprop=title|ids|sizes|flags|user&rclimit=3$l_format
@@ -39,9 +50,19 @@ getschema() {
 	#  --data "__VIEWSTATE=/wEPDwULLTE0NDc4ODY1NjZkZALwgmQT8TjHX9VW1hRQODpWO37P" \
 	#  --data "__EVENTVALIDATION=/wEWBgL4yt2nBgKj+/r1AwKM1c/8AwKkyPGDAQK7yPGDAQK0p9vtDUxLg82ZLCD8XFqL4UFJWhoBlHR7" \
 	# xml_schemagen_url="http://xmlgrid.net/xml2xsd.html"
-
-	xmlschemagen_url="http://devutilsonline.com/xsd-xml/generate-xsd-from-xml"
-	curl -s -F design=rd -F xmlcontent='<'$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+	# xmlschemagen_url="http://www.freeformatter.com/xsd-generator.html"
+  #	xmlschemagen_url="http://devutilsonline.com/xsd-xml/generate-xsd-from-xml"
+  # curl -s -X -d design=rd -d xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+  # xmlschemagen_url="http://www.freeformatter.com/xsd-generator.html"
+	# curl -s -X --data forceNewWindow=true --data inputString=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+ 	xmlschemagen_url="http://devutilsonline.com/xsd-xml/generate-xsd-from-xml"
+ 	echo "posting to $xmlschemagen_url"
+  curl -s -X --data design=rd --data xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+	if [ ! -f $l_tmpschemahtml ]
+	then
+	  error "result from xmlschemagen_url missing"
+	fi
+	
 	cat  $l_tmpschemahtml | xmlstarlet unesc | awk '
 BEGIN { 
   quote="\x22"
@@ -77,6 +98,7 @@ do
   curl -s "$query" -o $tmpxml
 
   echo "getting schema for xml result $tmpxml ..."
-  xsd=`getschema $tmpxml`
+  #getschema $tmpxml
+  xsd="/tmp/result.xsd"
 	codegen $xsd
 done

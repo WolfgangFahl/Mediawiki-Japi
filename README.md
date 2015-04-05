@@ -110,3 +110,4 @@ unit tests supplied with Wiki.java).
 * 0.0.2 - 2015-01-18: fixes issues #1 - #7 
 * 0.0.3 - 2015-01-20: fixes issue #8 refactors to multi implementation approach with guice
 * 0.0.4 - 2015-04-05: adds section handling
+* 0.0.5 - 2015-04-05: improves section handling 
