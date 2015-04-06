@@ -557,7 +557,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         }
       }
     }
-    if (content == null) {
+    if (checkNotNull && content == null) {
       String errMsg = "pageTitle '" + pageTitle + "' not found";
       this.handleError(errMsg);
     }
