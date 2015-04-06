@@ -515,10 +515,11 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @param pageTitle
    * @param queryParams
    *          - extra query params e.g. for sections
+   * @param checkNotNull - check if the content should not be null
    * @return the page Content
    * @throws Exception
    */
-  public String getPageContent(String pageTitle, String queryParams)
+  public String getPageContent(String pageTitle, String queryParams, boolean checkNotNull)
       throws Exception {
     Api api = getQueryResult("&prop=revisions&rvprop=content" + queryParams
         + "&titles=" + normalize(pageTitle));
@@ -548,7 +549,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   public String getPageContent(String pageTitle) throws Exception {
-    String result = this.getPageContent(pageTitle, "");
+    String result = this.getPageContent(pageTitle, "",false);
     return result;
   }
 
@@ -563,7 +564,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public String getSectionText(String pageTitle, int sectionNumber)
       throws Exception {
     String result = this.getPageContent(pageTitle, "&rvsection="
-        + sectionNumber);
+        + sectionNumber,false);
     return result;
   }
   
