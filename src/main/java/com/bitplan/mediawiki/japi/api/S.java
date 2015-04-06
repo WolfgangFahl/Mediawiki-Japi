@@ -48,15 +48,15 @@ public class S {
     @XmlValue
     protected String value;
     @XmlAttribute(name = "toclevel")
-    protected Byte toclevel;
+    protected Integer toclevel;
     @XmlAttribute(name = "level")
-    protected Byte level;
+    protected Integer level;
     @XmlAttribute(name = "line")
     protected String line;
     @XmlAttribute(name = "number")
     protected Float number;
     @XmlAttribute(name = "index")
-    protected Byte index;
+    protected Integer index;
     @XmlAttribute(name = "fromtitle")
     protected String fromtitle;
     @XmlAttribute(name = "byteoffset")
@@ -93,10 +93,10 @@ public class S {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getToclevel() {
+    public Integer getToclevel() {
         return toclevel;
     }
 
@@ -105,10 +105,10 @@ public class S {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setToclevel(Byte value) {
+    public void setToclevel(Integer value) {
         this.toclevel = value;
     }
 
@@ -117,10 +117,10 @@ public class S {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
@@ -129,10 +129,10 @@ public class S {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setLevel(Byte value) {
+    public void setLevel(Integer value) {
         this.level = value;
     }
 
@@ -189,10 +189,10 @@ public class S {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -201,10 +201,10 @@ public class S {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setIndex(Byte value) {
+    public void setIndex(Integer value) {
         this.index = value;
     }
 
