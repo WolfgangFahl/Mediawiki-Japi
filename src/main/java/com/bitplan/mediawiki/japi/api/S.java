@@ -54,9 +54,9 @@ public class S {
     @XmlAttribute(name = "line")
     protected String line;
     @XmlAttribute(name = "number")
-    protected Float number;
+    protected String number;
     @XmlAttribute(name = "index")
-    protected Integer index;
+    protected String index;
     @XmlAttribute(name = "fromtitle")
     protected String fromtitle;
     @XmlAttribute(name = "byteoffset")
@@ -164,11 +164,9 @@ public class S {
      * Gets the value of the number property.
      * 
      * @return
-     *     possible object is
-     *     {@link Float }
      *     
      */
-    public Float getNumber() {
+    public String getNumber() {
         return number;
     }
 
@@ -176,11 +174,9 @@ public class S {
      * Sets the value of the number property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Float }
      *     
      */
-    public void setNumber(Float value) {
+    public void setNumber(String value) {
         this.number = value;
     }
 
@@ -188,11 +184,9 @@ public class S {
      * Gets the value of the index property.
      * 
      * @return
-     *     possible object is
-     *     {@link Integer }
      *     
      */
-    public Integer getIndex() {
+    public String getIndex() {
         return index;
     }
 
@@ -200,11 +194,9 @@ public class S {
      * Sets the value of the index property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Integer }
      *     
      */
-    public void setIndex(Integer value) {
+    public void setIndex(String value) {
         this.index = value;
     }
 
