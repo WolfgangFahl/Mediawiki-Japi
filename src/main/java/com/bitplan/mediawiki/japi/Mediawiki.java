@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -188,6 +189,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         true);
     client = ApacheHttpClient.create(config);
     client.setFollowRedirects(true);
+    // org.apache.log4j.Logger.getLogger("httpclient").setLevel(Level.ERROR);
     this.siteurl = siteurl;
     this.scriptPath = scriptpath;
   }
