@@ -11,6 +11,7 @@ package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -35,12 +36,15 @@ public class TestAPI_Upload extends APITestbase {
 	 * @throws Exception
 	 */
 	@Test
-	public void TestUpload() throws Exception {
+	public void testUpload() throws Exception {
     ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_24");
     lwiki.login();
-    fail("not implemented yet");
-    // lwiki.upload(file, filename, contents, reason);
-	  
+    ClassLoader classLoader = getClass().getClassLoader();
+    File file = new File(classLoader.getResource("upload/Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg").getFile());
+    String filename=file.getName();
+    String contents="http://commons.wikimedia.org/wiki/File:Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg";
+    String reason="test upload "+lwiki.wiki.getIsoTimeStamp();
+    lwiki.wiki.upload(file, filename, contents, reason);
 	}
 	
 	/**

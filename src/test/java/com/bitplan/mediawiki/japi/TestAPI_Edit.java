@@ -113,8 +113,14 @@ public class TestAPI_Edit extends APITestbase {
 	    }
 	  }
 	}
+	
+	@Test
+  public void testEditNoLogin() throws Exception {
+	  ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_24");
+    lwiki.login();
 	// FIXME need TestEditNoLogin - should throw an Exception with Message Action 'edit' is not allowed for
 	// current user
+	}
 	
 	/**
 	 * test copying a page from a source Wiki to a target Wiki
@@ -136,6 +142,30 @@ public class TestAPI_Edit extends APITestbase {
 			String targetContent=targetWiki.wiki.getPageContent(examplePage.getTitle());
 			assertEquals(sourceContent,targetContent);
 		}
+	}
+	
+	/**
+	 * test editing a section
+	 * @throws Exception 
+	 */
+	@Test
+	public void testEditSection() throws Exception {
+	  ExampleWiki targetWiki = ewm.get("targetWiki");
+	  ExamplePage editSectionPage=targetWiki.getExamplePages("testSectionEdit").get(0);
+	  String pageTitle=editSectionPage.getTitle();
+    targetWiki.login();
+    String summary="created/edited by TestAPI_Edit at "+targetWiki.wiki.getIsoTimeStamp();
+    targetWiki.wiki.edit(pageTitle, editSectionPage.getContentPart(), summary);
+    String section2=targetWiki.wiki.getSectionText(pageTitle, 2);
+    assertEquals("=== section 2 ===",section2);
+    String section3Title="section 3";
+    String section3Content="section 3 content";
+    targetWiki.wiki.edit(pageTitle, section3Content, summary, true,false,-1,section3Title,null);
+    String section3Edit=targetWiki.wiki.getSectionText(pageTitle, 3);
+    // System.out.println(section3Edit);
+    assertEquals("== section 3 ==\n" + 
+        "\n" + 
+        "section 3 content",section3Edit);
 	}
 	
 }
