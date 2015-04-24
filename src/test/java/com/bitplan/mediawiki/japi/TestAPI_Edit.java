@@ -58,6 +58,13 @@ public class TestAPI_Edit extends APITestbase {
 			}
 		}
 	}
+	
+	@Test 
+	public void testhttps() {
+		  // this is a fake test for educational purposes ..
+		 // String text=lwiki.getPageContent("https://www.wikipedia.de");
+		  // assertTrue(lwiki.contains("Wikimedia Deutschland"));
+	}
 
 	/**
 	 * test editing a page
