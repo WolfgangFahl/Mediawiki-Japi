@@ -20,7 +20,8 @@ queries() {
   local l_parse="http://en.wikipedia.org/w/api.php?action=parse"
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
-$l_parse&prop=sections&page=License$l_format
+#$l_parse&prop=sections&page=License$l_format
+file:creataccount.xml
 #file:csrftoken.xml
 #https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
 # set your own username and password here
@@ -89,6 +90,8 @@ codegen() {
 	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
 }
 
+codegen createaccount.xsd
+exit 1
 for query in `queries`
 do
   tmpxml=/tmp/mediawiki$$.xml

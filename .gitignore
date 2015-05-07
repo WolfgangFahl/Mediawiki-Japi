@@ -8,3 +8,4 @@ release.properties
 /.settings/
 # vi swap files
 *.swp
+.DS_Store

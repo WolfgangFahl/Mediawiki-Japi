@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -928,5 +927,33 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       e.printStackTrace();
     }
   }
+
+  /**
+   * create the given user account
+   * @param name
+   * @param eMail
+   * @param realname
+   * @param mailpassword
+   * @param reason
+   * @param language
+   * @throws Exception 
+   */
+	public Api createAccount(String name, String eMail, String realname,
+			boolean mailpassword, String reason, String language) throws Exception {
+		String params="&name="+name;
+		params+="&email="+eMail;
+		params+="&realName="+realname;
+		params+="&mailpassword="+mailpassword;
+		params+="&reason"+reason;
+		params+="&token=";
+		Api api =getActionResult(
+						"createaccount",params);
+		handleError(api);
+		String token=api.getCreateaccount().getToken();
+		params+=token;
+		api =getActionResult(
+				"createaccount",params);
+		return api;
+	}
 
 }

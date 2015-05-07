@@ -38,6 +38,8 @@ public class Api implements JaxbPersistenceApi<Api> {
   protected Query query;
   protected Login login;
   protected Error error;
+  protected Createaccount createaccount;
+ 
   protected Warnings warnings;
   protected Tokens tokens;
   protected Edit edit;
@@ -156,6 +158,30 @@ public class Api implements JaxbPersistenceApi<Api> {
    */
   public void setTokens(Tokens value) {
     this.tokens = value;
+  }
+  
+  /**
+   * Ruft den Wert der createaccount-Eigenschaft ab.
+   * 
+   * @return
+   *     possible object is
+   *     {@link Createaccount }
+   *     
+   */
+  public Createaccount getCreateaccount() {
+      return createaccount;
+  }
+
+  /**
+   * Legt den Wert der createaccount-Eigenschaft fest.
+   * 
+   * @param value
+   *     allowed object is
+   *     {@link Createaccount }
+   *     
+   */
+  public void setCreateaccount(Createaccount value) {
+      this.createaccount = value;
   }
 
   /**
