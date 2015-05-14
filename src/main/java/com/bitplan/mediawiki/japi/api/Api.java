@@ -13,6 +13,8 @@
  */
 package com.bitplan.mediawiki.japi.api;
 
+import java.util.logging.Level;
+
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,7 +35,12 @@ import com.bitplan.mediawiki.japi.jaxb.JaxbPersistenceApi;
  */
 @XmlRootElement(name = "api")
 public class Api implements JaxbPersistenceApi<Api> {
-
+	 /**
+   * Logging may be enabled by setting debug to true
+   */
+  protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
+      .getLogger("com.bitplan.mediawiki.japi.api");
+  
   String servedby;
   protected Query query;
   protected Login login;
@@ -249,7 +256,15 @@ public class Api implements JaxbPersistenceApi<Api> {
    * @throws Exception
    */
   public static Api fromXML(final String xml) throws Exception {
-    return apifactory.fromXML(xml);
+  	Api result=null;
+  	try {
+  	  result=apifactory.fromXML(xml);
+  	} catch (JAXBException je) {
+  		LOGGER.log(Level.SEVERE,je.getMessage());
+  		LOGGER.log(Level.INFO,xml);
+  		throw je;
+  	}
+    return result;
   }
 
   /**
