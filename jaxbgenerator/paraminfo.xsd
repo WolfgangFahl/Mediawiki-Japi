@@ -1,0 +1,74 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="api">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="paraminfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="modules">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="module" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="helpurls">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="helpurl"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="parameters">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="param" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType mixed="true">
+                                    <xs:sequence>
+                                      <xs:element name="type" minOccurs="0">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="t" maxOccurs="unbounded" minOccurs="0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:string" name="name" use="optional"/>
+                                    <xs:attribute type="xs:string" name="type" use="optional"/>
+                                    <xs:attribute type="xs:string" name="default" use="optional"/>
+                                    <xs:attribute type="xs:string" name="multi" use="optional"/>
+                                    <xs:attribute type="xs:byte" name="limit" use="optional"/>
+                                    <xs:attribute type="xs:byte" name="lowlimit" use="optional"/>
+                                    <xs:attribute type="xs:short" name="highlimit" use="optional"/>
+                                    <xs:attribute type="xs:short" name="max" use="optional"/>
+                                    <xs:attribute type="xs:short" name="highmax" use="optional"/>
+                                    <xs:attribute type="xs:byte" name="min" use="optional"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="name" use="optional"/>
+                        <xs:attribute type="xs:string" name="classname" use="optional"/>
+                        <xs:attribute type="xs:string" name="path" use="optional"/>
+                        <xs:attribute type="xs:string" name="group" use="optional"/>
+                        <xs:attribute type="xs:string" name="prefix" use="optional"/>
+                        <xs:attribute type="xs:string" name="source" use="optional"/>
+                        <xs:attribute type="xs:string" name="sourcename" use="optional"/>
+                        <xs:attribute type="xs:string" name="licensetag" use="optional"/>
+                        <xs:attribute type="xs:string" name="licenselink" use="optional"/>
+                        <xs:attribute type="xs:string" name="readrights" use="optional"/>
+                        <xs:attribute type="xs:string" name="generator" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:string" name="helpformat"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

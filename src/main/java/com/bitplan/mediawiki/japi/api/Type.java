@@ -2,12 +2,14 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2015.01.05 um 03:45:04 PM CET 
+// Generiert: 2015.05.23 um 06:48:00 PM CEST 
 //
 
 
 package com.bitplan.mediawiki.japi.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,14 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="tokens">
- *           &lt;complexType>
- *             &lt;simpleContent>
- *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
- *               &lt;/extension>
- *             &lt;/simpleContent>
- *           &lt;/complexType>
- *         &lt;/element>
+ *         &lt;element name="t" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -42,35 +37,40 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "tokens"
+    "t"
 })
-public class Warnings {
+public class Type {
 
     @XmlElement(required = true)
-    protected Tokens tokens;
+    protected List<String> t;
 
     /**
-     * Ruft den Wert der tokens-Eigenschaft ab.
+     * Gets the value of the t property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Tokens }
-     *     
-     */
-    public Tokens getTokens() {
-        return tokens;
-    }
-
-    /**
-     * Legt den Wert der tokens-Eigenschaft fest.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the t property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link Tokens }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getT().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
      */
-    public void setTokens(Tokens value) {
-        this.tokens = value;
+    public List<String> getT() {
+        if (t == null) {
+            t = new ArrayList<String>();
+        }
+        return this.t;
     }
 
 }

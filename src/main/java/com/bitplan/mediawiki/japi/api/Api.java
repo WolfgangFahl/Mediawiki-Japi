@@ -17,7 +17,6 @@ import java.util.logging.Level;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bitplan.mediawiki.japi.jaxb.JaxbFactory;
@@ -51,6 +50,31 @@ public class Api implements JaxbPersistenceApi<Api> {
   protected Tokens tokens;
   protected Edit edit;
   protected Parse parse;
+  protected Paraminfo paraminfo;
+
+  /**
+   * Ruft den Wert der paraminfo-Eigenschaft ab.
+   * 
+   * @return
+   *     possible object is
+   *     {@link Paraminfo }
+   *     
+   */
+  public Paraminfo getParaminfo() {
+      return paraminfo;
+  }
+
+  /**
+   * Legt den Wert der paraminfo-Eigenschaft fest.
+   * 
+   * @param value
+   *     allowed object is
+   *     {@link Paraminfo }
+   *     
+   */
+  public void setParaminfo(Paraminfo value) {
+      this.paraminfo = value;
+  }
 
   /**
    * @return the servedby

@@ -8,11 +8,15 @@
 
 package com.bitplan.mediawiki.japi.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -25,81 +29,71 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="paraminfo">
+ *         &lt;element name="modules">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
- *                   &lt;element name="modules">
+ *                   &lt;element name="module" maxOccurs="unbounded">
  *                     &lt;complexType>
  *                       &lt;complexContent>
  *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                           &lt;sequence>
- *                             &lt;element name="module" maxOccurs="unbounded">
+ *                             &lt;element name="helpurls" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
+ *                             &lt;element name="parameters">
  *                               &lt;complexType>
  *                                 &lt;complexContent>
  *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                     &lt;sequence>
- *                                       &lt;element name="helpurls" type="{http://www.w3.org/2001/XMLSchema}anyType"/>
- *                                       &lt;element name="parameters">
+ *                                       &lt;element name="param" maxOccurs="unbounded">
  *                                         &lt;complexType>
  *                                           &lt;complexContent>
  *                                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                               &lt;sequence>
- *                                                 &lt;element name="param" maxOccurs="unbounded">
+ *                                                 &lt;element name="type">
  *                                                   &lt;complexType>
  *                                                     &lt;complexContent>
  *                                                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                                         &lt;sequence>
- *                                                           &lt;element name="type">
- *                                                             &lt;complexType>
- *                                                               &lt;complexContent>
- *                                                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                                                   &lt;sequence>
- *                                                                     &lt;element name="t" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
- *                                                                   &lt;/sequence>
- *                                                                 &lt;/restriction>
- *                                                               &lt;/complexContent>
- *                                                             &lt;/complexType>
- *                                                           &lt;/element>
+ *                                                           &lt;element name="t" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
  *                                                         &lt;/sequence>
- *                                                         &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                                         &lt;attribute name="default" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                                         &lt;attribute name="submodules" type="{http://www.w3.org/2001/XMLSchema}string" />
  *                                                       &lt;/restriction>
  *                                                     &lt;/complexContent>
  *                                                   &lt;/complexType>
  *                                                 &lt;/element>
  *                                               &lt;/sequence>
+ *                                               &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                                               &lt;attribute name="default" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                                               &lt;attribute name="submodules" type="{http://www.w3.org/2001/XMLSchema}string" />
  *                                             &lt;/restriction>
  *                                           &lt;/complexContent>
  *                                         &lt;/complexType>
  *                                       &lt;/element>
  *                                     &lt;/sequence>
- *                                     &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="classname" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="path" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="prefix" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="source" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="sourcename" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="licensetag" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                                     &lt;attribute name="licenselink" type="{http://www.w3.org/2001/XMLSchema}string" />
  *                                   &lt;/restriction>
  *                                 &lt;/complexContent>
  *                               &lt;/complexType>
  *                             &lt;/element>
  *                           &lt;/sequence>
+ *                           &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="classname" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="path" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="prefix" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="source" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="sourcename" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="licensetag" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *                           &lt;attribute name="licenselink" type="{http://www.w3.org/2001/XMLSchema}string" />
  *                         &lt;/restriction>
  *                       &lt;/complexContent>
  *                     &lt;/complexType>
  *                   &lt;/element>
  *                 &lt;/sequence>
- *                 &lt;attribute name="helpformat" type="{http://www.w3.org/2001/XMLSchema}string" />
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
  *       &lt;/sequence>
+ *       &lt;attribute name="helpformat" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -108,37 +102,62 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "paraminfo"
-})
-@XmlRootElement(name = "api")
-public class Api {
 
-    @XmlElement(required = true)
-    protected Paraminfo paraminfo;
+public class Paraminfo {
+
+    @XmlTransient
+    protected List<Module> modules=new ArrayList<Module>();
+    @XmlAttribute(name = "helpformat")
+    protected String helpformat;
 
     /**
-     * Ruft den Wert der paraminfo-Eigenschaft ab.
+     * Ruft den Wert der modules-Eigenschaft ab.
      * 
      * @return
      *     possible object is
-     *     {@link Paraminfo }
+     *     {@link Modules }
      *     
      */
-    public Paraminfo getParaminfo() {
-        return paraminfo;
+    @XmlElementWrapper(name="modules")
+    @XmlElement(name="module", type=Module.class)
+    public List<Module> getModules() {
+        return modules;
     }
 
     /**
-     * Legt den Wert der paraminfo-Eigenschaft fest.
+     * Legt den Wert der modules-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
-     *     {@link Paraminfo }
+     *     {@link Modules }
      *     
      */
-    public void setParaminfo(Paraminfo value) {
-        this.paraminfo = value;
+    public void setModules(List<Module> value) {
+        this.modules = value;
+    }
+
+    /**
+     * Ruft den Wert der helpformat-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getHelpformat() {
+        return helpformat;
+    }
+
+    /**
+     * Legt den Wert der helpformat-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setHelpformat(String value) {
+        this.helpformat = value;
     }
 
 }

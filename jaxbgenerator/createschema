@@ -21,9 +21,9 @@ queries() {
   local l_format="&format=xml"
 cat << EOF | egrep -v "^#"
 #$l_parse&prop=sections&page=License$l_format
-file:creataccount.xml
+#file:creataccount.xml
 #file:csrftoken.xml
-#https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
+https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
 # set your own username and password here
 # change curl further down to -X POST
 #http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml
@@ -56,9 +56,11 @@ getschema() {
   # curl -s -X -d design=rd -d xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
   # xmlschemagen_url="http://www.freeformatter.com/xsd-generator.html"
 	# curl -s -X --data forceNewWindow=true --data inputString=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
- 	xmlschemagen_url="http://devutilsonline.com/xsd-xml/generate-xsd-from-xml"
+ 	# xmlschemagen_url="http://devutilsonline.com/xsd-xml/generate-xsd-from-xml"
+  #curl -s -X --data design=rd --data xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+  xmlschemagen_url="http://xmlgrid.net/xml2xsd.html"
  	echo "posting to $xmlschemagen_url"
-  curl -s -X --data design=rd --data xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+  curls -s -d xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
 	if [ ! -f $l_tmpschemahtml ]
 	then
 	  error "result from xmlschemagen_url missing"
@@ -90,7 +92,7 @@ codegen() {
 	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
 }
 
-codegen createaccount.xsd
+codegen paraminfo1.xsd
 exit 1
 for query in `queries`
 do
@@ -99,9 +101,9 @@ do
   # uncomment for POST actions e.g. login
   #  curl -s -X POST "$query" -o $tmpxml
   curl -s "$query" -o $tmpxml
-
+ ue $tmpxml
   echo "getting schema for xml result $tmpxml ..."
   #getschema $tmpxml
-  xsd="/tmp/result.xsd"
-	codegen $xsd
+  #xsd="/tmp/result.xsd"
+	#codegen $xsd
 done

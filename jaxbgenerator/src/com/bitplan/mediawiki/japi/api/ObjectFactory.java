@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2015.05.07 um 11:22:12 PM CEST 
+// Generiert: 2015.05.23 um 06:48:00 PM CEST 
 //
 
 
@@ -45,11 +45,51 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Createaccount }
+     * Create an instance of {@link Paraminfo }
      * 
      */
-    public Createaccount createCreateaccount() {
-        return new Createaccount();
+    public Paraminfo createParaminfo() {
+        return new Paraminfo();
+    }
+
+    /**
+     * Create an instance of {@link Modules }
+     * 
+     */
+    public Modules createModules() {
+        return new Modules();
+    }
+
+    /**
+     * Create an instance of {@link Module }
+     * 
+     */
+    public Module createModule() {
+        return new Module();
+    }
+
+    /**
+     * Create an instance of {@link Parameters }
+     * 
+     */
+    public Parameters createParameters() {
+        return new Parameters();
+    }
+
+    /**
+     * Create an instance of {@link Param }
+     * 
+     */
+    public Param createParam() {
+        return new Param();
+    }
+
+    /**
+     * Create an instance of {@link Type }
+     * 
+     */
+    public Type createType() {
+        return new Type();
     }
 
 }
