@@ -942,9 +942,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 			boolean mailpassword, String reason, String language) throws Exception {
 		String params="&name="+name;
 		params+="&email="+eMail;
-		params+="&realName="+realname;
+		params+="&realname="+realname;
 		params+="&mailpassword="+mailpassword;
-		params+="&reason"+reason;
+		params+="&reason="+reason;
 		params+="&token=";
 		Api api =getActionResult(
 						"createaccount",params);
