@@ -39,7 +39,7 @@ public class TestCreateAccount extends APITestbase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testCreateAccountToken() throws Exception {
+	public void testCreateAccount() throws Exception {
 		ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
 		Mediawiki wiki = (Mediawiki) lwiki.wiki;
 		lwiki.login();
