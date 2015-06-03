@@ -139,7 +139,7 @@ public class ExampleWikiManager {
           // "http://test.wikipedia.org",
           Mediawiki.DEFAULT_SCRIPTPATH);
       wiki.setExpectedPages(290000);
-      wiki.setLogo("//upload.wikimedia.org/wikipedia/mediawiki/b/bc/Wiki.png");
+      wiki.setLogo("//www.mediawiki.org/static/images/project-logos/mediawikiwiki.png");
       ExamplePage testPage1 = wiki.new ExamplePage("2011 Wikimedia fundraiser",
           "{{Wikimedia engineering project information");
       wiki.addExamplePage("testGetPages", testPage1);

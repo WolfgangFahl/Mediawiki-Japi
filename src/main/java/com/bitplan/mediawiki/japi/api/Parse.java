@@ -66,6 +66,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlRootElement(name = "parse")
+@XmlAccessorType(XmlAccessType.NONE)
 public class Parse {
 
     protected List<S> sections=new ArrayList<S>();
