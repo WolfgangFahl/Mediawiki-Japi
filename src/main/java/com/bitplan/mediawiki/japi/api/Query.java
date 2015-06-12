@@ -22,6 +22,7 @@ public class Query {
 	protected List<P> allpages = new ArrayList<P>();
 	protected List<Page> pages = new ArrayList<Page>();
 	protected List<Rc> recentchanges = new ArrayList<Rc>();
+	protected List<Ns> namespaces=new ArrayList<Ns>();
 
 	/**
 	 * Ruft den Wert der tokens-Eigenschaft ab.
@@ -136,5 +137,21 @@ public class Query {
 	public void setRecentchanges(List<Rc> recentchanges) {
 		this.recentchanges = recentchanges;
 	}
+
+  /**
+   * @return the namespaces
+   */
+	@XmlElementWrapper(name = "namespaces")
+  @XmlElement(name = "ns", type = Ns.class)
+  public List<Ns> getNamespaces() {
+    return namespaces;
+  }
+
+  /**
+   * @param namespaces the namespaces to set
+   */
+  public void setNamespaces(List<Ns> namespaces) {
+    this.namespaces = namespaces;
+  }
 
 }

@@ -192,6 +192,11 @@ public class ExampleWikiManager {
       // this page will by copied so it's only in one wiki for a start
       sourceWiki.addExamplePage("testEditPages", testPage3);
       sourceWiki.addExamplePage("testCopy", testPage3);
+      ExamplePage testTemplate=wiki.new ExamplePage("Template:TestTemplate","<noinclude>\n" + 
+          "This is a test Template for the mediawiki-japi Java API copyToWiki function\n" + 
+          "</noinclude>\n" + 
+          "",true);
+      sourceWiki.addExamplePage("testCopy",testTemplate);
     }
     // check whether the id is an alias
     if (aliases.containsKey(wikiId)) {

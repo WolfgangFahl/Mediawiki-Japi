@@ -12,6 +12,7 @@ package com.bitplan.mediawiki.japi;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Extensiondistributor;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Limit;
+import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.Query;
 import com.bitplan.mediawiki.japi.api.Snapshots;
 import com.bitplan.mediawiki.japi.api.Statistics;
@@ -110,4 +112,28 @@ public class TestAPI_Meta extends APITestbase {
 			assertTrue(statistics.getPages().intValue() >= lwiki.getExpectedPages());
 		}
 	}
+	
+	/**
+	 * test namespace retrieving
+   * http://www.mediawiki.org/wiki/Help:Namespaces
+   * @throws Exception
+   */
+  @Test
+  public void testNameSpaces() throws Exception {
+    /* Mediawiki sourceWiki=new Mediawiki();
+    sourceWiki.siteinfo=new General();
+    sourceWiki.siteinfo.setLang("de");*/
+    for (ExampleWiki lwiki : getWikis()) {
+      Mediawiki mw=(Mediawiki) lwiki.wiki;
+      List<Ns> namespaces =mw.getNamespaces();
+      assertNotNull(namespaces);
+      assertTrue(namespaces.size()>12);
+      // debug=true;
+      if (debug) {
+        for (Ns namespace:namespaces) {
+          LOGGER.log(Level.INFO,namespace.getCanonical());
+        }
+      }
+    }
+  }
 }

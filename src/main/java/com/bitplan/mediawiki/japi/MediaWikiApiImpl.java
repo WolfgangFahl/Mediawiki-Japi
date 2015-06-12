@@ -154,6 +154,10 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    */
   public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
       String summary) throws Exception {
+    String sourceLang=this.getSiteInfo().getLang();
+    String targetLang=targetWiki.getSiteInfo().getLang();
+    LOGGER.log(Level.INFO,"sourceLang:"+sourceLang+" targetLang:"+targetLang);
+    
     String content = getPageContent(pageTitle);
     Edit result = targetWiki.edit(pageTitle, content, summary);
     return result;

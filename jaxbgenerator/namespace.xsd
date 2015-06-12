@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="api">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="query">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="general">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="fallback"/>
+                    <xs:element name="thumblimits">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:float" name="limit" maxOccurs="unbounded" minOccurs="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="imagelimits">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="limit" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:short" name="width" use="optional"/>
+                                  <xs:attribute type="xs:short" name="height" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="mainpage"/>
+                  <xs:attribute type="xs:anyURI" name="base"/>
+                  <xs:attribute type="xs:string" name="sitename"/>
+                  <xs:attribute type="xs:anyURI" name="logo"/>
+                  <xs:attribute type="xs:string" name="generator"/>
+                  <xs:attribute type="xs:string" name="phpversion"/>
+                  <xs:attribute type="xs:string" name="phpsapi"/>
+                  <xs:attribute type="xs:string" name="dbtype"/>
+                  <xs:attribute type="xs:string" name="dbversion"/>
+                  <xs:attribute type="xs:string" name="imagewhitelistenabled"/>
+                  <xs:attribute type="xs:string" name="langconversion"/>
+                  <xs:attribute type="xs:string" name="titleconversion"/>
+                  <xs:attribute type="xs:string" name="linkprefixcharset"/>
+                  <xs:attribute type="xs:string" name="linkprefix"/>
+                  <xs:attribute type="xs:string" name="linktrail"/>
+                  <xs:attribute type="xs:string" name="case"/>
+                  <xs:attribute type="xs:string" name="lang"/>
+                  <xs:attribute type="xs:string" name="fallback8bitEncoding"/>
+                  <xs:attribute type="xs:string" name="writeapi"/>
+                  <xs:attribute type="xs:string" name="timezone"/>
+                  <xs:attribute type="xs:byte" name="timeoffset"/>
+                  <xs:attribute type="xs:string" name="articlepath"/>
+                  <xs:attribute type="xs:string" name="scriptpath"/>
+                  <xs:attribute type="xs:string" name="script"/>
+                  <xs:attribute type="xs:anyURI" name="server"/>
+                  <xs:attribute type="xs:string" name="wikiid"/>
+                  <xs:attribute type="xs:dateTime" name="time"/>
+                  <xs:attribute type="xs:int" name="maxuploadsize"/>
+                  <xs:attribute type="xs:anyURI" name="favicon"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="namespaces">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ns" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:byte" name="id" use="optional"/>
+                            <xs:attribute type="xs:string" name="case" use="optional"/>
+                            <xs:attribute type="xs:string" name="canonical" use="optional"/>
+                            <xs:attribute type="xs:string" name="content" use="optional"/>
+                            <xs:attribute type="xs:string" name="subpages" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

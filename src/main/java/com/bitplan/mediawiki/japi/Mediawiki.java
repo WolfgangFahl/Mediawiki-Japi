@@ -37,8 +37,10 @@ import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Login;
+import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
+import com.bitplan.mediawiki.japi.api.Query;
 import com.bitplan.mediawiki.japi.api.S;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -96,6 +98,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   // mediaWikiVersion and site info
   protected String mediawikiVersion;
   protected General siteinfo;
+  protected List<Ns> namespaces;
 
   private String userid;
 
@@ -472,10 +475,24 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public General getSiteInfo() throws Exception {
     if (siteinfo == null) {
-      Api api = getQueryResult("&meta=siteinfo");
-      siteinfo = api.getQuery().getGeneral();
+      Api api = getQueryResult("&meta=siteinfo&siprop=general%7Cnamespaces");
+      Query query = api.getQuery();
+      siteinfo = query.getGeneral();
+      namespaces=query.getNamespaces();
     }
     return siteinfo;
+  }
+  
+  /**
+   * get the Namespaces for this wiki
+   * @return
+   * @throws Exception
+   */
+  public List<Ns> getNamespaces() throws Exception {
+    if (namespaces==null) {
+      getSiteInfo();
+    }
+    return namespaces;
   }
 
   /**

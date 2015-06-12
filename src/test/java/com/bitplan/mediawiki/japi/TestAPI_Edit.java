@@ -127,7 +127,7 @@ public class TestAPI_Edit extends APITestbase {
 	 * @throws Exception
 	 */
 	@Test
-	public void TestCopy() throws Exception {
+	public void testCopy() throws Exception {
 		ExampleWiki sourceWiki = ewm.get("sourceWiki");
 		// sourceWiki.setDebug(true);
 		ExampleWiki targetWiki = ewm.get("targetWiki");
@@ -140,8 +140,19 @@ public class TestAPI_Edit extends APITestbase {
 			String sourceContent=sourceWiki.wiki.getPageContent(examplePage.getTitle());
 			sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki,examplePage.getTitle(), summary);
 			String targetContent=targetWiki.wiki.getPageContent(examplePage.getTitle());
+			LOGGER.log(Level.INFO,"source "+sourceWiki.wiki.getSiteurl()+sourceWiki.wiki.getScriptPath()+" "+examplePage.getTitle());
+			LOGGER.log(Level.INFO,"target "+targetWiki.wiki.getSiteurl()+targetWiki.wiki.getScriptPath()+" "+examplePage.getTitle());
 			assertEquals(sourceContent,targetContent);
 		}
+	}
+
+	@Test
+	/**
+   * test copying images from a source Wiki to a target Wiki
+   * @throws Exception
+   */
+	public void testCopyImages() throws Exception {
+	  
 	}
 	
 	/**
