@@ -41,6 +41,7 @@ import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.P;
@@ -1012,7 +1013,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (pages != null) {
       Page page = pages.get(0);
       if (page != null) {
-        ii = page.getImageinfo().getIi();
+        Imageinfo imageinfo = page.getImageinfo();
+        if (imageinfo!=null) {
+          ii = imageinfo.getIi();
+        } else {
+          String errMsg="imageinfo for pageTitle '" + pageTitle + "' not found";
+          this.handleError(errMsg);
+        }
       }
     }
     if (ii == null) {

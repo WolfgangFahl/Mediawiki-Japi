@@ -9,6 +9,8 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -135,4 +137,18 @@ public class APITestbase {
 		this.wiki = wiki;
 	}
 	
+	/**
+   * check that a given url exists
+   * @param url
+   * @return true if the access is successful
+   * @throws Exception
+   */
+  public boolean urlExists(String url) throws Exception {
+    URL u = new URL ( url);
+    HttpURLConnection huc =  ( HttpURLConnection )  u.openConnection (); 
+    huc.setRequestMethod ("GET");  //OR  huc.setRequestMethod ("HEAD"); 
+    huc.connect () ; 
+    int code = huc.getResponseCode() ;
+    return code==200;
+  }
 }

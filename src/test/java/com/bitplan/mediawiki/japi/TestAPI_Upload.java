@@ -21,6 +21,7 @@ import org.junit.Test;
 import com.bitplan.mediawiki.japi.ExampleWiki.ExamplePage;
 import com.bitplan.mediawiki.japi.Mediawiki.TokenResult;
 import com.bitplan.mediawiki.japi.api.Edit;
+import com.bitplan.mediawiki.japi.api.Ii;
 
 /**
  * test https://www.mediawiki.org/wiki/API:Upload
@@ -45,29 +46,27 @@ public class TestAPI_Upload extends APITestbase {
     String contents="http://commons.wikimedia.org/wiki/File:Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg";
     String reason="test upload "+lwiki.wiki.getIsoTimeStamp();
     lwiki.wiki.upload(file, filename, contents, reason);
+    String targetUrl=lwiki.wiki.getImageInfo("File:"+filename).getUrl();
+    assertTrue("url '"+targetUrl+"' should exist",this.urlExists(targetUrl));
 	}
 	
 	/**
-	 * test copying a page from a source Wiki to a target Wiki
+	 * test uploading via image information
 	 * @throws Exception
 	 */
 	@Test
-	public void TestCopy() throws Exception {
-		ExampleWiki sourceWiki = ewm.get("sourceWiki");
-		// sourceWiki.setDebug(true);
-		ExampleWiki targetWiki = ewm.get("targetWiki");
-		targetWiki.login();
-		// targetWiki.setDebug(true);
-		List<ExamplePage> examplePages = sourceWiki.getExamplePages("testCopy");
-		// List<String> titles=sourceWiki.getTitleList(examplePages);
-		for (ExamplePage examplePage:examplePages) {
-			String summary="created/edited by TestAPI_Edit at "+sourceWiki.wiki.getIsoTimeStamp();
-			String sourceContent=sourceWiki.wiki.getPageContent(examplePage.getTitle());
-			// FIXME add to interface
-			sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki,examplePage.getTitle(), summary);
-			String targetContent=targetWiki.wiki.getPageContent(examplePage.getTitle());
-			assertEquals(sourceContent,targetContent);
-		}
+	public void testUploadViaII() throws Exception {
+	  ExampleWiki sourceWiki = ewm.get("sourceWiki");
+	  String imageName="Index.png";
+	  String imageTitle="File:"+imageName;
+    Ii ii=sourceWiki.getImageInfo(imageTitle);
+    ExampleWiki targetWiki =ewm.get("targetWiki");
+    String pageContent=sourceWiki.wiki.getPageContent(imageTitle);
+    targetWiki.login();
+    targetWiki.wiki.upload(ii, imageName, pageContent);
+    // targetWiki.wiki.setDebug(true);
+    String targetUrl=targetWiki.wiki.getImageInfo(imageTitle).getUrl();
+    assertTrue("url '"+targetUrl+"' should exist",this.urlExists(targetUrl));
 	}
 	
 }

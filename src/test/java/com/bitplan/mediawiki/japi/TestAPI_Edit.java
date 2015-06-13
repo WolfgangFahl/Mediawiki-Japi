@@ -136,21 +136,6 @@ public class TestAPI_Edit extends APITestbase {
 
   
   /**
-   * check that a given url exists
-   * @param url
-   * @return true if the access is successful
-   * @throws Exception
-   */
-  public boolean urlExists(String url) throws Exception {
-    URL u = new URL ( url);
-    HttpURLConnection huc =  ( HttpURLConnection )  u.openConnection (); 
-    huc.setRequestMethod ("GET");  //OR  huc.setRequestMethod ("HEAD"); 
-    huc.connect () ; 
-    int code = huc.getResponseCode() ;
-    return code==200;
-  }
-  
-  /**
    * test copying a page from a source Wiki to a target Wiki
    * 
    * @throws Exception
