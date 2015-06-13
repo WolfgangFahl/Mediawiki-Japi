@@ -165,4 +165,18 @@ public class TestAPI_Meta extends APITestbase {
     String targetNameSpace=sourceWiki.mapNamespace("Vorlage",targetWiki);
     assertEquals("Modèle",targetNameSpace);
   }
+  
+  @Test
+  public void testGetNameSpaceFromPageTitle() throws Exception {
+    String pageTitles[]={"Template:someTemplate","MainPage","Template:someTemplate:with weird colons:","File:SomeFilewith File: again"};
+    String expected[]={"Template",null,"Template","File","Modèle:French template"};
+    int index=0;
+    for (String pageTitle:pageTitles) {
+      String template=MediaWikiApiImpl.getNameSpaceName(pageTitle);
+      assertEquals(expected[index],template);
+      index++;
+    }
+  }
+  
+ 
 }

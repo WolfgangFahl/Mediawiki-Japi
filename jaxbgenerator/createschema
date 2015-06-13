@@ -92,7 +92,7 @@ codegen() {
 	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
 }
 
-codegen namespace.xsd
+codegen imageinfo.xsd
 exit 1
 for query in `queries`
 do

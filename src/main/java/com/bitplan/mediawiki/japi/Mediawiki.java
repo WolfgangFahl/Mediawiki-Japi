@@ -37,6 +37,7 @@ import org.kohsuke.args4j.Option;
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
+import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.P;
@@ -98,9 +99,6 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   // mediaWikiVersion and site info
   protected String mediawikiVersion;
-  protected General siteinfo;
-  protected Map<String,Ns> namespaces;
-  protected Map<Integer,Ns> namespacesById;
   protected String userid;
 
   /**
@@ -498,29 +496,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
   }
   
-  /**
-   * get the Namespaces for this wiki
-   * @return
-   * @throws Exception
-   */
-  public Map<String,Ns> getNamespaces() throws Exception {
-    if (namespaces==null) {
-      getSiteInfo();
-    }
-    return namespaces;
-  }
   
-  /**
-   * get the Namespaces for this wiki
-   * @return
-   * @throws Exception
-   */
-  public Map<Integer,Ns> getNamespacesById() throws Exception {
-    if (namespacesById==null) {
-      getSiteInfo();
-    }
-    return namespacesById;
-  }
 
   /**
    * get the Version of this wiki
@@ -1000,27 +976,28 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 		return api;
 	}
 
-	/**
-	 * map the given namespace to the target wiki
-	 * @param ns
-	 * @param targetWiki
-	 * @return the namespace name for the target wiki
-	 * @throws Exception 
-	 */
-  public String mapNamespace(String ns, Mediawiki targetWiki) throws Exception {
-    Map<String, Ns> sourceMap = this.getNamespaces();
-    Map<Integer, Ns> targetMap = targetWiki.getNamespacesById();
-    Ns sourceNs = sourceMap.get(ns);
-    if (sourceNs==null) {
-      LOGGER.log(Level.WARNING,"can not map unknown namespace "+ns);
-      return ns;
+  @Override
+  public Ii getImageInfo(String pageTitle) throws Exception {
+    // example
+    // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
+    String props="timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Ccanonicaltitle%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth%7Cuploadwarning";
+    Api api = getQueryResult( "&prop=imageinfo&iiprop="+props+"&titles="+pageTitle);
+    handleError(api);
+    Ii ii =null;
+    List<Page> pages = api.getQuery().getPages();
+    if (pages != null) {
+      Page page = pages.get(0);
+      if (page != null) {
+        ii = page.getImageinfo().getIi();
+        
+      }
     }
-    Ns targetNs=targetMap.get(sourceNs.getId());
-    if (targetNs==null) {
-      LOGGER.log(Level.WARNING,"missing namespace "+sourceNs.getValue()+" id:"+sourceNs.getId()+" canonical:"+sourceNs.getCanonical());
-      return ns;
+    if (ii == null) {
+      String errMsg = "pageTitle '" + pageTitle + "' not found";
+      this.handleError(errMsg);
     }
-    return targetNs.getValue();
+    return ii;
   }
+
 
 }

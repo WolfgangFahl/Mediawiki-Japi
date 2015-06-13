@@ -74,6 +74,8 @@ public class Page {
     protected String title;
     @XmlTransient
     protected List<Rev> revisions=new ArrayList<Rev>();
+    @XmlElement
+    protected Imageinfo imageinfo;
 
     /**
      * Gets the value of the revisions property.
@@ -358,5 +360,28 @@ public class Page {
     public void setEdittoken(String value) {
         this.edittoken = value;
     }
+    
+    /**
+     * Ruft den Wert der imageinfo-Eigenschaft ab.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Imageinfo }
+     *     
+     */
+    public Imageinfo getImageinfo() {
+        return imageinfo;
+    }
 
+    /**
+     * Legt den Wert der imageinfo-Eigenschaft fest.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Imageinfo }
+     *     
+     */
+    public void setImageinfo(Imageinfo value) {
+        this.imageinfo = value;
+    }
 }

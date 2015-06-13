@@ -187,6 +187,8 @@ public class ExampleWikiManager {
       aliases.put("targetWiki", TARGET_WIKI);
 
       ExampleWiki sourceWiki = getExampleWikis().get(SOURCE_WIKI);
+      ExamplePage testImage=wiki.new ExamplePage("File:Index.png","",false);
+      sourceWiki.addExamplePage("testCopy",testImage);
       ExamplePage testPage3 = wiki.new ExamplePage("Testpage 3",
           "This is test page 3", true);
       // this page will by copied so it's only in one wiki for a start

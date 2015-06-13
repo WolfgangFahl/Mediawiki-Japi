@@ -15,7 +15,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -26,6 +25,7 @@ import com.bitplan.mediawiki.japi.MediawikiApi;
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
+import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.S;
@@ -197,6 +197,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   @Override
   public List<S> getSections(String pageTitle) throws Exception {
+    // FIXME implement
+    return null;
+  }
+
+  @Override
+  public Ii getImageInfo(String pageTitle) throws Exception {
     // FIXME implement
     return null;
   }

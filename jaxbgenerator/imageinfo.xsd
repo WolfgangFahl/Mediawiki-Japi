@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:element name="api">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="query">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="pages">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="page">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="imageinfo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="ii">
+                                  <xs:complexType>
+                                   
+                                     
+                                    <xs:attribute type="xs:dateTime" name="timestamp"/>
+                                    <xs:attribute type="xs:string" name="user"/>
+                                    <xs:attribute type="xs:int" name="userid"/>
+                                    <xs:attribute type="xs:int" name="size"/>
+                                    <xs:attribute type="xs:short" name="width"/>
+                                    <xs:attribute type="xs:short" name="height"/>
+                                    <xs:attribute type="xs:string" name="parsedcomment"/>
+                                    <xs:attribute type="xs:string" name="comment"/>
+                                    <xs:attribute type="xs:string" name="html"/>
+                                    <xs:attribute type="xs:string" name="canonicaltitle"/>
+                                    <xs:attribute type="xs:string" name="url"/>
+                                    <xs:attribute type="xs:string" name="descriptionurl"/>
+                                    <xs:attribute type="xs:string" name="sha1"/>
+                                    <xs:attribute type="xs:string" name="mime"/>
+                                    <xs:attribute type="xs:string" name="mediatype"/>
+                                    <xs:attribute type="xs:integer" name="bitdepth"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:integer" name="_idx"/>
+                        <xs:attribute type="xs:integer" name="ns"/>
+                        <xs:attribute type="xs:string" name="title"/>
+                        <xs:attribute type="xs:string" name="missing"/>
+                        <xs:attribute type="xs:string" name="imagerepository"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
