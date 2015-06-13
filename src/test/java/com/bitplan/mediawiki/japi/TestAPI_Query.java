@@ -81,7 +81,7 @@ public class TestAPI_Query extends APITestbase {
   public void testImageInfo() throws Exception {
     ExampleWiki sourceWiki = ewm.get("sourceWiki");
     Ii ii=sourceWiki.getImageInfo("File:Index.png");
-    debug=true;
+    // debug=true;
     if (debug) {
       System.out.println(ii.getUrl());
       // System.out.println(ii.getCanonicaltitle());

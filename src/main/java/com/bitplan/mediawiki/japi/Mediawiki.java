@@ -14,6 +14,9 @@
 package com.bitplan.mediawiki.japi;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,7 +56,7 @@ import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.multipart.FormDataMultiPart;
-import com.sun.jersey.multipart.file.FileDataBodyPart;
+import com.sun.jersey.multipart.file.StreamDataBodyPart;
 
 /**
  * access to Mediawiki api
@@ -797,19 +800,40 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   @Override
   public synchronized void upload(File fileToUpload, String filename,
-      String contents, String reason) throws Exception {
+      String contents, String comment) throws Exception {
+    this.upload(new FileInputStream(fileToUpload), filename, contents, comment);
+  }
+  
+  /**
+   * upload from the given inputstream
+   * @param fileToUpload
+   * @param filename
+   * @param contents
+   * @param comment
+   * @throws Exception
+   */
+  public synchronized void upload(InputStream fileToUpload, String filename,
+      String contents, String comment) throws Exception {
     TokenResult token = getEditToken("File:" + filename);
     final FormDataMultiPart multiPart = new FormDataMultiPart();
-    multiPart.bodyPart(new FileDataBodyPart("file", fileToUpload,
-        MediaType.APPLICATION_OCTET_STREAM_TYPE));
+    // http://stackoverflow.com/questions/5772225/trying-to-upload-a-file-to-a-jax-rs-jersey-server
+    multiPart.bodyPart(new StreamDataBodyPart("file", fileToUpload));
     multiPart.field("filename", filename);
     multiPart.field("ignorewarnings", "true");
     multiPart.field("text", contents);
-    if (!reason.isEmpty())
-      multiPart.field("comment", reason);
+    if (!comment.isEmpty())
+      multiPart.field("comment", comment);
     String params="";
     Api api = this.getActionResult("upload", params, token, multiPart);
     handleError(api);
+  }
+  
+  @Override
+  public void upload(Ii ii, String fileName, String pageContent) throws Exception {
+    String url=ii.getUrl();
+    InputStream imageInput = new URL(url).openStream();
+    String comment=ii.getComment();
+    this.upload(imageInput, fileName, pageContent, comment);
   }
 
   /**
@@ -980,7 +1004,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public Ii getImageInfo(String pageTitle) throws Exception {
     // example
     // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
-    String props="timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Ccanonicaltitle%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth%7Cuploadwarning";
+    String props="timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
     Api api = getQueryResult( "&prop=imageinfo&iiprop="+props+"&titles="+pageTitle);
     handleError(api);
     Ii ii =null;
@@ -989,7 +1013,6 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       Page page = pages.get(0);
       if (page != null) {
         ii = page.getImageinfo().getIi();
-        
       }
     }
     if (ii == null) {
@@ -998,6 +1021,5 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
-
 
 }

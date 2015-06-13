@@ -9,10 +9,11 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +157,7 @@ public class TestAPI_Edit extends APITestbase {
    */
   @Test
   public void testCopy() throws Exception {
-    debug = true;
+    // debug = true;
     ExampleWiki sourceWiki = ewm.get("sourceWiki");
     sourceWiki.wiki.setDebug(debug);
     ExampleWiki targetWiki = ewm.get("targetWiki");

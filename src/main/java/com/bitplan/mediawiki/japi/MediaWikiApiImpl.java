@@ -226,11 +226,17 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
       String targetNameSpace=this.mapNamespace(nameSpaceName, targetWiki);
       targetPageTitle=pageTitle.replaceFirst(nameSpaceName+":",targetNameSpace+":");
     }
-    // File: namespace used see http://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces
+    String content = getPageContent(pageTitle);
+       // File: namespace used see http://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces
     if (namespace!=null && namespace.getId()==6) {
-      
+      // get the image information 
+      Ii ii = this.getImageInfo(pageTitle);
+      String filename=pageTitle.replaceFirst("File:","");
+      if (nameSpaceName!=null) {
+        filename=filename.replaceFirst(nameSpaceName+":", "");
+      }
+      targetWiki.upload(ii,filename,content);
     } else {
-      String content = getPageContent(pageTitle);
       result = targetWiki.edit(targetPageTitle, content, summary);
     }
     return result;

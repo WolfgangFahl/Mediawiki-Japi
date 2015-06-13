@@ -207,4 +207,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return null;
   }
 
+  @Override
+  public void upload(Ii ii, String fileName, String pageContent)
+      throws Exception {
+    // FIXME implement
+  }
+
+ 
+
 }

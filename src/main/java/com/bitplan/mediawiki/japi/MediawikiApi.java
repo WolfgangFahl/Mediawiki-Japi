@@ -204,18 +204,30 @@ public interface MediawikiApi {
    *          the image file
    * @param filename
    *          the target file name (may contain File)
-   * @param contents
+   * @param pageContent
    *          the contents of the image description page, set to "" if
    *          overwriting an existing file
-   * @param reason
+   * @param comment
    *          an upload summary (defaults to <tt>contents</tt>, use "" to not
    *          specify one)
    * @throws Exception
    *           - if the upload fails
    * @since 0.0.3
    */
-  public void upload(File file, String filename, String contents, String reason)
+  public void upload(File file, String filename, String pageContent, String comment)
       throws Exception;
+  
+  /**
+   * upload the image described in the given imageinfo
+   * @param ii
+   * @param fileName
+   * @param pageContent
+   *          the contents of the image description page, set to "" if
+   *          overwriting an existing file
+   * @throws Exception 
+   * @since 0.0.5
+   */
+  public void upload(Ii ii, String fileName, String pageContent) throws Exception;
 
   /**
    * getAllPages
@@ -313,8 +325,6 @@ public interface MediawikiApi {
    * @return - true if debugging is activated
    * @return
    */
-  public boolean isDebug();
-
-  
+  public boolean isDebug();  
 
 }
