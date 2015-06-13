@@ -49,6 +49,10 @@ public class TestUsage {
     for (MediawikiApi wikiapi : wikiapis) {
       wikiapi.setSiteurl("http://en.wikipedia.org");
       String content = wikiapi.getPageContent("Main Page");
+      boolean debug=true;
+      if (debug) {
+        System.out.println(content);
+      }
       assertTrue(content.contains("Wikipedia"));
     }
   }

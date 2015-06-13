@@ -45,7 +45,7 @@ public class Ns {
     @XmlValue
     protected String value;
     @XmlAttribute
-    protected Byte id;
+    protected Integer id;
     @XmlAttribute(name = "case")
     protected String _case;
     @XmlAttribute
@@ -84,10 +84,10 @@ public class Ns {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -96,10 +96,10 @@ public class Ns {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setId(Byte value) {
+    public void setId(Integer value) {
         this.id = value;
     }
 

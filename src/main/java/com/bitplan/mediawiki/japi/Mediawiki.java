@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -98,9 +99,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   // mediaWikiVersion and site info
   protected String mediawikiVersion;
   protected General siteinfo;
-  protected List<Ns> namespaces;
-
-  private String userid;
+  protected Map<String,Ns> namespaces;
+  protected Map<Integer,Ns> namespacesById;
+  protected String userid;
 
   /**
    * enable debugging
@@ -477,10 +478,24 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (siteinfo == null) {
       Api api = getQueryResult("&meta=siteinfo&siprop=general%7Cnamespaces");
       Query query = api.getQuery();
-      siteinfo = query.getGeneral();
-      namespaces=query.getNamespaces();
+      setUpSiteInfo(query);
     }
     return siteinfo;
+  }
+  
+  /**
+   * setup siteinfo for a query (e.g. for testing)
+   * @param query
+   */
+  public void setUpSiteInfo(Query query) {
+    siteinfo = query.getGeneral();
+    List<Ns> namespaceList = query.getNamespaces();
+    namespaces=new LinkedHashMap<String,Ns>();
+    namespacesById=new LinkedHashMap<Integer,Ns>();
+    for (Ns namespace:namespaceList) {
+      namespaces.put(namespace.getValue(), namespace);
+      namespacesById.put(namespace.getId(), namespace);
+    }
   }
   
   /**
@@ -488,11 +503,23 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return
    * @throws Exception
    */
-  public List<Ns> getNamespaces() throws Exception {
+  public Map<String,Ns> getNamespaces() throws Exception {
     if (namespaces==null) {
       getSiteInfo();
     }
     return namespaces;
+  }
+  
+  /**
+   * get the Namespaces for this wiki
+   * @return
+   * @throws Exception
+   */
+  public Map<Integer,Ns> getNamespacesById() throws Exception {
+    if (namespacesById==null) {
+      getSiteInfo();
+    }
+    return namespacesById;
   }
 
   /**
@@ -972,5 +999,28 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 				"createaccount",params);
 		return api;
 	}
+
+	/**
+	 * map the given namespace to the target wiki
+	 * @param ns
+	 * @param targetWiki
+	 * @return the namespace name for the target wiki
+	 * @throws Exception 
+	 */
+  public String mapNamespace(String ns, Mediawiki targetWiki) throws Exception {
+    Map<String, Ns> sourceMap = this.getNamespaces();
+    Map<Integer, Ns> targetMap = targetWiki.getNamespacesById();
+    Ns sourceNs = sourceMap.get(ns);
+    if (sourceNs==null) {
+      LOGGER.log(Level.WARNING,"can not map unknown namespace "+ns);
+      return ns;
+    }
+    Ns targetNs=targetMap.get(sourceNs.getId());
+    if (targetNs==null) {
+      LOGGER.log(Level.WARNING,"missing namespace "+sourceNs.getValue()+" id:"+sourceNs.getId()+" canonical:"+sourceNs.getCanonical());
+      return ns;
+    }
+    return targetNs.getValue();
+  }
 
 }
