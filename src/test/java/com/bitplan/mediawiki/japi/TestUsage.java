@@ -46,10 +46,11 @@ public class TestUsage {
    */
   public void testMultipleImplementations() throws Exception {
     MediawikiApi[] wikiapis = { new Mediawiki(), new org.wikipedia.Mediawiki() };
+    // MediawikiApi[] wikiapis = {  new org.wikipedia.Mediawiki() };
     for (MediawikiApi wikiapi : wikiapis) {
-      wikiapi.setSiteurl("http://en.wikipedia.org");
+      wikiapi.setSiteurl("http://test.wikipedia.org");
       String content = wikiapi.getPageContent("Main Page");
-      boolean debug=true;
+      boolean debug=false;
       if (debug) {
         System.out.println(content);
       }

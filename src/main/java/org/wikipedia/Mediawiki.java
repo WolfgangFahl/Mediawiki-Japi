@@ -63,10 +63,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if ("".equals(scriptPath)) {
       scriptPath = "/w";
     }
-    wiki = new Wiki();
     String prot = url.getProtocol();
-
-    wiki.init(prot, domain, scriptPath);
+    wiki = new Wiki(domain,scriptPath,prot+"://");   
     // zip doesn't work as of 2015-01-20
     wiki.setUsingCompressedRequests(false);
   }
@@ -153,7 +151,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (pageContent != null && pageContent.contains(protectionMarker)) {
       LOGGER.log(Level.WARNING, "page " + pageTitle + " is protected!");
     } else {
-      wiki.edit(pageTitle, text, summary, minor, bot, sectionNumber, sectionTitle,basetime);
+      if (sectionNumber==-1)
+        wiki.edit(pageTitle, text, sectionTitle, minor, bot, sectionNumber,basetime);
+      else
+        wiki.edit(pageTitle, text, summary, minor, bot, sectionNumber,basetime);
     }
     return result;
   }
