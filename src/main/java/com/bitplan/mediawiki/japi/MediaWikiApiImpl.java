@@ -244,7 +244,8 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
       String targetNameSpace=this.mapNamespace(nameSpaceName, targetWiki);
       targetPageTitle=pageTitle.replaceFirst(nameSpaceName+":",targetNameSpace+":");
       namespaceId=namespace.getId();
-      LOGGER.log(Level.INFO,"targetNameSpace is "+targetNameSpace+" targetTitle is "+targetPageTitle+" namespaceId is "+namespaceId);
+      if (isDebug())
+        LOGGER.log(Level.INFO,"targetNameSpace is "+targetNameSpace+" targetTitle is "+targetPageTitle+" namespaceId is "+namespaceId);
     }
     String content = getPageContent(pageTitle);
        // File: namespace used see http://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces
