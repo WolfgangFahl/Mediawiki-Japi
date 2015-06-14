@@ -36,6 +36,7 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
 
   protected General siteinfo;
   protected Map<String,Ns> namespaces;
+  protected Map<String,Ns> namespacesByCanonicalName;
   protected Map<Integer,Ns> namespacesById;
   
   /**
@@ -161,6 +162,18 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
   }
   
   /**
+   * get the Namespaces by canonical name for this wiki
+   * @return
+   * @throws Exception
+   */
+  public Map<String,Ns> getNamespacesByCanonicalName() throws Exception {
+    if (namespacesByCanonicalName==null) {
+      getSiteInfo();
+    }
+    return namespacesByCanonicalName;
+  }
+  
+  /**
    * get the Namespaces for this wiki
    * @return
    * @throws Exception
@@ -171,6 +184,7 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
     }
     return namespacesById;
   }
+  
   
   /**
    * map the given namespace to the target wiki
@@ -217,18 +231,24 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
       LOGGER.log(Level.INFO,"sourceLang:"+sourceLang+" targetLang:"+targetLang);
     Ns namespace=null;
     String nameSpaceName=getNameSpaceName(pageTitle);
+    int namespaceId=-999;
     String targetPageTitle=pageTitle;
     Edit result=null;
     if (nameSpaceName!=null) {
       namespace = this.getNamespaces().get(nameSpaceName);
+      if (namespace==null) {
+        namespace = this.getNamespacesByCanonicalName().get(nameSpaceName);        
+      }
     }
     if (namespace!=null) {
       String targetNameSpace=this.mapNamespace(nameSpaceName, targetWiki);
       targetPageTitle=pageTitle.replaceFirst(nameSpaceName+":",targetNameSpace+":");
+      namespaceId=namespace.getId();
+      LOGGER.log(Level.INFO,"targetNameSpace is "+targetNameSpace+" targetTitle is "+targetPageTitle+" namespaceId is "+namespaceId);
     }
     String content = getPageContent(pageTitle);
        // File: namespace used see http://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces
-    if (namespace!=null && namespace.getId()==6) {
+    if (namespaceId==6) {
       // get the image information 
       Ii ii = this.getImageInfo(pageTitle);
       String filename=pageTitle.replaceFirst("File:","");

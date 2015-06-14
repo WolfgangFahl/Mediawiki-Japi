@@ -494,9 +494,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     List<Ns> namespaceList = query.getNamespaces();
     namespaces=new LinkedHashMap<String,Ns>();
     namespacesById=new LinkedHashMap<Integer,Ns>();
+    namespacesByCanonicalName=new LinkedHashMap<String,Ns>();
     for (Ns namespace:namespaceList) {
       namespaces.put(namespace.getValue(), namespace);
       namespacesById.put(namespace.getId(), namespace);
+      String canonical=namespace.getCanonical();
+      namespacesByCanonicalName.put(canonical,namespace);
     }
   }
   
