@@ -69,7 +69,7 @@ public class Page {
     @XmlAttribute(name = "pageid")
     protected Short pageid;
     @XmlAttribute(name = "ns")
-    protected Byte ns;
+    protected Integer ns;
     @XmlAttribute(name = "title")
     protected String title;
     @XmlTransient
@@ -128,10 +128,10 @@ public class Page {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getNs() {
+    public Integer getNs() {
         return ns;
     }
 
@@ -140,10 +140,10 @@ public class Page {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setNs(Byte value) {
+    public void setNs(Integer value) {
         this.ns = value;
     }
 
@@ -179,11 +179,11 @@ public class Page {
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar touched;
     @XmlAttribute
-    protected Byte lastrevid;
+    protected Integer lastrevid;
     @XmlAttribute
-    protected Byte counter;
+    protected Integer counter;
     @XmlAttribute
-    protected Byte length;
+    protected Integer length;
     @XmlAttribute(name = "new")
     protected String _new;
     @XmlAttribute
@@ -222,10 +222,10 @@ public class Page {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getLastrevid() {
+    public Integer getLastrevid() {
         return lastrevid;
     }
 
@@ -234,10 +234,10 @@ public class Page {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setLastrevid(Byte value) {
+    public void setLastrevid(Integer value) {
         this.lastrevid = value;
     }
 
@@ -246,10 +246,10 @@ public class Page {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getCounter() {
+    public Integer getCounter() {
         return counter;
     }
 
@@ -258,10 +258,10 @@ public class Page {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setCounter(Byte value) {
+    public void setCounter(Integer value) {
         this.counter = value;
     }
 
@@ -270,10 +270,10 @@ public class Page {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getLength() {
+    public Integer getLength() {
         return length;
     }
 
@@ -282,10 +282,10 @@ public class Page {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setLength(Byte value) {
+    public void setLength(Integer value) {
         this.length = value;
     }
 
