@@ -262,6 +262,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public ClientResponse getPostResponse(String queryUrl, String params,
       TokenResult token, Object pFormDataObject) throws Exception {
+    params=params.replace("|","%7C");
     // modal handling of post
     FormDataMultiPart form=null;
     MultivaluedMap<String, String> lFormData=null;
@@ -640,8 +641,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public List<Page> getPages(List<String> titleList) throws Exception {
     String titles = this.getTitles(titleList);
+    // https://www.mediawiki.org/wiki/API:Revisions#Parameters
     Api api = getQueryResult("&titles=" + titles
-        + "&prop=revisions&rvprop=content");
+        + "&prop=revisions&rvprop=content|ids|timestamp");
     List<Page> pages = api.getQuery().getPages();
     return pages;
   }

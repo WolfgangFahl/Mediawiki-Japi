@@ -45,6 +45,12 @@ public class Rev {
     protected String contentformat;
     @XmlAttribute(name = "contentmodel")
     protected String contentmodel;
+    @XmlAttribute(name = "revid")
+    protected Integer revid;
+    @XmlAttribute(name = "parentid")
+    protected Integer parentid;
+    @XmlAttribute(name = "timestamp")
+    protected String timestamp;
 
     /**
      * Gets the value of the value property.
@@ -116,6 +122,48 @@ public class Rev {
      */
     public void setContentmodel(String value) {
         this.contentmodel = value;
+    }
+
+    /**
+     * @return the revid
+     */
+    public Integer getRevid() {
+      return revid;
+    }
+
+    /**
+     * @param revid the revid to set
+     */
+    public void setRevid(Integer revid) {
+      this.revid = revid;
+    }
+
+    /**
+     * @return the parentid
+     */
+    public Integer getParentid() {
+      return parentid;
+    }
+
+    /**
+     * @param parentid the parentid to set
+     */
+    public void setParentid(Integer parentid) {
+      this.parentid = parentid;
+    }
+
+    /**
+     * @return the timestamp
+     */
+    public String getTimestamp() {
+      return timestamp;
+    }
+
+    /**
+     * @param timestamp the timestamp to set
+     */
+    public void setTimestamp(String timestamp) {
+      this.timestamp = timestamp;
     }
 
 }
