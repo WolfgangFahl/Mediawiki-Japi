@@ -37,7 +37,9 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   final Class<T> classOfT;
 
   /**
-   * allow access to the type that would otherwise not be available due to Java type erasure
+   * allow access to the type that would otherwise not be available due to Java
+   * type erasure
+   * 
    * @return the classOfT
    */
   public Class<T> getClassOfT() {
@@ -77,7 +79,8 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
 
   @SuppressWarnings("unchecked")
   public T fromString(Unmarshaller u, String s) throws Exception {
-    // unmarshal the string to a Java object of type <T> (classOfT has the runtime type)
+    // unmarshal the string to a Java object of type <T> (classOfT has the
+    // runtime type)
     StringReader stringReader = new StringReader(s);
     T result = null;
     // this step will convert from xml text to Java Object
@@ -86,7 +89,13 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
       if (classOfT.isInstance(unmarshalResult)) {
         result = (T) unmarshalResult;
       } else {
-        throw new Exception("unmarshalling returned "+unmarshalResult.getClass().getName()+" but "+classOfT.getName()+" was expected");
+        String type = "null";
+        if (unmarshalResult != null) {
+          type = unmarshalResult.getClass().getName();
+        }
+        String msg = "unmarshalling returned " + type + " but "
+            + classOfT.getName() + " was expected";
+        throw new Exception(msg);
       }
     } catch (JAXBException jex) {
       String msg = "JAXBException: " + jex.getMessage();
@@ -103,12 +112,13 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @param xml
    *          - the xml representation of the <T> instance
    * @return T
-   * @throws Exception - if the conversion fails
+   * @throws Exception
+   *           - if the conversion fails
    */
   public T fromXML(String xml) throws Exception {
-    Unmarshaller u=this.getUnmarshaller();
+    Unmarshaller u = this.getUnmarshaller();
     u.setProperty(MarshallerProperties.MEDIA_TYPE, "application/xml");
-    T result=this.fromString(u, xml);
+    T result = this.fromString(u, xml);
     return result;
   }
 
@@ -121,9 +131,9 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
    * @throws Exception
    */
   public T fromJson(String json) throws Exception {
-    Unmarshaller u=this.getUnmarshaller();
+    Unmarshaller u = this.getUnmarshaller();
     u.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-    T result=this.fromString(u, json);
+    T result = this.fromString(u, json);
     return result;
   }
 
