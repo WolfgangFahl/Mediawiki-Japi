@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.5|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.6|jar
 
 Maven dependency:
 
@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
 </dependency>
 ```
 
@@ -113,3 +113,4 @@ unit tests supplied with Wiki.java).
 * 0.0.5 - 2015-06-14: improves section handling 
                       handles uploads in copyToWiki
 											fixes issue with test on en.wikipedia.org
+* 0.0.6 - 2015-07-02: fixes revprop handling											
