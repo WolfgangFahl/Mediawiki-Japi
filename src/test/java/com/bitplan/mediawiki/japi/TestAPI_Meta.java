@@ -41,7 +41,7 @@ public class TestAPI_Meta extends APITestbase {
 		for (ExampleWiki lwiki : getWikis()) {
 			// lwiki.wiki.setDebug(true);
 		  // FIXME add to interface
-			General general = lwiki.getSiteInfo();
+			General general = lwiki.getGeneral();
 			assertNotNull(general);
 			boolean mayBeNull = true;
 			check("generator", general.getGenerator());
@@ -123,7 +123,7 @@ public class TestAPI_Meta extends APITestbase {
   public void testNameSpaces() throws Exception {
     for (ExampleWiki lwiki : getWikis()) {
       Mediawiki mw=(Mediawiki) lwiki.wiki;
-      Map<String, Ns> namespaces = mw.getNamespaces();
+      Map<String, Ns> namespaces = mw.getSiteInfo().getNamespaces();
       assertNotNull(namespaces);
       assertTrue(namespaces.size()>12);
       // debug=true;
@@ -162,7 +162,7 @@ public class TestAPI_Meta extends APITestbase {
     String nameSpaceApiXmlDe="<?xml version=\"1.0\"?><api><query><general lang='de'></general><namespaces><ns _idx=\"-2\" id=\"-2\" case=\"first-letter\" canonical=\"Media\" xml:space=\"preserve\">Medium</ns><ns _idx=\"-1\" id=\"-1\" case=\"first-letter\" canonical=\"Special\" xml:space=\"preserve\">Spezial</ns><ns _idx=\"0\" id=\"0\" case=\"first-letter\" content=\"\" xml:space=\"preserve\" /><ns _idx=\"1\" id=\"1\" case=\"first-letter\" subpages=\"\" canonical=\"Talk\" xml:space=\"preserve\">Diskussion</ns><ns _idx=\"2\" id=\"2\" case=\"first-letter\" subpages=\"\" canonical=\"User\" xml:space=\"preserve\">Benutzer</ns><ns _idx=\"3\" id=\"3\" case=\"first-letter\" subpages=\"\" canonical=\"User talk\" xml:space=\"preserve\">Benutzer Diskussion</ns><ns _idx=\"4\" id=\"4\" case=\"first-letter\" subpages=\"\" canonical=\"Project\" xml:space=\"preserve\">Wikipedia</ns><ns _idx=\"5\" id=\"5\" case=\"first-letter\" subpages=\"\" canonical=\"Project talk\" xml:space=\"preserve\">Wikipedia Diskussion</ns><ns _idx=\"6\" id=\"6\" case=\"first-letter\" canonical=\"File\" xml:space=\"preserve\">Datei</ns><ns _idx=\"7\" id=\"7\" case=\"first-letter\" subpages=\"\" canonical=\"File talk\" xml:space=\"preserve\">Datei Diskussion</ns><ns _idx=\"8\" id=\"8\" case=\"first-letter\" canonical=\"MediaWiki\" xml:space=\"preserve\">MediaWiki</ns><ns _idx=\"9\" id=\"9\" case=\"first-letter\" subpages=\"\" canonical=\"MediaWiki talk\" xml:space=\"preserve\">MediaWiki Diskussion</ns><ns _idx=\"10\" id=\"10\" case=\"first-letter\" canonical=\"Template\" xml:space=\"preserve\">Vorlage</ns><ns _idx=\"11\" id=\"11\" case=\"first-letter\" subpages=\"\" canonical=\"Template talk\" xml:space=\"preserve\">Vorlage Diskussion</ns><ns _idx=\"12\" id=\"12\" case=\"first-letter\" subpages=\"\" canonical=\"Help\" xml:space=\"preserve\">Hilfe</ns><ns _idx=\"13\" id=\"13\" case=\"first-letter\" subpages=\"\" canonical=\"Help talk\" xml:space=\"preserve\">Hilfe Diskussion</ns><ns _idx=\"14\" id=\"14\" case=\"first-letter\" subpages=\"\" canonical=\"Category\" xml:space=\"preserve\">Kategorie</ns><ns _idx=\"15\" id=\"15\" case=\"first-letter\" subpages=\"\" canonical=\"Category talk\" xml:space=\"preserve\">Kategorie Diskussion</ns><ns _idx=\"100\" id=\"100\" case=\"first-letter\" subpages=\"\" canonical=\"Portal\" xml:space=\"preserve\">Portal</ns><ns _idx=\"101\" id=\"101\" case=\"first-letter\" subpages=\"\" canonical=\"Portal Diskussion\" xml:space=\"preserve\">Portal Diskussion</ns><ns _idx=\"828\" id=\"828\" case=\"first-letter\" subpages=\"\" canonical=\"Module\" xml:space=\"preserve\">Modul</ns><ns _idx=\"829\" id=\"829\" case=\"first-letter\" subpages=\"\" canonical=\"Module talk\" xml:space=\"preserve\">Modul Diskussion</ns></namespaces></query></api>";   
     Mediawiki sourceWiki=setUpNameSpace(nameSpaceApiXmlDe);
     Mediawiki targetWiki=setUpNameSpace(nameSpaceApiXmlFr);
-    String targetNameSpace=sourceWiki.mapNamespace("Vorlage",targetWiki);
+    String targetNameSpace=sourceWiki.getSiteInfo().mapNamespace("Vorlage",targetWiki.getSiteInfo());
     assertEquals("Modèle",targetNameSpace);
   }
   
@@ -172,7 +172,7 @@ public class TestAPI_Meta extends APITestbase {
     String expected[]={"Template",null,"Template","File","Modèle:French template"};
     int index=0;
     for (String pageTitle:pageTitles) {
-      String template=MediaWikiApiImpl.getNameSpaceName(pageTitle);
+      String template=PageInfo.getNameSpaceName(pageTitle);
       assertEquals(expected[index],template);
       index++;
     }

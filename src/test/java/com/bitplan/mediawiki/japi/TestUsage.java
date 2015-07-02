@@ -48,7 +48,7 @@ public class TestUsage {
     MediawikiApi[] wikiapis = { new Mediawiki(), new org.wikipedia.Mediawiki() };
     // MediawikiApi[] wikiapis = {  new org.wikipedia.Mediawiki() };
     for (MediawikiApi wikiapi : wikiapis) {
-      wikiapi.setSiteurl("http://test.wikipedia.org");
+      wikiapi.setSiteurl("https://test.wikipedia.org");
       String content = wikiapi.getPageContent("Main Page");
       boolean debug=false;
       if (debug) {

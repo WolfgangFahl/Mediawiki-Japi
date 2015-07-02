@@ -13,17 +13,12 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import java.util.Map;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
-import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
-import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.Tokens;
 import com.bitplan.mediawiki.japi.api.Warnings;
 
@@ -33,11 +28,6 @@ import com.bitplan.mediawiki.japi.api.Warnings;
  *
  */
 public abstract class MediaWikiApiImpl implements MediawikiApi {
-
-  protected General siteinfo;
-  protected Map<String,Ns> namespaces;
-  protected Map<String,Ns> namespacesByCanonicalName;
-  protected Map<Integer,Ns> namespacesById;
   
   /**
    * Logging may be enabled by setting debug to true
@@ -149,65 +139,8 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
     return api;
   }
   
-  /**
-   * get the Namespaces for this wiki
-   * @return
-   * @throws Exception
-   */
-  public Map<String,Ns> getNamespaces() throws Exception {
-    if (namespaces==null) {
-      getSiteInfo();
-    }
-    return namespaces;
-  }
-  
-  /**
-   * get the Namespaces by canonical name for this wiki
-   * @return
-   * @throws Exception
-   */
-  public Map<String,Ns> getNamespacesByCanonicalName() throws Exception {
-    if (namespacesByCanonicalName==null) {
-      getSiteInfo();
-    }
-    return namespacesByCanonicalName;
-  }
-  
-  /**
-   * get the Namespaces for this wiki
-   * @return
-   * @throws Exception
-   */
-  public Map<Integer,Ns> getNamespacesById() throws Exception {
-    if (namespacesById==null) {
-      getSiteInfo();
-    }
-    return namespacesById;
-  }
-  
-  
-  /**
-   * map the given namespace to the target wiki
-   * @param ns
-   * @param targetWiki
-   * @return the namespace name for the target wiki
-   * @throws Exception 
-   */
-  public String mapNamespace(String ns, MediawikiApi targetWiki) throws Exception {
-    Map<String, Ns> sourceMap = this.getNamespaces();
-    Map<Integer, Ns> targetMap = targetWiki.getNamespacesById();
-    Ns sourceNs = sourceMap.get(ns);
-    if (sourceNs==null) {
-      LOGGER.log(Level.WARNING,"can not map unknown namespace "+ns);
-      return ns;
-    }
-    Ns targetNs=targetMap.get(sourceNs.getId());
-    if (targetNs==null) {
-      LOGGER.log(Level.WARNING,"missing namespace "+sourceNs.getValue()+" id:"+sourceNs.getId()+" canonical:"+sourceNs.getCanonical());
-      return ns;
-    }
-    return targetNs.getValue();
-  }
+  // we do not implement this ... 
+  public abstract SiteInfo getSiteInfo() throws Exception;
   
   /**
    * copy the page for a given title from this wiki to the given target Wiki
@@ -225,31 +158,20 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    */
   public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
       String summary) throws Exception {
-    String sourceLang=this.getSiteInfo().getLang();
-    String targetLang=targetWiki.getSiteInfo().getLang();
-    if (isDebug())
-      LOGGER.log(Level.INFO,"sourceLang:"+sourceLang+" targetLang:"+targetLang);
-    Ns namespace=null;
-    String nameSpaceName=getNameSpaceName(pageTitle);
-    int namespaceId=-999;
+    SiteInfo siteinfo = this.getSiteInfo();
+    SiteInfo targetSiteInfo = targetWiki.getSiteInfo();
+    PageInfo sourcePageInfo=new PageInfo(pageTitle,siteinfo);
     String targetPageTitle=pageTitle;
     Edit result=null;
-    if (nameSpaceName!=null) {
-      namespace = this.getNamespaces().get(nameSpaceName);
-      if (namespace==null) {
-        namespace = this.getNamespacesByCanonicalName().get(nameSpaceName);        
-      }
-    }
-    if (namespace!=null) {
-      String targetNameSpace=this.mapNamespace(nameSpaceName, targetWiki);
+    String nameSpaceName="";
+    if (sourcePageInfo.namespace!=null) {
+      nameSpaceName=sourcePageInfo.nameSpaceName;
+      String targetNameSpace=siteinfo.mapNamespace(nameSpaceName, targetSiteInfo);
       targetPageTitle=pageTitle.replaceFirst(nameSpaceName+":",targetNameSpace+":");
-      namespaceId=namespace.getId();
-      if (isDebug())
-        LOGGER.log(Level.INFO,"targetNameSpace is "+targetNameSpace+" targetTitle is "+targetPageTitle+" namespaceId is "+namespaceId);
     }
     String content = getPageContent(pageTitle);
-       // File: namespace used see http://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces
-    if (namespaceId==6) {
+    // "File:" namespace (ID: 6) used see http://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces
+    if (sourcePageInfo.namespaceId==6) {
       // get the image information 
       Ii ii = this.getImageInfo(pageTitle);
       String filename=pageTitle.replaceFirst("File:","");
@@ -263,23 +185,14 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
     return result;
   }
   
-  // try with http://regexpal.com/
-  
-  public static final String NAMESPACE_REGEX="([^:]*):";
-  public static final Pattern namespacePattern=Pattern.compile(NAMESPACE_REGEX);
-
   /**
-   * get the name space name
-   * @param pageTitle
-   * @return
+   * get the Version of this wiki
+   * 
+   * @throws Exception
    */
-  public static String getNameSpaceName(String pageTitle) {
-    Matcher matcher = namespacePattern.matcher(pageTitle);
-    if (matcher.find()) {
-      // LOGGER.log(Level.INFO,pageTitle);
-      return matcher.group(1);
-    }
-    return null;
+  public String getVersion() throws Exception {
+    String mediawikiVersion=getSiteInfo().getVersion();
+    return mediawikiVersion;
   }
-
+  
 }

@@ -222,8 +222,8 @@ public class ExampleWiki  {
 	 * @return
 	 * @throws Exception
 	 */
-  public General getSiteInfo() throws Exception {
-    return wiki.getSiteInfo();
+  public General getGeneral() throws Exception {
+    return wiki.getSiteInfo().getGeneral();
   }
 
   /**

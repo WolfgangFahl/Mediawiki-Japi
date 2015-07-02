@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -43,7 +42,6 @@ import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Login;
-import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.api.Query;
@@ -102,8 +100,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   private ArrayList<Object> cookies;
 
   // mediaWikiVersion and site info
-  protected String mediawikiVersion;
   protected String userid;
+  
+  SiteInfo siteinfo;
 
   /**
    * enable debugging
@@ -472,12 +471,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
-   * get the general siteinfo
+   * get the siteinfo
    * 
    * @return the siteinfo
    * @throws Exception
    */
-  public General getSiteInfo() throws Exception {
+  public SiteInfo getSiteInfo() throws Exception {
     if (siteinfo == null) {
       Api api = getQueryResult("&meta=siteinfo&siprop=general%7Cnamespaces");
       Query query = api.getQuery();
@@ -491,32 +490,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @param query
    */
   public void setUpSiteInfo(Query query) {
-    siteinfo = query.getGeneral();
-    List<Ns> namespaceList = query.getNamespaces();
-    namespaces=new LinkedHashMap<String,Ns>();
-    namespacesById=new LinkedHashMap<Integer,Ns>();
-    namespacesByCanonicalName=new LinkedHashMap<String,Ns>();
-    for (Ns namespace:namespaceList) {
-      namespaces.put(namespace.getValue(), namespace);
-      namespacesById.put(namespace.getId(), namespace);
-      String canonical=namespace.getCanonical();
-      namespacesByCanonicalName.put(canonical,namespace);
-    }
-  }
-  
-  
-
-  /**
-   * get the Version of this wiki
-   * 
-   * @throws Exception
-   */
-  public String getVersion() throws Exception {
-    if (mediawikiVersion == null) {
-      General lGeneral = getSiteInfo();
-      mediawikiVersion = lGeneral.getGenerator();
-    }
-    return mediawikiVersion;
+    General general = query.getGeneral();
+    siteinfo=new SiteInfoImpl(general,query.getNamespaces());
   }
 
   // login implementation
@@ -1033,5 +1008,4 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
-
 }

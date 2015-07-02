@@ -22,6 +22,7 @@ import java.util.logging.Level;
 
 import com.bitplan.mediawiki.japi.MediaWikiApiImpl;
 import com.bitplan.mediawiki.japi.MediawikiApi;
+import com.bitplan.mediawiki.japi.SiteInfo;
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
@@ -91,12 +92,16 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   @Override
   public String getVersion() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    String version=this.getSiteInfo().getVersion();
+    return version;
   }
 
-  @Override
-  public General getSiteInfo() throws Exception {
+  /**
+   * get the siteinfo
+   * @return
+   * @throws Exception
+   */
+  public General getGeneral() throws Exception {
     Map<String, Object> siteinfo = wiki.getSiteInfo();
     String xml = (String) siteinfo.get("xml");
     Api api = super.fromXML(xml);
@@ -214,6 +219,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     // FIXME implement
   }
 
- 
+  @Override
+  public SiteInfo getSiteInfo() throws Exception {
+    // FIXME implement
+    return null;
+  }
 
 }

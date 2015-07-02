@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bitplan.mediawiki.japi.api.Edit;
-import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Ns;
@@ -78,7 +77,7 @@ public interface MediawikiApi {
    * @return the siteinfo
    * @throws Exception
    */
-  public General getSiteInfo() throws Exception;
+  public SiteInfo getSiteInfo() throws Exception;
   
   /**
    * get the Image Info for the given pageTitle
@@ -273,20 +272,6 @@ public interface MediawikiApi {
    */
   public Edit copyToWiki(MediawikiApi targetWiki, String pageTitle,
       String summary) throws Exception;
-  
-  /**
-   * get the Namespaces by Id
-   * @return the map of namespaces by Id
-   * @throws Exception 
-   */
-  public Map<Integer, Ns> getNamespacesById() throws Exception;
-  
-  /**
-   * get the Namespaces for this wiki
-   * @return the map of namespaces by name
-   * @throws Exception
-   */
-  public Map<String,Ns> getNamespaces() throws Exception;
 
   /**
    * are exceptions thrown when an api error code is received?
