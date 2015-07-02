@@ -13,6 +13,7 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,15 @@ import com.bitplan.mediawiki.japi.api.Ns;
  * helper class for canonical Page Titles
  */
 public class PageInfo {
-  int namespaceId=-999;
+  /**
+   * Logging may be enabled by setting debug to true
+   */
+  protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
+      .getLogger("com.bitplan.mediawiki.japi");
+
+  public static boolean debug = true;
+
+  int namespaceId = -999;
   String lang;
   String pageTitle;
   String canonicalPageTitle;
@@ -35,6 +44,96 @@ public class PageInfo {
   public static final String NAMESPACE_REGEX = "([^:]*):";
   public static final Pattern namespacePattern = Pattern
       .compile(NAMESPACE_REGEX);
+
+  /**
+   * @return the namespaceId
+   */
+  public int getNamespaceId() {
+    return namespaceId;
+  }
+
+  /**
+   * @param namespaceId
+   *          the namespaceId to set
+   */
+  public void setNamespaceId(int namespaceId) {
+    this.namespaceId = namespaceId;
+  }
+
+  /**
+   * @return the lang
+   */
+  public String getLang() {
+    return lang;
+  }
+
+  /**
+   * @param lang
+   *          the lang to set
+   */
+  public void setLang(String lang) {
+    this.lang = lang;
+  }
+
+  /**
+   * @return the pageTitle
+   */
+  public String getPageTitle() {
+    return pageTitle;
+  }
+
+  /**
+   * @param pageTitle
+   *          the pageTitle to set
+   */
+  public void setPageTitle(String pageTitle) {
+    this.pageTitle = pageTitle;
+  }
+
+  /**
+   * @return the canonicalPageTitle
+   */
+  public String getCanonicalPageTitle() {
+    return canonicalPageTitle;
+  }
+
+  /**
+   * @param canonicalPageTitle
+   *          the canonicalPageTitle to set
+   */
+  public void setCanonicalPageTitle(String canonicalPageTitle) {
+    this.canonicalPageTitle = canonicalPageTitle;
+  }
+
+  /**
+   * @return the namespace
+   */
+  public Ns getNamespace() {
+    return namespace;
+  }
+
+  /**
+   * @param namespace
+   *          the namespace to set
+   */
+  public void setNamespace(Ns namespace) {
+    this.namespace = namespace;
+  }
+
+  /**
+   * @return the nameSpaceName
+   */
+  public String getNameSpaceName() {
+    return nameSpaceName;
+  }
+
+  /**
+   * @param nameSpaceName
+   *          the nameSpaceName to set
+   */
+  public void setNameSpaceName(String nameSpaceName) {
+    this.nameSpaceName = nameSpaceName;
+  }
 
   /**
    * get the name space name
@@ -56,22 +155,39 @@ public class PageInfo {
    * 
    * @param pageTitle
    * @param siteinfo
-   * @throws Exception 
+   * @throws Exception
    */
   public PageInfo(String pageTitle, SiteInfo siteinfo) throws Exception {
     this.pageTitle = pageTitle;
+    this.canonicalPageTitle = pageTitle;
     this.siteinfo = siteinfo;
-    nameSpaceName=getNameSpaceName(pageTitle);
-    this.lang=siteinfo.getLang();
-    namespace=null;
-    if (nameSpaceName!=null) {
-      namespace =siteinfo.getNamespaces().get(nameSpaceName);
-      if (namespace==null) {
-        namespace = siteinfo.getNamespacesByCanonicalName().get(nameSpaceName);        
+    nameSpaceName = getNameSpaceName(pageTitle);
+    this.lang = siteinfo.getLang();
+    namespace = null;
+    // do we have to map a namespace?
+    if (nameSpaceName != null) {
+      // get the namespace
+      namespace = siteinfo.getNamespaces().get(nameSpaceName);
+      if (namespace == null) {
+        String lookupName=nameSpaceName;
+        // get it from the canonical namespaces
+        namespace = siteinfo.getNamespacesByCanonicalName().get(lookupName);
       }
-      String canonical=namespace.getCanonical();
-      this.canonicalPageTitle=pageTitle.replaceFirst(nameSpaceName+":",canonical+":");
-      namespaceId=namespace.getId();
+      // ok we found one
+      if (namespace != null) {
+        String canonical = namespace.getCanonical();
+        this.canonicalPageTitle = pageTitle.replaceFirst(nameSpaceName + ":",
+            canonical + ":");
+        namespaceId = namespace.getId();
+      } else {
+        if (debug) {
+          LOGGER.log(Level.WARNING, "namespace for namespacename '"
+              + nameSpaceName + "' not found");
+          for (Ns ns : siteinfo.getNamespacesByCanonicalName().values()) {
+            LOGGER.log(Level.WARNING, ns.getValue() + "->" + ns.getCanonical());
+          }
+        }
+      }
     }
   }
 }
