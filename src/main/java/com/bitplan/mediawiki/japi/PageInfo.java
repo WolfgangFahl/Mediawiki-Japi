@@ -69,6 +69,8 @@ public class PageInfo {
       if (namespace==null) {
         namespace = siteinfo.getNamespacesByCanonicalName().get(nameSpaceName);        
       }
+      String canonical=namespace.getCanonical();
+      this.canonicalPageTitle=pageTitle.replaceFirst(nameSpaceName+":",canonical+":");
       namespaceId=namespace.getId();
     }
   }

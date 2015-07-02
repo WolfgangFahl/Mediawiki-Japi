@@ -16,12 +16,10 @@ package com.bitplan.mediawiki.japi;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Login;
-import com.bitplan.mediawiki.japi.api.Ns;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.S;
 
