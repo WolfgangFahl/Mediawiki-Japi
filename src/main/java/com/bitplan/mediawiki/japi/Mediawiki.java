@@ -609,20 +609,39 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
    * 
    * @param titleList
+   * @param rvprop - the revision properties
    * @return the list of pages retrieved
    * @throws Exception
    * 
    *           FIXME should be part of the Java Interface
    */
-  public List<Page> getPages(List<String> titleList) throws Exception {
+  public List<Page> getPages(List<String> titleList, String rvprop) throws Exception {
     String titles = this.getTitles(titleList);
     // https://www.mediawiki.org/wiki/API:Revisions#Parameters
     Api api = getQueryResult("&titles=" + titles
-        + "&prop=revisions&rvprop=content|ids|timestamp");
-    List<Page> pages = api.getQuery().getPages();
+        + "&prop=revisions&rvprop="+rvprop);
+    handleError(api);
+    Query query = api.getQuery();
+    if (query==null) {
+      throw new Exception("query is null for getPages '"+titleList+"' rvprop='"+rvprop+"'");
+    }
+    List<Page> pages = query.getPages();
     return pages;
   }
 
+  /**
+   * get a list of pages for the given titles see <a
+   * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
+   * @param titleList
+   * @return
+   * @throws Exception
+   */
+  public List<Page> getPages(List<String> titleList) throws Exception {
+    String rvprop="content|ids|timestamp";
+    List<Page> result = this.getPages(titleList, rvprop);
+    return result;
+  }
+  
   /**
    * the different modes of handling tokens - depending on MediaWiki version
    */

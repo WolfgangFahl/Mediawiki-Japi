@@ -105,6 +105,10 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   protected void handleError(Api api) throws Exception {
+    if (api==null) {
+      String errMsg="api result is null";
+      handleError(errMsg);
+    }
     if (api.getError() != null) {
       this.handleError(api.getError());
     }

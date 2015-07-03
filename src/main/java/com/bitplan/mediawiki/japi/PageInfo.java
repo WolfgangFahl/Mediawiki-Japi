@@ -189,5 +189,16 @@ public class PageInfo {
         }
       }
     }
+    // normalize the title
+    this.canonicalPageTitle = this.canonicalPageTitle.replace(" ", "_"); 
+  }
+
+  /**
+   * get the dual version of the pageTitle
+   * @return
+   */
+  public String dual() {
+     String result=("'"+pageTitle+"' canonical '"+this.canonicalPageTitle+"'");
+     return result;
   }
 }
