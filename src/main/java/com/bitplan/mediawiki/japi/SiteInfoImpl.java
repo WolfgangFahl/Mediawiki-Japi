@@ -70,7 +70,7 @@ public class SiteInfoImpl implements SiteInfo {
       String canonical = namespace.getCanonical();
       // this is a BUG in 2015-07-02 - some canonical names are not correct
       // FIXME - when Bug has been fixed in SMW
-      String bugs[] = { "Attribut", "Property", "Konzept", "Concept" };
+      String bugs[] = { "Attribut", "Property", "Konzept", "Concept","Kategorie","Category" };
       for (int i = 0; i < bugs.length; i += 2) {
         if (bugs[i].equals(canonical) && bugs[i].equals(namespacename)) {
           canonical = bugs[i + 1];

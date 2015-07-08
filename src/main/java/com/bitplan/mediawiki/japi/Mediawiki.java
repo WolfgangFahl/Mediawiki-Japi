@@ -37,6 +37,7 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
@@ -68,7 +69,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.6";
+  protected static final String VERSION = "0.0.7";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -101,7 +102,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   // mediaWikiVersion and site info
   protected String userid;
-  
+
   SiteInfo siteinfo;
 
   /**
@@ -261,15 +262,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public ClientResponse getPostResponse(String queryUrl, String params,
       TokenResult token, Object pFormDataObject) throws Exception {
-    params=params.replace("|","%7C");
+    params = params.replace("|", "%7C");
     // modal handling of post
-    FormDataMultiPart form=null;
-    MultivaluedMap<String, String> lFormData=null;
+    FormDataMultiPart form = null;
+    MultivaluedMap<String, String> lFormData = null;
     if (pFormDataObject instanceof FormDataMultiPart) {
-      form=(FormDataMultiPart) pFormDataObject;
+      form = (FormDataMultiPart) pFormDataObject;
     } else {
       @SuppressWarnings("unchecked")
-      Map<String,String> pFormData=(Map<String,String>) pFormDataObject;
+      Map<String, String> pFormData = (Map<String, String>) pFormDataObject;
       lFormData = new MultivaluedMapImpl();
       if (pFormData != null) {
         for (String key : pFormData.keySet()) {
@@ -280,7 +281,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (token != null) {
       switch (token.tokenMode) {
       case token1_24:
-        if (lFormData!=null) {
+        if (lFormData != null) {
           lFormData.add(token.tokenName, token.token);
         } else {
           form.field(token.tokenName, token.token);
@@ -293,15 +294,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     Builder resource = getResource(queryUrl + params);
     // FIXME allow to specify content type (not needed for Mediawiki itself but
     // could be good for interfacing )
-    ClientResponse response=null;
-    if (lFormData!=null) {
-     response= resource.type(
-        MediaType.APPLICATION_FORM_URLENCODED_TYPE).post(ClientResponse.class,
-        lFormData);
+    ClientResponse response = null;
+    if (lFormData != null) {
+      response = resource.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
+          .post(ClientResponse.class, lFormData);
     } else {
-      response = resource.type(
-          MediaType.MULTIPART_FORM_DATA_TYPE).post(ClientResponse.class,
-          form);
+      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).post(
+          ClientResponse.class, form);
     }
     return response;
   }
@@ -484,14 +483,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return siteinfo;
   }
-  
+
   /**
    * setup siteinfo for a query (e.g. for testing)
+   * 
    * @param query
    */
   public void setUpSiteInfo(Query query) {
     General general = query.getGeneral();
-    siteinfo=new SiteInfoImpl(general,query.getNamespaces());
+    siteinfo = new SiteInfoImpl(general, query.getNamespaces());
   }
 
   // login implementation
@@ -609,21 +609,24 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
    * 
    * @param titleList
-   * @param rvprop - the revision properties
+   * @param rvprop
+   *          - the revision properties
    * @return the list of pages retrieved
    * @throws Exception
    * 
    *           FIXME should be part of the Java Interface
    */
-  public List<Page> getPages(List<String> titleList, String rvprop) throws Exception {
+  public List<Page> getPages(List<String> titleList, String rvprop)
+      throws Exception {
     String titles = this.getTitles(titleList);
     // https://www.mediawiki.org/wiki/API:Revisions#Parameters
-    Api api = getQueryResult("&titles=" + titles
-        + "&prop=revisions&rvprop="+rvprop);
+    Api api = getQueryResult("&titles=" + titles + "&prop=revisions&rvprop="
+        + rvprop);
     handleError(api);
     Query query = api.getQuery();
-    if (query==null) {
-      throw new Exception("query is null for getPages '"+titleList+"' rvprop='"+rvprop+"'");
+    if (query == null) {
+      throw new Exception("query is null for getPages '" + titleList
+          + "' rvprop='" + rvprop + "'");
     }
     List<Page> pages = query.getPages();
     return pages;
@@ -632,16 +635,17 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * get a list of pages for the given titles see <a
    * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
+   * 
    * @param titleList
    * @return
    * @throws Exception
    */
   public List<Page> getPages(List<String> titleList) throws Exception {
-    String rvprop="content|ids|timestamp";
+    String rvprop = "content|ids|timestamp";
     List<Page> result = this.getPages(titleList, rvprop);
     return result;
   }
-  
+
   /**
    * the different modes of handling tokens - depending on MediaWiki version
    */
@@ -700,10 +704,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * href='https://www.mediawiki.org/wiki/API:Tokens'>API:Tokens</a>
    * 
    * @param pageTitle
+   * @param type
+   *          e.g. edit or delete
    * @return the edit token for the page title
    * @throws Exception
    */
-  public TokenResult getEditToken(String pageTitle) throws Exception {
+  public TokenResult getEditToken(String pageTitle, String type)
+      throws Exception {
     pageTitle = normalize(pageTitle);
     String editversion = "";
     String action = "query";
@@ -717,15 +724,17 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       editversion = "Versions 1.20-1.23";
       tokenMode = TokenMode.token1_20_23;
       action = "tokens";
-      params = "&type=edit";
+      params = "&type=" + type;
     } else {
       editversion = "Version 1.19 and earlier";
       tokenMode = TokenMode.token1_19;
-      params = "&prop=info&7Crevisions&intoken=edit&titles=" + pageTitle;
+      params = "&prop=info&7Crevisions&intoken=" + type + "&titles="
+          + pageTitle;
     }
     if (debug) {
-      LOGGER.log(Level.INFO, "handling edit for wiki version " + getVersion()
-          + " as " + editversion + " with action=" + action + params);
+      LOGGER.log(Level.INFO, "handling " + type + " token for wiki version "
+          + getVersion() + " as " + editversion + " with action=" + action
+          + params);
     }
     Api api = getActionResult(action, params);
     handleError(api);
@@ -734,10 +743,20 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     token.tokenName = "token";
     switch (tokenMode) {
     case token1_19:
-      token.setToken(api.getQuery().getPages().get(0).getEdittoken());
+      Page page = api.getQuery().getPages().get(0);
+      if (type.equals("edit")) {
+        token.setToken(page.getEdittoken());
+      } else if (type.equals("delete")) {
+        token.setToken(page.getDeletetoken());
+      }
+
       break;
     case token1_20_23:
-      token.setToken(api.getTokens().getEdittoken());
+      if (type.equals("edit")) {
+        token.setToken(api.getTokens().getEdittoken());
+      } else if (type.equals("delete")) {
+        token.setToken(api.getTokens().getDeletetoken());
+      } 
       break;
     default:
       token.setToken(api.getQuery().getTokens().getCsrftoken());
@@ -757,6 +776,35 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return result;
   }
 
+  /**
+   * https://www.mediawiki.org/wiki/API:Delete/de
+   * 
+   * @return info
+   */
+  @Override
+  public Delete delete(String pageTitle, String reason) throws Exception {
+    Delete result = new Delete();
+    String pageContent = getPageContent(pageTitle);
+    if (pageContent != null && pageContent.contains(protectionMarker)) {
+      LOGGER.log(Level.WARNING, "page " + pageTitle + " is protected!");
+    } else {
+      TokenResult token = getEditToken(pageTitle, "delete");
+      if (token.token == null) {
+        throw new IllegalStateException("could not get "
+            + token.tokenMode.toString() + " delete token for " + pageTitle
+            + " ");
+      }
+      Map<String, String> lFormData = new HashMap<String, String>();
+      lFormData.put("title", pageTitle);
+      lFormData.put("reason", reason);
+      String params = "";
+      Api api = this.getActionResult("delete", params, token, lFormData);
+      handleError(api);
+      result = api.getDelete();
+    }
+    return result;
+  }
+
   @Override
   public Edit edit(String pageTitle, String text, String summary,
       boolean minor, boolean bot, int sectionNumber, String sectionTitle,
@@ -766,7 +814,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (pageContent != null && pageContent.contains(protectionMarker)) {
       LOGGER.log(Level.WARNING, "page " + pageTitle + " is protected!");
     } else {
-      TokenResult token = getEditToken(pageTitle);
+      TokenResult token = getEditToken(pageTitle, "edit");
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("text", text);
       lFormData.put("title", pageTitle);
@@ -803,9 +851,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       String contents, String comment) throws Exception {
     this.upload(new FileInputStream(fileToUpload), filename, contents, comment);
   }
-  
+
   /**
    * upload from the given inputstream
+   * 
    * @param fileToUpload
    * @param filename
    * @param contents
@@ -814,7 +863,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public synchronized void upload(InputStream fileToUpload, String filename,
       String contents, String comment) throws Exception {
-    TokenResult token = getEditToken("File:" + filename);
+    TokenResult token = getEditToken("File:" + filename, "edit");
     final FormDataMultiPart multiPart = new FormDataMultiPart();
     // http://stackoverflow.com/questions/5772225/trying-to-upload-a-file-to-a-jax-rs-jersey-server
     multiPart.bodyPart(new StreamDataBodyPart("file", fileToUpload));
@@ -823,16 +872,17 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     multiPart.field("text", contents);
     if (!comment.isEmpty())
       multiPart.field("comment", comment);
-    String params="";
+    String params = "";
     Api api = this.getActionResult("upload", params, token, multiPart);
     handleError(api);
   }
-  
+
   @Override
-  public void upload(Ii ii, String fileName, String pageContent) throws Exception {
-    String url=ii.getUrl();
+  public void upload(Ii ii, String fileName, String pageContent)
+      throws Exception {
+    String url = ii.getUrl();
     InputStream imageInput = new URL(url).openStream();
-    String comment=ii.getComment();
+    String comment = ii.getComment();
     this.upload(imageInput, fileName, pageContent, comment);
   }
 
@@ -974,49 +1024,50 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * create the given user account
+   * 
    * @param name
    * @param eMail
    * @param realname
    * @param mailpassword
    * @param reason
    * @param language
-   * @throws Exception 
+   * @throws Exception
    */
-	public Api createAccount(String name, String eMail, String realname,
-			boolean mailpassword, String reason, String language) throws Exception {
-		String params="&name="+name;
-		params+="&email="+eMail;
-		params+="&realname="+realname;
-		params+="&mailpassword="+mailpassword;
-		params+="&reason="+reason;
-		params+="&token=";
-		Api api =getActionResult(
-						"createaccount",params);
-		handleError(api);
-		String token=api.getCreateaccount().getToken();
-		params+=token;
-		api =getActionResult(
-				"createaccount",params);
-		return api;
-	}
+  public Api createAccount(String name, String eMail, String realname,
+      boolean mailpassword, String reason, String language) throws Exception {
+    String params = "&name=" + name;
+    params += "&email=" + eMail;
+    params += "&realname=" + realname;
+    params += "&mailpassword=" + mailpassword;
+    params += "&reason=" + reason;
+    params += "&token=";
+    Api api = getActionResult("createaccount", params);
+    handleError(api);
+    String token = api.getCreateaccount().getToken();
+    params += token;
+    api = getActionResult("createaccount", params);
+    return api;
+  }
 
   @Override
   public Ii getImageInfo(String pageTitle) throws Exception {
     // example
     // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
-    String props="timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
-    Api api = getQueryResult( "&prop=imageinfo&iiprop="+props+"&titles="+pageTitle);
+    String props = "timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
+    Api api = getQueryResult("&prop=imageinfo&iiprop=" + props + "&titles="
+        + pageTitle);
     handleError(api);
-    Ii ii =null;
+    Ii ii = null;
     List<Page> pages = api.getQuery().getPages();
     if (pages != null) {
       Page page = pages.get(0);
       if (page != null) {
         Imageinfo imageinfo = page.getImageinfo();
-        if (imageinfo!=null) {
+        if (imageinfo != null) {
           ii = imageinfo.getIi();
         } else {
-          String errMsg="imageinfo for pageTitle '" + pageTitle + "' not found";
+          String errMsg = "imageinfo for pageTitle '" + pageTitle
+              + "' not found";
           this.handleError(errMsg);
         }
       }
@@ -1027,4 +1078,5 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
+
 }

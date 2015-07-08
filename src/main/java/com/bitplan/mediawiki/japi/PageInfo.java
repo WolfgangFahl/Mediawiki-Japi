@@ -29,7 +29,7 @@ public class PageInfo {
   protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
       .getLogger("com.bitplan.mediawiki.japi");
 
-  public static boolean debug = true;
+  public static boolean debug = false;
 
   int namespaceId = -999;
   String lang;

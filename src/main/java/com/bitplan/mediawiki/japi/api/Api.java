@@ -49,6 +49,7 @@ public class Api implements JaxbPersistenceApi<Api> {
   protected Warnings warnings;
   protected Tokens tokens;
   protected Edit edit;
+  protected Delete delete;
   protected Parse parse;
   protected Paraminfo paraminfo;
 
@@ -223,6 +224,20 @@ public class Api implements JaxbPersistenceApi<Api> {
    */
   public Edit getEdit() {
     return edit;
+  }
+
+  /**
+   * @return the delete
+   */
+  public Delete getDelete() {
+    return delete;
+  }
+
+  /**
+   * @param delete the delete to set
+   */
+  public void setDelete(Delete delete) {
+    this.delete = delete;
   }
 
   /**

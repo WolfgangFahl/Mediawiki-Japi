@@ -42,6 +42,8 @@ public class Tokens {
     protected String value;
     @XmlAttribute
     protected String edittoken;
+    @XmlAttribute
+    protected String deletetoken;
     @XmlAttribute(name = "csrftoken")
     protected String csrftoken;
 
@@ -116,6 +118,20 @@ public class Tokens {
      */
     public void setEdittoken(String value) {
         this.edittoken = value;
+    }
+
+    /**
+     * @return the deletetoken
+     */
+    public String getDeletetoken() {
+      return deletetoken;
+    }
+
+    /**
+     * @param deletetoken the deletetoken to set
+     */
+    public void setDeletetoken(String deletetoken) {
+      this.deletetoken = deletetoken;
     }
 
 }

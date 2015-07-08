@@ -193,6 +193,8 @@ public class Page {
     protected XMLGregorianCalendar starttimestamp;
     @XmlAttribute
     protected String edittoken;
+    @XmlAttribute
+    protected String deletetoken;
  
 
     /**
@@ -350,7 +352,8 @@ public class Page {
     public String getEdittoken() {
         return edittoken;
     }
-
+    
+ 
     /**
      * Sets the value of the edittoken property.
      * 
@@ -363,6 +366,20 @@ public class Page {
         this.edittoken = value;
     }
     
+    /**
+     * @return the deletetoken
+     */
+    public String getDeletetoken() {
+      return deletetoken;
+    }
+
+    /**
+     * @param deletetoken the deletetoken to set
+     */
+    public void setDeletetoken(String deletetoken) {
+      this.deletetoken = deletetoken;
+    }
+
     /**
      * Ruft den Wert der imageinfo-Eigenschaft ab.
      * 
@@ -386,4 +403,6 @@ public class Page {
     public void setImageinfo(Imageinfo value) {
         this.imageinfo = value;
     }
+
+   
 }

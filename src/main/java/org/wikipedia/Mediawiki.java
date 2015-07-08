@@ -10,6 +10,7 @@
 package org.wikipedia;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,10 +21,13 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
+import javax.security.auth.login.LoginException;
+
 import com.bitplan.mediawiki.japi.MediaWikiApiImpl;
 import com.bitplan.mediawiki.japi.MediawikiApi;
 import com.bitplan.mediawiki.japi.SiteInfo;
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
@@ -223,6 +227,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public SiteInfo getSiteInfo() throws Exception {
     // FIXME implement
     return null;
+  }
+
+  @Override
+  public Delete delete(String title, String reason) throws Exception {
+    Delete result = new Delete();
+    this.wiki.delete(title, reason);
+    return result;
   }
 
 }

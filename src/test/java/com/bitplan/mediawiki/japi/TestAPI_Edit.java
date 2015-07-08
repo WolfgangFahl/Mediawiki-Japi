@@ -9,12 +9,13 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.junit.Test;
@@ -54,7 +55,7 @@ public class TestAPI_Edit extends APITestbase {
         // lwiki.setDebug(true);
         for (ExamplePage examplePage : exampleEditPages) {
           TokenResult token = lwiki.getMediaWikiJapi().getEditToken(
-              examplePage.getTitle());
+              examplePage.getTitle(), "edit");
           assertNotNull(lwiki.getWikiId(), token);
           assertEquals("token", token.tokenName);
         }
@@ -63,10 +64,31 @@ public class TestAPI_Edit extends APITestbase {
   }
 
   @Test
-  public void testhttps() {
-    // this is a fake test for educational purposes ..
-    // String text=lwiki.getPageContent("https://www.wikipedia.de");
-    // assertTrue(lwiki.contains("Wikimedia Deutschland"));
+  public void testDelete() {
+    Map<String, Throwable> errors = new LinkedHashMap<String, Throwable>();
+    debug = true;
+    for (ExampleWiki lwiki : getWikis()) {
+      try {
+        if (!lwiki.wikiId.contains("org")) {
+          lwiki.login();
+          lwiki.wiki.setDebug(debug);
+          String pageTitle = "deleteMe";
+          lwiki.wiki.edit(pageTitle, pageTitle, pageTitle);
+          lwiki.wiki.delete(pageTitle, "for test");
+          String content = lwiki.wiki.getPageContent(pageTitle);
+          assertNull(content);
+        }
+      } catch (Exception e) {
+        errors.put(lwiki.wikiId, e);
+      }
+    }
+    if (debug) {
+      for (Entry<String, Throwable> errEntry : errors.entrySet()) {
+        System.err.println(errEntry.getKey() + ":" + errEntry.getValue());
+        errEntry.getValue().printStackTrace();
+      }
+    }
+    assertEquals(0, errors.size());
   }
 
   /**
@@ -132,7 +154,6 @@ public class TestAPI_Edit extends APITestbase {
     // current user
   }
 
-  
   /**
    * test copying a page from a source Wiki to a target Wiki
    * 
@@ -152,14 +173,16 @@ public class TestAPI_Edit extends APITestbase {
       String pageTitle = examplePage.getTitle();
       String summary = "created/edited by TestAPI_Edit at "
           + sourceWiki.wiki.getIsoTimeStamp();
-      sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki,
-          pageTitle, summary);
-      
+      sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki, pageTitle,
+          summary);
+
       if (pageTitle.startsWith("File:")) {
-        String sourceUrl=sourceWiki.wiki.getImageInfo(pageTitle).getUrl();
-        assertTrue("url '"+sourceUrl+"' should exist",this.urlExists(sourceUrl));
-        String targetUrl=targetWiki.wiki.getImageInfo(pageTitle).getUrl();
-        assertTrue("url '"+targetUrl+"' should exist",this.urlExists(targetUrl));
+        String sourceUrl = sourceWiki.wiki.getImageInfo(pageTitle).getUrl();
+        assertTrue("url '" + sourceUrl + "' should exist",
+            this.urlExists(sourceUrl));
+        String targetUrl = targetWiki.wiki.getImageInfo(pageTitle).getUrl();
+        assertTrue("url '" + targetUrl + "' should exist",
+            this.urlExists(targetUrl));
       } else {
         String sourceContent = sourceWiki.wiki.getPageContent(pageTitle);
         String targetContent = targetWiki.wiki.getPageContent(pageTitle);

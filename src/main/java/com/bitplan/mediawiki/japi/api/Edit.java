@@ -28,11 +28,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
  *       &lt;attribute name="new" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="result" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="pageid" type="{http://www.w3.org/2001/XMLSchema}byte" />
+ *       &lt;attribute name="pageid" type="{http://www.w3.org/2001/XMLSchema}Integer" />
  *       &lt;attribute name="title" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="contentmodel" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="oldrevid" type="{http://www.w3.org/2001/XMLSchema}byte" />
- *       &lt;attribute name="newrevid" type="{http://www.w3.org/2001/XMLSchema}byte" />
+ *       &lt;attribute name="oldrevid" type="{http://www.w3.org/2001/XMLSchema}Integer" />
+ *       &lt;attribute name="newrevid" type="{http://www.w3.org/2001/XMLSchema}Integer" />
  *       &lt;attribute name="newtimestamp" type="{http://www.w3.org/2001/XMLSchema}dateTime" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
@@ -54,15 +54,15 @@ public class Edit {
     @XmlAttribute
     protected String result;
     @XmlAttribute
-    protected Byte pageid;
+    protected Integer pageid;
     @XmlAttribute
     protected String title;
     @XmlAttribute
     protected String contentmodel;
     @XmlAttribute
-    protected Byte oldrevid;
+    protected Integer oldrevid;
     @XmlAttribute
-    protected Byte newrevid;
+    protected Integer newrevid;
     @XmlAttribute
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar newtimestamp;
@@ -144,10 +144,10 @@ public class Edit {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getPageid() {
+    public Integer getPageid() {
         return pageid;
     }
 
@@ -156,10 +156,10 @@ public class Edit {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setPageid(Byte value) {
+    public void setPageid(Integer value) {
         this.pageid = value;
     }
 
@@ -216,10 +216,10 @@ public class Edit {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getOldrevid() {
+    public Integer getOldrevid() {
         return oldrevid;
     }
 
@@ -228,10 +228,10 @@ public class Edit {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setOldrevid(Byte value) {
+    public void setOldrevid(Integer value) {
         this.oldrevid = value;
     }
 
@@ -240,10 +240,10 @@ public class Edit {
      * 
      * @return
      *     possible object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public Byte getNewrevid() {
+    public Integer getNewrevid() {
         return newrevid;
     }
 
@@ -252,10 +252,10 @@ public class Edit {
      * 
      * @param value
      *     allowed object is
-     *     {@link Byte }
+     *     {@link Integer }
      *     
      */
-    public void setNewrevid(Byte value) {
+    public void setNewrevid(Integer value) {
         this.newrevid = value;
     }
 

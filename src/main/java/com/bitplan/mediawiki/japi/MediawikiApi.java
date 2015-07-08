@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
+import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Login;
@@ -146,6 +147,16 @@ public interface MediawikiApi {
    */
   public String getSectionText(String pageTitle, int sectionNumber)
       throws Exception;
+
+  /**
+   * delete the given page for the given reason
+   * @param title
+   * @param reason
+   * @return 
+   * @throws Exception 
+   * @since 0.0.1
+   */
+  public Delete delete(String title, String reason) throws Exception;
 
   /**
    * Edits a page by setting its text to the supplied value.
