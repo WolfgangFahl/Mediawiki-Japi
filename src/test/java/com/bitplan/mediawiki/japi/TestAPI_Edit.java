@@ -66,7 +66,7 @@ public class TestAPI_Edit extends APITestbase {
   @Test
   public void testDelete() {
     Map<String, Throwable> errors = new LinkedHashMap<String, Throwable>();
-    debug = true;
+    // debug = true;
     for (ExampleWiki lwiki : getWikis()) {
       try {
         if (!lwiki.wikiId.contains("org")) {
