@@ -20,6 +20,7 @@ public class Query {
 	protected Statistics statistics;
 	protected General general;
 	protected List<P> allpages = new ArrayList<P>();
+	protected List<Img> allimages = new ArrayList<Img>();
 	protected List<Page> pages = new ArrayList<Page>();
 	protected List<Rc> recentchanges = new ArrayList<Rc>();
 	protected List<Ns> namespaces=new ArrayList<Ns>();
@@ -98,6 +99,24 @@ public class Query {
 	public void setAllpages(List<P> value) {
 		this.allpages = value;
 	}
+	
+	/**
+   * Gets the value of the allimages property.
+   * 
+   */
+  @XmlElementWrapper(name = "allimages")
+  @XmlElement(name = "img", type = Img.class)
+  public List<Img> getAllImages() {
+    return allimages;
+  }
+
+  /**
+   * Sets the value of the allpages property.
+   * 
+   */
+  public void setAllImages(List<Img> value) {
+    this.allimages = value;
+  }
 
 	/**
 	 * Gets the value of the pages property.

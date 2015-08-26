@@ -20,6 +20,7 @@ import java.util.List;
 import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.S;
@@ -248,6 +249,14 @@ public interface MediawikiApi {
    */
   public List<P> getAllPages(String apfrom, int aplimit) throws Exception;
   
+  /**
+   * get all Images by the given time stamps
+   * @param aistart - start time stamp
+   * @param aiend - end time stamp
+   * @throws Exception 
+   */
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend) throws Exception;  
+
   
   /**
    * get the sections for the given pageTitle
@@ -319,6 +328,7 @@ public interface MediawikiApi {
    * @return - true if debugging is activated
    * @return
    */
-  public boolean isDebug();  
+  public boolean isDebug();
+
 
 }

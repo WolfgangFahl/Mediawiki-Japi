@@ -42,6 +42,7 @@ import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Imageinfo;
+import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
@@ -905,6 +906,20 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     List<P> pageRefList = api.getQuery().getAllpages();
     return pageRefList;
   }
+  
+  @Override
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend) throws Exception {
+    String query = "&list=allimages&aisort=timestamp";
+    if (aistart != null && !aistart.trim().equals("")) {
+      query += "&aistart=" + aistart;
+    }
+    if (aiend != null && !aiend.trim().equals("")) {
+      query += "&aiend=" + aiend;
+    }
+    Api api = getQueryResult(query);
+    List<Img> result = api.getQuery().getAllImages();
+    return result;
+  }
 
   /**
    * handle the given Throwable (in commandline mode)
@@ -1078,5 +1093,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
+
+ 
 
 }

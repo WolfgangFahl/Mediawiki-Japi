@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 import org.junit.Test;
 
+import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.P;
 
 /**
@@ -37,6 +38,23 @@ public class TestAPI_Allpages extends APITestbase {
       LOGGER.log(Level.INFO, "page #=" + pages.size());
     }
     assertTrue(pages.size() >= 7);
+  }
+  
+  @Test
+  public void testAllImages() throws Exception {
+    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_24");
+    lWiki.login();
+    String aistart="20080823180546";
+    String aiend="20990101235959";
+    // lWiki.wiki.setDebug(true);
+    List<Img> images = lWiki.wiki.getAllImagesByTimeStamp(aistart,aiend);
+    if (debug)
+      System.out.println(images.size());
+    assertEquals(2,images.size());
+    String[] expected={"Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg","Wuthering_Heights_NT.pdf"};
+    for (int i=0;i<expected.length;i++) {
+      assertEquals(expected[i],images.get(i).getName());
+    }
   }
 
 }

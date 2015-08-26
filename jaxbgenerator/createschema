@@ -23,7 +23,8 @@ cat << EOF | egrep -v "^#"
 #$l_parse&prop=sections&page=License$l_format
 #file:creataccount.xml
 #file:csrftoken.xml
-https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
+file:allimages.xml
+#https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
 # set your own username and password here
 # change curl further down to -X POST
 #http://www.mediawiki.org/w/api.php?&action=login&lgname=user&lgpassword=password&format=xml
@@ -92,7 +93,7 @@ codegen() {
 	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
 }
 
-codegen imageinfo.xsd
+codegen allimages.xsd
 exit 1
 for query in `queries`
 do

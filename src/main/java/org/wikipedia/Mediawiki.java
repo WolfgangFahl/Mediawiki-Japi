@@ -31,6 +31,7 @@ import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.S;
@@ -234,6 +235,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     Delete result = new Delete();
     this.wiki.delete(title, reason);
     return result;
+  }
+
+  @Override
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend) {
+   // FIXME implement
+    return null;
   }
 
 }
