@@ -238,7 +238,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   @Override
-  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend) {
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend, int ailimit) {
    // FIXME implement
     return null;
   }

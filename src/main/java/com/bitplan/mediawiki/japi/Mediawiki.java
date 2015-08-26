@@ -908,7 +908,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
   
   @Override
-  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend) throws Exception {
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend, int ailimit) throws Exception {
     String query = "&list=allimages&aisort=timestamp";
     if (aistart != null && !aistart.trim().equals("")) {
       query += "&aistart=" + aistart;
@@ -916,6 +916,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (aiend != null && !aiend.trim().equals("")) {
       query += "&aiend=" + aiend;
     }
+    query+="&ailimit="+ailimit;
     Api api = getQueryResult(query);
     List<Img> result = api.getQuery().getAllImages();
     return result;

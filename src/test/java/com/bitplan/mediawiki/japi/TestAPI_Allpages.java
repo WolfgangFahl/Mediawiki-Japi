@@ -46,8 +46,9 @@ public class TestAPI_Allpages extends APITestbase {
     lWiki.login();
     String aistart="20080823180546";
     String aiend="20990101235959";
+    int ailimit=500;
     // lWiki.wiki.setDebug(true);
-    List<Img> images = lWiki.wiki.getAllImagesByTimeStamp(aistart,aiend);
+    List<Img> images = lWiki.wiki.getAllImagesByTimeStamp(aistart,aiend,ailimit);
     if (debug)
       System.out.println(images.size());
     assertEquals(2,images.size());

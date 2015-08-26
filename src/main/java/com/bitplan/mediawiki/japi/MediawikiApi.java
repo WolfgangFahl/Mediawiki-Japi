@@ -253,9 +253,10 @@ public interface MediawikiApi {
    * get all Images by the given time stamps
    * @param aistart - start time stamp
    * @param aiend - end time stamp
+   * @param ailimit - how many images to get
    * @throws Exception 
    */
-  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend) throws Exception;  
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend, int ailimit) throws Exception;  
 
   
   /**
