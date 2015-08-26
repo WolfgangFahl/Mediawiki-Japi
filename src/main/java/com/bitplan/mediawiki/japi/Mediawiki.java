@@ -37,12 +37,14 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Bl;
 import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Img;
+import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
@@ -921,6 +923,27 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     List<Img> result = api.getQuery().getAllImages();
     return result;
   }
+  
+  @Override
+  public List<Bl> getBacklinks(String pageTitle, String params, int bllimit) throws Exception {
+    String query="&list=backlinks&bltitle="+normalize(pageTitle);
+    query+="&bllimit="+bllimit;
+    query+=params;
+    Api api=getQueryResult(query);
+    List<Bl> result = api.getQuery().getBacklinks();
+    return result;
+  }
+  
+  @Override
+  public List<Iu> getImageUsage(String imageTitle, String params, int limit)
+      throws Exception {
+    String query="&list=imageusage&iutitle="+normalize(imageTitle);
+    query+="&iulimit="+limit;
+    query+=params;
+    Api api=getQueryResult(query);
+    List<Iu> result = api.getQuery().getImageusage();
+    return result; 
+  }
 
   /**
    * handle the given Throwable (in commandline mode)
@@ -1094,6 +1117,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
+
+ 
+
+ 
 
  
 

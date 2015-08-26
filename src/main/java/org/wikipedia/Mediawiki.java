@@ -27,11 +27,13 @@ import com.bitplan.mediawiki.japi.MediaWikiApiImpl;
 import com.bitplan.mediawiki.japi.MediawikiApi;
 import com.bitplan.mediawiki.japi.SiteInfo;
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Bl;
 import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Img;
+import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.S;
@@ -240,6 +242,20 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Override
   public List<Img> getAllImagesByTimeStamp(String aistart, String aiend, int ailimit) {
    // FIXME implement
+    return null;
+  }
+
+  @Override
+  public List<Bl> getBacklinks(String pageTitle, String params, int limit)
+      throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Iu> getImageUsage(String imageTitle, String params, int limit)
+      throws Exception {
+    // TODO Auto-generated method stub
     return null;
   }
 

@@ -24,23 +24,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="backlinks">
+ *         &lt;element name="bl">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="bl">
- *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;attribute name="pageid" type="{http://www.w3.org/2001/XMLSchema}int" />
- *                           &lt;attribute name="ns" type="{http://www.w3.org/2001/XMLSchema}int" />
- *                           &lt;attribute name="title" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
- *                     &lt;/complexType>
- *                   &lt;/element>
- *                 &lt;/sequence>
+ *                 &lt;attribute name="pageid" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *                 &lt;attribute name="ns" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *                 &lt;attribute name="title" type="{http://www.w3.org/2001/XMLSchema}string" />
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
@@ -55,35 +45,35 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "backlinks"
+    "bl"
 })
-public class Query {
+public class Backlinks {
 
     @XmlElement(required = true)
-    protected Backlinks backlinks;
+    protected Bl bl;
 
     /**
-     * Ruft den Wert der backlinks-Eigenschaft ab.
+     * Ruft den Wert der bl-Eigenschaft ab.
      * 
      * @return
      *     possible object is
-     *     {@link Backlinks }
+     *     {@link Bl }
      *     
      */
-    public Backlinks getBacklinks() {
-        return backlinks;
+    public Bl getBl() {
+        return bl;
     }
 
     /**
-     * Legt den Wert der backlinks-Eigenschaft fest.
+     * Legt den Wert der bl-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
-     *     {@link Backlinks }
+     *     {@link Bl }
      *     
      */
-    public void setBacklinks(Backlinks value) {
-        this.backlinks = value;
+    public void setBl(Bl value) {
+        this.bl = value;
     }
 
 }

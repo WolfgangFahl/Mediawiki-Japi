@@ -16,7 +16,9 @@ import java.util.logging.Level;
 
 import org.junit.Test;
 
+import com.bitplan.mediawiki.japi.api.Bl;
 import com.bitplan.mediawiki.japi.api.Img;
+import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.P;
 
 /**
@@ -56,6 +58,25 @@ public class TestAPI_Allpages extends APITestbase {
     for (int i=0;i<expected.length;i++) {
       assertEquals(expected[i],images.get(i).getName());
     }
+    // lWiki.wiki.setDebug(true);
+    String[] expectedUsage={"Picture Example","PDF Example"};
+    int i=0;
+    for (Img img:images) {
+      List<Iu> ius = lWiki.wiki.getImageUsage("File:"+img.getName(),"",50);
+      assertTrue(ius.size()==1);
+      assertEquals(expectedUsage[i],ius.get(0).getTitle());
+      i++;
+    }
   }
-
+  
+  @Test
+  public void testBacklink() throws Exception {
+    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_24");
+    lWiki.login();
+    // lWiki.wiki.setDebug(true);
+    String pageTitle="Picture Example";
+    List<Bl> bls = lWiki.wiki.getBacklinks(pageTitle,"", 50);
+    assertTrue(bls.size()>0);
+    assertEquals("PDF Example",bls.get(0).getTitle());
+  }
 }

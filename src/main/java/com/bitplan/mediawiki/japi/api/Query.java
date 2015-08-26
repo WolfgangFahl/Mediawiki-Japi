@@ -21,6 +21,8 @@ public class Query {
 	protected General general;
 	protected List<P> allpages = new ArrayList<P>();
 	protected List<Img> allimages = new ArrayList<Img>();
+	protected List<Bl> backlinks=new ArrayList<Bl>();
+	protected List<Iu> imageusages=new ArrayList<Iu>();
 	protected List<Page> pages = new ArrayList<Page>();
 	protected List<Rc> recentchanges = new ArrayList<Rc>();
 	protected List<Ns> namespaces=new ArrayList<Ns>();
@@ -117,6 +119,43 @@ public class Query {
   public void setAllImages(List<Img> value) {
     this.allimages = value;
   }
+  
+  /**
+   * Gets the value of the backlinks property.
+   * 
+   */
+  @XmlElementWrapper(name = "backlinks")
+  @XmlElement(name = "bl", type = Bl.class)
+  public List<Bl> getBacklinks() {
+    return backlinks;
+  }
+
+  /**
+   * Sets the value of the backlinks property.
+   * 
+   */
+  public void setBacklinks(List<Bl> value) {
+    this.backlinks = value;
+  }
+  
+  /**
+   * Gets the value of the backlinks property.
+   * 
+   */
+  @XmlElementWrapper(name = "imageusage")
+  @XmlElement(name = "iu", type = Iu.class)
+  public List<Iu> getImageusage() {
+    return this.imageusages;
+  }
+
+  /**
+   * Sets the value of the imageusages property.
+   * 
+   */
+  public void setImageusage(List<Iu> value) {
+    this.imageusages = value;
+  }
+  
 
 	/**
 	 * Gets the value of the pages property.

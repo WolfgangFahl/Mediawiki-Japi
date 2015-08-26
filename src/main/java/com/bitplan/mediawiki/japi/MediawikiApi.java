@@ -17,10 +17,12 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
+import com.bitplan.mediawiki.japi.api.Bl;
 import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Img;
+import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.S;
@@ -330,6 +332,24 @@ public interface MediawikiApi {
    * @return
    */
   public boolean isDebug();
+
+  /**
+   * get the backlinks for the given pagetitle
+   * @param pagetitle
+   * @param params - extra params
+   * @limit - the limit for the number of results to return
+   * @throws Exception 
+   */
+  public List<Bl> getBacklinks(String pageTitle,String params, int limit) throws Exception;
+  
+  /**
+   * get the imageusage for the given imageTitle
+   * @param imageTitle
+   * @param params - extra params
+   * @limit - the limit for the number of results to return
+   * @throws Exception 
+   */
+  public List<Iu> getImageUsage(String imageTitle,String params, int limit) throws Exception;
 
 
 }

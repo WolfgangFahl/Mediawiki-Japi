@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.8-b130911.1802 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2015.08.26 um 04:12:24 PM CEST 
+// Generiert: 2015.08.26 um 04:12:23 PM CEST 
 //
 
 
@@ -24,23 +24,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="backlinks">
+ *         &lt;element name="iu">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="bl">
- *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;attribute name="pageid" type="{http://www.w3.org/2001/XMLSchema}int" />
- *                           &lt;attribute name="ns" type="{http://www.w3.org/2001/XMLSchema}int" />
- *                           &lt;attribute name="title" type="{http://www.w3.org/2001/XMLSchema}string" />
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
- *                     &lt;/complexType>
- *                   &lt;/element>
- *                 &lt;/sequence>
+ *                 &lt;attribute name="pageid" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *                 &lt;attribute name="ns" type="{http://www.w3.org/2001/XMLSchema}int" />
+ *                 &lt;attribute name="title" type="{http://www.w3.org/2001/XMLSchema}string" />
  *               &lt;/restriction>
  *             &lt;/complexContent>
  *           &lt;/complexType>
@@ -55,35 +45,35 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "backlinks"
+    "iu"
 })
-public class Query {
+public class Imageusage {
 
     @XmlElement(required = true)
-    protected Backlinks backlinks;
+    protected Iu iu;
 
     /**
-     * Ruft den Wert der backlinks-Eigenschaft ab.
+     * Ruft den Wert der iu-Eigenschaft ab.
      * 
      * @return
      *     possible object is
-     *     {@link Backlinks }
+     *     {@link Iu }
      *     
      */
-    public Backlinks getBacklinks() {
-        return backlinks;
+    public Iu getIu() {
+        return iu;
     }
 
     /**
-     * Legt den Wert der backlinks-Eigenschaft fest.
+     * Legt den Wert der iu-Eigenschaft fest.
      * 
      * @param value
      *     allowed object is
-     *     {@link Backlinks }
+     *     {@link Iu }
      *     
      */
-    public void setBacklinks(Backlinks value) {
-        this.backlinks = value;
+    public void setIu(Iu value) {
+        this.iu = value;
     }
 
 }
