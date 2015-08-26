@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.7|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.8|jar
 
 Maven dependency:
 
@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.7</version>
+  <version>0.0.8</version>
 </dependency>
 ```
 
@@ -116,3 +116,4 @@ unit tests supplied with Wiki.java).
 * 0.0.6 - 2015-07-02: fixes revprop handling											
 * 0.0.7 - 2015-07-08: fixes #14 namespace handling in copy 
                       adds #15 - delete function
+* 0.0.8 - 2015-08-26: fixes #16 allImages support (timestamp based for the time being)                      
