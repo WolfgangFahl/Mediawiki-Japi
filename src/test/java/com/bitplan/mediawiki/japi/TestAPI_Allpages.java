@@ -122,8 +122,10 @@ public class TestAPI_Allpages extends APITestbase {
       List<Ii> imageInfos = lWiki.wiki.getImageInfosForPage(pageTitle, 100);
       assertEquals(expected[i].length, imageInfos.size());
       for (int j = 0; j < imageInfos.size(); j++) {
-        assertTrue(imageInfos.get(j).getUrl(), imageInfos.get(j).getUrl()
+        Ii imageInfo=imageInfos.get(j);
+        assertTrue(imageInfo.getUrl(), imageInfo.getUrl()
             .contains(expected[i][j]));
+        System.out.println(imageInfo.getCanonicaltitle());
       }
       i++;
     }

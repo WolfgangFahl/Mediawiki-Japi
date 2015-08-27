@@ -1142,6 +1142,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     List<Ii> result=new ArrayList<Ii>();
     for (Im image:images) {
       Ii imageinfo=this.getImageInfo(image.getTitle());
+      if (imageinfo.getCanonicaltitle()==null) {
+        imageinfo.setCanonicaltitle(image.getTitle());
+      }
       result.add(imageinfo);
     }
     return result;
