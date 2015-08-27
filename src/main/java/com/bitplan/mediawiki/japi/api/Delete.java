@@ -8,15 +8,14 @@ import javax.xml.bind.annotation.XmlAttribute;
  *
  */
 public class Delete {
-  @XmlAttribute
+
   protected String title;
-  @XmlAttribute
   protected String reason;
-  @XmlAttribute
   protected Integer logid;
   /**
    * @return the title
    */
+  @XmlAttribute
   public String getTitle() {
     return title;
   }
@@ -29,6 +28,7 @@ public class Delete {
   /**
    * @return the reason
    */
+  @XmlAttribute
   public String getReason() {
     return reason;
   }
@@ -41,6 +41,7 @@ public class Delete {
   /**
    * @return the logid
    */
+  @XmlAttribute
   public Integer getLogid() {
     return logid;
   }
