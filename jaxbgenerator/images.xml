@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<api>
+<query>
+<pages>
+<page pageid="13" ns="0" title="Image Example">
+<images>
+<im ns="6" title="File:Radcliffe Chastenay - Les Mysteres d Udolphe frontispice T6.jpg" />
+<im ns="6" title="File:Wuthering Heights NT.pdf" />
+</images>
+</page>
+</pages>
+</query>
+</api>

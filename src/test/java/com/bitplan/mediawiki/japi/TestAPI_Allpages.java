@@ -69,7 +69,7 @@ public class TestAPI_Allpages extends APITestbase {
     int i = 0;
     for (Img img : images) {
       List<Iu> ius = lWiki.wiki.getImageUsage("File:" + img.getName(), "", 50);
-      assertTrue(ius.size() == 1);
+      assertTrue(ius.size() > 1);
       assertEquals(expectedUsage[i], ius.get(0).getTitle());
       i++;
     }
