@@ -42,6 +42,7 @@ import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Im;
 import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Iu;
@@ -72,7 +73,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.7";
+  protected static final String VERSION = "0.0.8";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -920,6 +921,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     query+="&ailimit="+ailimit;
     Api api = getQueryResult(query);
+    handleError(api);
     List<Img> result = api.getQuery().getAllImages();
     return result;
   }
@@ -930,6 +932,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     query+="&bllimit="+bllimit;
     query+=params;
     Api api=getQueryResult(query);
+    handleError(api);
     List<Bl> result = api.getQuery().getBacklinks();
     return result;
   }
@@ -941,6 +944,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     query+="&iulimit="+limit;
     query+=params;
     Api api=getQueryResult(query);
+    handleError(api);
     List<Iu> result = api.getQuery().getImageusage();
     return result; 
   }
@@ -1094,7 +1098,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
     String props = "timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
     Api api = getQueryResult("&prop=imageinfo&iiprop=" + props + "&titles="
-        + pageTitle);
+        + normalize(pageTitle));
     handleError(api);
     Ii ii = null;
     List<Page> pages = api.getQuery().getPages();
@@ -1117,11 +1121,30 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
-
  
+  @Override
+  public List<Im> getImagesOnPage(String pageTitle, int imLimit) throws Exception {
+    String query="&titles="+normalize(pageTitle)+"&prop=images&imlimit="+imLimit;
+    Api api = getQueryResult(query);
+    handleError(api);
+    List<Page> pages = api.getQuery().getPages();
+    List<Im> result=new ArrayList<Im>();
+    if (pages.size()>0) {
+      Page page=pages.get(0);
+      result=page.getImages();
+    }
+    return result;
+  }
 
- 
-
- 
+  @Override
+  public List<Ii> getImageInfosForPage(String pageTitle, int imLimit) throws Exception {
+    List<Im> images=this.getImagesOnPage(pageTitle, imLimit);
+    List<Ii> result=new ArrayList<Ii>();
+    for (Im image:images) {
+      Ii imageinfo=this.getImageInfo(image.getTitle());
+      result.add(imageinfo);
+    }
+    return result;
+  }
 
 }

@@ -76,6 +76,8 @@ public class Page {
     protected String title;
     @XmlTransient
     protected List<Rev> revisions=new ArrayList<Rev>();
+    @XmlTransient
+    protected List<Im> images=new ArrayList<Im>();
     @XmlElement
     protected Imageinfo imageinfo;
 
@@ -99,6 +101,28 @@ public class Page {
      */
     public void setRevisions(List<Rev> value) {
         this.revisions = value;
+    }
+    
+    /**
+     * Gets the value of the images property.
+     * 
+     * @return list of {@link Im }
+     *     
+     */
+    @XmlElementWrapper(name="images")
+    @XmlElement(name="im", type=Im.class)
+    public List<Im> getImages() {
+        return images;
+    }
+
+    /**
+     * Sets the value of the images property.
+     * 
+     * @param value list of  {@link Im }
+     *     
+     */
+    public void setImages(List<Im> value) {
+        this.images = value;
     }
 
     /**

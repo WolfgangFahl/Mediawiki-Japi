@@ -21,6 +21,8 @@ import com.bitplan.mediawiki.japi.api.Bl;
 import com.bitplan.mediawiki.japi.api.Delete;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Im;
+import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.Login;
@@ -80,12 +82,14 @@ public interface MediawikiApi {
    * @throws Exception
    */
   public SiteInfo getSiteInfo() throws Exception;
-  
+
   /**
    * get the Image Info for the given pageTitle
-   * @param pageTitle - the pageTitle to get the ImageInfo for
+   * 
+   * @param pageTitle
+   *          - the pageTitle to get the ImageInfo for
    * @return - the Image Info
-   * @throws Exception 
+   * @throws Exception
    */
   public Ii getImageInfo(String pageTitle) throws Exception;
 
@@ -141,6 +145,17 @@ public interface MediawikiApi {
   public String getPageContent(String pageTitle) throws Exception;
 
   /**
+   * get the Images on the given page
+   * 
+   * @param pageTitle
+   * @param imLimit
+   * @return
+   * @throws Exception
+   */
+  public List<Im> getImagesOnPage(String pageTitle, int imLimit)
+      throws Exception;
+
+  /**
    * get the content of the given section
    * 
    * @param pageTitle
@@ -153,10 +168,11 @@ public interface MediawikiApi {
 
   /**
    * delete the given page for the given reason
+   * 
    * @param title
    * @param reason
-   * @return 
-   * @throws Exception 
+   * @return
+   * @throws Exception
    * @since 0.0.1
    */
   public Delete delete(String title, String reason) throws Exception;
@@ -225,20 +241,22 @@ public interface MediawikiApi {
    *           - if the upload fails
    * @since 0.0.3
    */
-  public void upload(File file, String filename, String pageContent, String comment)
-      throws Exception;
-  
+  public void upload(File file, String filename, String pageContent,
+      String comment) throws Exception;
+
   /**
    * upload the image described in the given imageinfo
+   * 
    * @param ii
    * @param fileName
    * @param pageContent
    *          the contents of the image description page, set to "" if
    *          overwriting an existing file
-   * @throws Exception 
+   * @throws Exception
    * @since 0.0.5
    */
-  public void upload(Ii ii, String fileName, String pageContent) throws Exception;
+  public void upload(Ii ii, String fileName, String pageContent)
+      throws Exception;
 
   /**
    * getAllPages
@@ -250,19 +268,24 @@ public interface MediawikiApi {
    * @throws Exception
    */
   public List<P> getAllPages(String apfrom, int aplimit) throws Exception;
-  
+
   /**
    * get all Images by the given time stamps
-   * @param aistart - start time stamp
-   * @param aiend - end time stamp
-   * @param ailimit - how many images to get
-   * @throws Exception 
+   * 
+   * @param aistart
+   *          - start time stamp
+   * @param aiend
+   *          - end time stamp
+   * @param ailimit
+   *          - how many images to get
+   * @throws Exception
    */
-  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend, int ailimit) throws Exception;  
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend,
+      int ailimit) throws Exception;
 
-  
   /**
    * get the sections for the given pageTitle
+   * 
    * @param pageTitle
    * @return
    * @throws Exception
@@ -335,21 +358,37 @@ public interface MediawikiApi {
 
   /**
    * get the backlinks for the given pagetitle
+   * 
    * @param pagetitle
-   * @param params - extra params
+   * @param params
+   *          - extra params
    * @limit - the limit for the number of results to return
-   * @throws Exception 
+   * @throws Exception
    */
-  public List<Bl> getBacklinks(String pageTitle,String params, int limit) throws Exception;
-  
+  public List<Bl> getBacklinks(String pageTitle, String params, int limit)
+      throws Exception;
+
   /**
    * get the imageusage for the given imageTitle
+   * 
    * @param imageTitle
-   * @param params - extra params
+   * @param params
+   *          - extra params
    * @limit - the limit for the number of results to return
-   * @throws Exception 
+   * @throws Exception
    */
-  public List<Iu> getImageUsage(String imageTitle,String params, int limit) throws Exception;
+  public List<Iu> getImageUsage(String imageTitle, String params, int limit)
+      throws Exception;
 
+  /**
+   * get the imageInfos for all images on the given page Title
+   * 
+   * @param pageTitle
+   * @limit - the limit for the number of results to return
+   * @throws Exception
+   * 
+   * @return the list of ImageInfos
+   */
+  public List<Ii> getImageInfosForPage(String pageTitle, int limit) throws Exception;
 
 }
