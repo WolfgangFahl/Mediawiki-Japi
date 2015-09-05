@@ -355,6 +355,14 @@ public interface MediawikiApi {
    * @return
    */
   public boolean isDebug();
+  
+  /**
+   * normalize the given page title
+   * @param title - a raw page title
+   * @return a valid page title see https://www.mediawiki.org/wiki/Manual:Page_title
+   * @throws Exception
+   */
+  public String normalizeTitle(String title) throws Exception;
 
   /**
    * get the backlinks for the given pagetitle

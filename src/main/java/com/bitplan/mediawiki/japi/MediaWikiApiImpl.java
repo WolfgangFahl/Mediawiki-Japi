@@ -13,6 +13,7 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import java.net.URLEncoder;
 import java.util.logging.Level;
 
 import com.bitplan.mediawiki.japi.api.Api;
@@ -198,5 +199,28 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
     String mediawikiVersion=getSiteInfo().getVersion();
     return mediawikiVersion;
   }
-  
+  /**
+   * request parameter encoding
+   * 
+   * @param param
+   * @return an encoded url parameter
+   * @throws Exception
+   */
+  protected String encode(String param) throws Exception {
+    String result = URLEncoder.encode(param, "UTF-8");
+    return result;
+  }
+
+  /**
+   * normalize the given page title
+   * 
+   * @param title
+   * @return the normalized title e.g. replacing blanks FIXME encode is not good
+   *         enough
+   * @throws Exception
+   */
+  public String normalizeTitle(String title) throws Exception {
+    String result = encode(title);
+    return result;
+  }
 }

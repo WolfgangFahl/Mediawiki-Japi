@@ -430,30 +430,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return result;
   }
 
-  /**
-   * request parameter encoding
-   * 
-   * @param param
-   * @return an encoded url parameter
-   * @throws Exception
-   */
-  protected String encode(String param) throws Exception {
-    String result = URLEncoder.encode(param, "UTF-8");
-    return result;
-  }
-
-  /**
-   * normalize the given page title
-   * 
-   * @param title
-   * @return the normalized title e.g. replacing blanks FIXME encode is not good
-   *         enough
-   * @throws Exception
-   */
-  protected String normalize(String title) throws Exception {
-    String result = encode(title);
-    return result;
-  }
+  
 
   /**
    * get a normalized | delimited (encoded as %7C) string of titles
@@ -467,7 +444,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String titles = "";
     String delim = "";
     for (String title : titleList) {
-      titles = titles + delim + normalize(title);
+      titles = titles + delim + normalizeTitle(title);
       delim = "%7C";
     }
     return titles;
@@ -553,7 +530,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public String getPageContent(String pageTitle, String queryParams,
       boolean checkNotNull) throws Exception {
     Api api = getQueryResult("&prop=revisions&rvprop=content" + queryParams
-        + "&titles=" + normalize(pageTitle));
+        + "&titles=" + normalizeTitle(pageTitle));
     handleError(api);
     List<Page> pages = api.getQuery().getPages();
     String content = null;
@@ -715,7 +692,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public TokenResult getEditToken(String pageTitle, String type)
       throws Exception {
-    pageTitle = normalize(pageTitle);
+    pageTitle = normalizeTitle(pageTitle);
     String editversion = "";
     String action = "query";
     String params = "&meta=tokens";
@@ -928,7 +905,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   
   @Override
   public List<Bl> getBacklinks(String pageTitle, String params, int bllimit) throws Exception {
-    String query="&list=backlinks&bltitle="+normalize(pageTitle);
+    String query="&list=backlinks&bltitle="+normalizeTitle(pageTitle);
     query+="&bllimit="+bllimit;
     query+=params;
     Api api=getQueryResult(query);
@@ -940,7 +917,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Override
   public List<Iu> getImageUsage(String imageTitle, String params, int limit)
       throws Exception {
-    String query="&list=imageusage&iutitle="+normalize(imageTitle);
+    String query="&list=imageusage&iutitle="+normalizeTitle(imageTitle);
     query+="&iulimit="+limit;
     query+=params;
     Api api=getQueryResult(query);
@@ -1098,7 +1075,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
     String props = "timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
     Api api = getQueryResult("&prop=imageinfo&iiprop=" + props + "&titles="
-        + normalize(pageTitle));
+        + normalizeTitle(pageTitle));
     handleError(api);
     Ii ii = null;
     List<Page> pages = api.getQuery().getPages();
@@ -1124,7 +1101,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
  
   @Override
   public List<Im> getImagesOnPage(String pageTitle, int imLimit) throws Exception {
-    String query="&titles="+normalize(pageTitle)+"&prop=images&imlimit="+imLimit;
+    String query="&titles="+normalizeTitle(pageTitle)+"&prop=images&imlimit="+imLimit;
     Api api = getQueryResult(query);
     handleError(api);
     List<Page> pages = api.getQuery().getPages();
