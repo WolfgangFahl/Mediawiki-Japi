@@ -81,7 +81,7 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
   public T fromString(Unmarshaller u, String s) throws Exception {
     // unmarshal the string to a Java object of type <T> (classOfT has the
     // runtime type)
-    StringReader stringReader = new StringReader(s);
+    StringReader stringReader = new StringReader(s.trim());
     T result = null;
     // this step will convert from xml text to Java Object
     try {
