@@ -59,13 +59,13 @@ public class TestAPI_Allpages extends APITestbase {
       System.out.println(images.size());
     assertEquals(2, images.size());
     String[] expected = {
-        "Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg",
-        "Wuthering_Heights_NT.pdf" };
+        "Wuthering_Heights_NT.pdf" ,   "Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg",
+        };
     for (int i = 0; i < expected.length; i++) {
       assertEquals(expected[i], images.get(i).getName());
     }
     // lWiki.wiki.setDebug(true);
-    String[] expectedUsage = { "Picture Example", "PDF Example" };
+    String[] expectedUsage = {  "PDF Example","Picture Example" };
     int i = 0;
     for (Img img : images) {
       List<Iu> ius = lWiki.wiki.getImageUsage("File:" + img.getName(), "", 50);
