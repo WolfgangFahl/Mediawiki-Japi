@@ -173,9 +173,10 @@ public class TestAPI_Edit extends APITestbase {
       String pageTitle = examplePage.getTitle();
       String summary = "created/edited by TestAPI_Edit at "
           + sourceWiki.wiki.getIsoTimeStamp();
-      sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki, pageTitle,
+      Edit copyEdit=sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki, pageTitle,
           summary);
-
+      assertNotNull(copyEdit);
+      assertNotNull(copyEdit.getTitle());
       if (pageTitle.startsWith("File:")) {
         String sourceUrl = sourceWiki.wiki.getImageInfo(pageTitle).getUrl();
         assertTrue("url '" + sourceUrl + "' should exist",

@@ -184,6 +184,8 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
         filename=filename.replaceFirst(nameSpaceName+":", "");
       }
       targetWiki.upload(ii,filename,content);
+      result=new Edit();
+      result.setTitle(filename);
     } else {
       result = targetWiki.edit(targetPageTitle, content, summary);
     }
