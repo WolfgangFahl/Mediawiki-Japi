@@ -43,7 +43,7 @@ public class TestCreateAccount extends APITestbase {
 		ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
 		Mediawiki wiki = (Mediawiki) lwiki.wiki;
 		lwiki.login();
-		lwiki.wiki.setDebug(true);
+		// lwiki.wiki.setDebug(true);
 		Api api=wiki.createAccount("JohnDoe4","wf@bitplan.com","John%20Doe",true,"SMWCon2015-05","en");
 		assertNull(api.getWarnings());
 		String result=api.getCreateaccount().getResult();
