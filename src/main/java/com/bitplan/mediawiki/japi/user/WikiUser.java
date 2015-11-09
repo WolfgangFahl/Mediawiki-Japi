@@ -60,15 +60,13 @@ public class WikiUser {
 	/**
 	 * get input from standard in
 	 * @param name
+	 * @param br - the buffered reader to read from
 	 * @return the input returned
 	 * @throws IOException 
 	 */
-	public static String getInput(String name) throws IOException {
+	public static String getInput(String name, BufferedReader br) throws IOException {
 		// prompt the user to enter the given name
 		System.out.print("Please Enter " + name + ": ");
-
-		// open up standard input
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		String value = br.readLine();
 		return value;
@@ -152,13 +150,15 @@ public class WikiUser {
 	 */
 	public static void createIniFile(String wikiid) {
 		try {
+		  // open up standard input
+	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			if (wikiid==null)
-				wikiid=getInput("wiki id");
+				wikiid=getInput("wiki id",br);
 			File propFile=getPropertyFile(wikiid);
-			String username = getInput("username");
-			String password = getInput("password");
-			String email=getInput("email");
-			String remember= getInput("shall i store "+username+"'s credentials encrypted in "+propFile.getName()+" y/n?");
+			String username = getInput("username",br);
+			String password = getInput("password",br);
+			String email=getInput("email",br);
+			String remember= getInput("shall i store "+username+"'s credentials encrypted in "+propFile.getName()+" y/n?",br);
 			if (remember.trim().toLowerCase().startsWith("y")) {
 				Crypt lCrypt=Crypt.getRandomCrypt();
 				Properties props = new Properties();
