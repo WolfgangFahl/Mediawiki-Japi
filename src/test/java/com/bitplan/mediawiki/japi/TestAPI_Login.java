@@ -77,8 +77,32 @@ public class TestAPI_Login extends APITestbase {
       assertNotNull(login.getLguserid());
       assertEquals(wuser.getUsername().toLowerCase(), login.getLgusername()
           .toLowerCase());
+      assertEquals("Success", login.getResult());
       assertNotNull(login.getLgtoken());
       assertTrue(lwiki.wiki.isLoggedIn());
+      // make sure logout also works
+      lwiki.wiki.logout();
+      assertFalse(lwiki.wiki.isLoggedIn());
+    }
+  }
+  
+  @Test
+  public void testLoginWrongPassword() throws Exception {
+    for (ExampleWiki lwiki : getWikis()) {
+      WikiUser wuser = lwiki.getWikiUser();
+      if (wuser == null) {
+        fail(WikiUser.help(lwiki.wikiId, lwiki.wiki.getSiteurl()));
+      }
+      // avoid uncommenting - will show password information ...
+      // lwiki.debug = true;
+      assertFalse(lwiki.wiki.isLoggedIn());
+      // spoilt the password
+      Login login = lwiki.wiki.login(wuser.getUsername(), "not"+wuser.getPassword());
+      assertNull(login.getLguserid());
+      assertNull(login.getLgusername());
+      assertEquals("WrongPass", login.getResult());
+      assertNull(login.getLgtoken());
+      assertFalse(lwiki.wiki.isLoggedIn());
       // make sure logout also works
       lwiki.wiki.logout();
       assertFalse(lwiki.wiki.isLoggedIn());
