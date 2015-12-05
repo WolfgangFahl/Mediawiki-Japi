@@ -223,6 +223,7 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    */
   public String normalizeTitle(String title) throws Exception {
     String result = encode(title);
+    result=result.replace("+","_");
     return result;
   }
 }

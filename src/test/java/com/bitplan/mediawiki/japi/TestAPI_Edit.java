@@ -9,9 +9,11 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,4 +226,15 @@ public class TestAPI_Edit extends APITestbase {
     assertEquals("== section 3 ==\n" + "\n" + "section 3 content", section3Edit);
   }
 
+  @Test
+  public void testNormalizeTitle() throws Exception {
+    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
+    String titles[]={"Nice Page"};
+    String expected[]={"Nice_Page"};
+    int index=0;
+    for (String title:titles) {
+      String result=lwiki.wiki.normalizeTitle(title);
+      assertEquals(expected[index++],result);
+    }
+  }
 }
