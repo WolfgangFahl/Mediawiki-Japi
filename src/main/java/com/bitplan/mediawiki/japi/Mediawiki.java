@@ -21,7 +21,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +76,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.12";
+  protected static final String VERSION = "0.0.13";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -82,11 +85,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * see <a href=
-   * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>Iden
-   * t i f y i n g your client:User-Agent</a>
+   * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>
+   * Iden t i f y i n g your client:User-Agent</a>
    */
-  protected static final String USER_AGENT = "Mediawiki-Japi/"
-      + VERSION
+  protected static final String USER_AGENT = "Mediawiki-Japi/" + VERSION
       + " (https://github.com/WolfgangFahl/Mediawiki-Japi; support@bitplan.com)";
 
   /**
@@ -296,15 +298,16 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       }
     }
     Builder resource = getResource(queryUrl + params);
-    // FIXME allow to specify content type (not needed for Mediawiki itself but
+    // FIXME allow to specify content type (not needed for Mediawiki itself
+    // but
     // could be good for interfacing )
     ClientResponse response = null;
     if (lFormData != null) {
       response = resource.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
           .post(ClientResponse.class, lFormData);
     } else {
-      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).post(
-          ClientResponse.class, form);
+      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE)
+          .post(ClientResponse.class, form);
     }
     return response;
   }
@@ -321,7 +324,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return
    * @throws Exception
    */
-  public ClientResponse getResponse(String url, Method method) throws Exception {
+  public ClientResponse getResponse(String url, Method method)
+      throws Exception {
     Builder resource = getResource(url);
     ClientResponse response = null;
     switch (method) {
@@ -430,8 +434,6 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return result;
   }
 
-  
-
   /**
    * get a normalized | delimited (encoded as %7C) string of titles
    * 
@@ -479,15 +481,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public Login login(String username, String password) throws Exception {
     username = encode(username);
     password = encode(password);
-    Api apiResult = getActionResult("login", "&lgname=" + username
-        + "&lgpassword=" + password, null, null);
+    Api apiResult = getActionResult("login",
+        "&lgname=" + username + "&lgpassword=" + password, null, null);
     Login login = apiResult.getLogin();
     TokenResult token = new TokenResult();
     token.token = login.getToken();
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
-    apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
-        + password, token, null);
+    apiResult = getActionResult("login",
+        "&lgname=" + username + "&lgpassword=" + password, token, null);
     login = apiResult.getLogin();
     userid = login.getLguserid();
     return login;
@@ -571,8 +573,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public String getSectionText(String pageTitle, int sectionNumber)
       throws Exception {
-    String result = this.getPageContent(pageTitle, "&rvsection="
-        + sectionNumber, false);
+    String result = this.getPageContent(pageTitle,
+        "&rvsection=" + sectionNumber, false);
     return result;
   }
 
@@ -586,8 +588,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
-   * get a list of pages for the given titles see <a
-   * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
+   * get a list of pages for the given titles see
+   * <a href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
    * 
    * @param titleList
    * @param rvprop
@@ -601,8 +603,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       throws Exception {
     String titles = this.getTitles(titleList);
     // https://www.mediawiki.org/wiki/API:Revisions#Parameters
-    Api api = getQueryResult("&titles=" + titles + "&prop=revisions&rvprop="
-        + rvprop);
+    Api api = getQueryResult(
+        "&titles=" + titles + "&prop=revisions&rvprop=" + rvprop);
     handleError(api);
     Query query = api.getQuery();
     if (query == null) {
@@ -614,8 +616,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
-   * get a list of pages for the given titles see <a
-   * href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
+   * get a list of pages for the given titles see
+   * <a href='http://www.mediawiki.org/wiki/API:Query'>API:Query</a>
    * 
    * @param titleList
    * @return
@@ -657,8 +659,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
     /**
      * get me as a param string e.g. &lgtoken=1234 make sure the trailing \ or
-     * +\ are handled correctly see <a href=
-     * 'https://www.mediawiki.org/wiki/Manual:Edit_token'>Manual:Edit_token</a>
+     * +\ are handled correctly see
+     * <a href= 'https://www.mediawiki.org/wiki/Manual:Edit_token'>Manual:
+     * Edit_token</a>
      * 
      * @return - the resulting string
      * @throws Exception
@@ -681,8 +684,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
-   * get an edit token for the given page Title see <a
-   * href='https://www.mediawiki.org/wiki/API:Tokens'>API:Tokens</a>
+   * get an edit token for the given page Title see
+   * <a href='https://www.mediawiki.org/wiki/API:Tokens'>API:Tokens</a>
    * 
    * @param pageTitle
    * @param type
@@ -713,9 +716,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
           + pageTitle;
     }
     if (debug) {
-      LOGGER.log(Level.INFO, "handling " + type + " token for wiki version "
-          + getVersion() + " as " + editversion + " with action=" + action
-          + params);
+      LOGGER.log(Level.INFO,
+          "handling " + type + " token for wiki version " + getVersion()
+              + " as " + editversion + " with action=" + action + params);
     }
     Api api = getActionResult(action, params);
     handleError(api);
@@ -737,7 +740,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         token.setToken(api.getTokens().getEdittoken());
       } else if (type.equals("delete")) {
         token.setToken(api.getTokens().getDeletetoken());
-      } 
+      }
       break;
     default:
       token.setToken(api.getQuery().getTokens().getCsrftoken());
@@ -771,9 +774,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     } else {
       TokenResult token = getEditToken(pageTitle, "delete");
       if (token.token == null) {
-        throw new IllegalStateException("could not get "
-            + token.tokenMode.toString() + " delete token for " + pageTitle
-            + " ");
+        throw new IllegalStateException(
+            "could not get " + token.tokenMode.toString() + " delete token for "
+                + pageTitle + " ");
       }
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("title", pageTitle);
@@ -787,9 +790,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   @Override
-  public Edit edit(String pageTitle, String text, String summary,
-      boolean minor, boolean bot, int sectionNumber, String sectionTitle,
-      Calendar basetime) throws Exception {
+  public Edit edit(String pageTitle, String text, String summary, boolean minor,
+      boolean bot, int sectionNumber, String sectionTitle, Calendar basetime)
+          throws Exception {
     Edit result = new Edit();
     String pageContent = getPageContent(pageTitle);
     if (pageContent != null && pageContent.contains(protectionMarker)) {
@@ -886,9 +889,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     List<P> pageRefList = api.getQuery().getAllpages();
     return pageRefList;
   }
-  
+
   @Override
-  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend, int ailimit) throws Exception {
+  public List<Img> getAllImagesByTimeStamp(String aistart, String aiend,
+      int ailimit) throws Exception {
     String query = "&list=allimages&aisort=timestamp";
     if (aistart != null && !aistart.trim().equals("")) {
       query += "&aistart=" + aistart;
@@ -896,34 +900,35 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (aiend != null && !aiend.trim().equals("")) {
       query += "&aiend=" + aiend;
     }
-    query+="&ailimit="+ailimit;
+    query += "&ailimit=" + ailimit;
     Api api = getQueryResult(query);
     handleError(api);
     List<Img> result = api.getQuery().getAllImages();
     return result;
   }
-  
+
   @Override
-  public List<Bl> getBacklinks(String pageTitle, String params, int bllimit) throws Exception {
-    String query="&list=backlinks&bltitle="+normalizeTitle(pageTitle);
-    query+="&bllimit="+bllimit;
-    query+=params;
-    Api api=getQueryResult(query);
+  public List<Bl> getBacklinks(String pageTitle, String params, int bllimit)
+      throws Exception {
+    String query = "&list=backlinks&bltitle=" + normalizeTitle(pageTitle);
+    query += "&bllimit=" + bllimit;
+    query += params;
+    Api api = getQueryResult(query);
     handleError(api);
     List<Bl> result = api.getQuery().getBacklinks();
     return result;
   }
-  
+
   @Override
   public List<Iu> getImageUsage(String imageTitle, String params, int limit)
       throws Exception {
-    String query="&list=imageusage&iutitle="+normalizeTitle(imageTitle);
-    query+="&iulimit="+limit;
-    query+=params;
-    Api api=getQueryResult(query);
+    String query = "&list=imageusage&iutitle=" + normalizeTitle(imageTitle);
+    query += "&iulimit=" + limit;
+    query += params;
+    Api api = getQueryResult(query);
     handleError(api);
     List<Iu> result = api.getQuery().getImageusage();
-    return result; 
+    return result;
   }
 
   /**
@@ -965,9 +970,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * show Help
    */
   public void showHelp() {
-    String msg = "Help\n"
-        + "Mediawiki-Japi version "
-        + VERSION
+    String msg = "Help\n" + "Mediawiki-Japi version " + VERSION
         + " has no functional command line interface\n"
         + "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
     usage(msg);
@@ -978,13 +981,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * set to true for debugging
    */
-  @Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
+  @Option(name = "-d", aliases = {
+      "--debug" }, usage = "debug\nadds debugging output")
   protected boolean debug = false;
 
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;
 
-  @Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
+  @Option(name = "-v", aliases = {
+      "--version" }, usage = "showVersion\nshow current version if this switch is used")
   boolean showVersion = false;
 
   /**
@@ -1009,8 +1014,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       } else {
         // FIXME - do something
         // implement actions
-        System.err.println("Commandline interface is not functional in "
-            + VERSION + " yet");
+        System.err.println(
+            "Commandline interface is not functional in " + VERSION + " yet");
         exitCode = 1;
         // exitCode = 0;
       }
@@ -1074,8 +1079,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     // example
     // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
     String props = "timestamp";
-    props+="%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions";
-    props+="%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
+    props += "%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions";
+    props += "%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
     Api api = getQueryResult("&prop=imageinfo&iiprop=" + props + "&titles="
         + normalizeTitle(pageTitle));
     handleError(api);
@@ -1100,28 +1105,31 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     }
     return ii;
   }
- 
+
   @Override
-  public List<Im> getImagesOnPage(String pageTitle, int imLimit) throws Exception {
-    String query="&titles="+normalizeTitle(pageTitle)+"&prop=images&imlimit="+imLimit;
+  public List<Im> getImagesOnPage(String pageTitle, int imLimit)
+      throws Exception {
+    String query = "&titles=" + normalizeTitle(pageTitle)
+        + "&prop=images&imlimit=" + imLimit;
     Api api = getQueryResult(query);
     handleError(api);
     List<Page> pages = api.getQuery().getPages();
-    List<Im> result=new ArrayList<Im>();
-    if (pages.size()>0) {
-      Page page=pages.get(0);
-      result=page.getImages();
+    List<Im> result = new ArrayList<Im>();
+    if (pages.size() > 0) {
+      Page page = pages.get(0);
+      result = page.getImages();
     }
     return result;
   }
 
   @Override
-  public List<Ii> getImageInfosForPage(String pageTitle, int imLimit) throws Exception {
-    List<Im> images=this.getImagesOnPage(pageTitle, imLimit);
-    List<Ii> result=new ArrayList<Ii>();
-    for (Im image:images) {
-      Ii imageinfo=this.getImageInfo(image.getTitle());
-      if (imageinfo.getCanonicaltitle()==null) {
+  public List<Ii> getImageInfosForPage(String pageTitle, int imLimit)
+      throws Exception {
+    List<Im> images = this.getImagesOnPage(pageTitle, imLimit);
+    List<Ii> result = new ArrayList<Ii>();
+    for (Im image : images) {
+      Ii imageinfo = this.getImageInfo(image.getTitle());
+      if (imageinfo.getCanonicaltitle() == null) {
         imageinfo.setCanonicaltitle(image.getTitle());
       }
       result.add(imageinfo);
@@ -1130,28 +1138,103 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
-   * get the recent changes 
-   * see https://www.mediawiki.org/wiki/API:RecentChanges
-   * @param rcstart The timestamp to start listing from (May not be more than $wgRCMaxAge into the past, which on Wikimedia wikis is 30 days[1])
- * @param rcend 
- * @param rclimit 
+   * get the recent changes see https://www.mediawiki.org/wiki/API:RecentChanges
+   * 
+   * @param rcstart
+   *          The timestamp to start listing from (May not be more than
+   *          $wgRCMaxAge into the past, which on Wikimedia wikis is 30 days[1])
+   * @param rcend
+   * @param rclimit
    * @return - the list of recent changes
- * @throws Exception 
+   * @throws Exception
    */
-  public List<Rc> getRecentChanges(String rcstart, String rcend, Integer rclimit) throws Exception {
-	String query="&list=recentchanges&rcprop=title%7Ctimestamp%7Csha1%7Cids%7Csizes%7Cflags%7Cuser";
-	if (rclimit!=null) {
-		query+="&rclimit="+rclimit;
-	}
-	if (rcstart!=null) {
-		query+="&rcstart="+rcstart;
-	}
-	if (rcend!=null) {
-		query+="&rcend="+rcend;
-	}
-	Api api = getQueryResult(query);
-	List<Rc> rcList = api.getQuery().getRecentchanges();
-	return rcList;
+  public List<Rc> getRecentChanges(String rcstart, String rcend,
+      Integer rclimit) throws Exception {
+    String query = "&list=recentchanges&rcprop=title%7Ctimestamp%7Csha1%7Cids%7Csizes%7Cflags%7Cuser";
+    if (rclimit != null) {
+      query += "&rclimit=" + rclimit;
+    }
+    if (rcstart != null) {
+      query += "&rcstart=" + rcstart;
+    }
+    if (rcend != null) {
+      query += "&rcend=" + rcend;
+    }
+    Api api = getQueryResult(query);
+    handleError(api);
+    List<Rc> rcList = api.getQuery().getRecentchanges();
+    rcList = sortByTitleAndFilterDoubles(rcList);
+    return rcList;
+  }
+
+  /**
+   * sort the given List by title and filter double titles
+   * 
+   * @param rcList
+   * @return
+   */
+  public List<Rc> sortByTitleAndFilterDoubles(List<Rc> rcList) {
+    List<Rc> result = new ArrayList<Rc>();
+    List<Rc> sorted = new ArrayList<Rc>();
+    sorted.addAll(rcList);
+    Collections.sort(sorted, new Comparator<Rc>() {
+      @Override
+      public int compare(Rc lRc, Rc rRc) {
+        int result = lRc.getTitle().compareTo(rRc.getTitle());
+        if (result==0) {
+          result=rRc.getTimestamp().compare(lRc.getTimestamp());
+        }
+        return result;
+      }
+    });
+    Rc previous=null;
+    for (Rc rc:sorted) {
+      if (previous==null || (!rc.getTitle().equals(previous.getTitle()))) {
+         result.add(rc);
+      }
+      previous=rc;
+    }
+    Collections.sort(result, new Comparator<Rc>() {
+      @Override
+      public int compare(Rc lRc, Rc rRc) {
+        int result=rRc.getTimestamp().compare(lRc.getTimestamp());
+        return result;
+      }
+    });
+    return result;
+  }
+
+  /**
+   * convert a data to a MediaWiki API timestamp
+   * 
+   * @param date
+   * @return
+   */
+  public String dateToMWTimeStamp(Date date) {
+    SimpleDateFormat mwTimeStampFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+    String result = mwTimeStampFormat.format(date);
+    return result;
+  }
+
+  /**
+   * get the most recent changes
+   * 
+   * @param days
+   * @param rcLimit
+   * @return
+   * @throws Exception
+   */
+  public List<Rc> getMostRecentChanges(int days, int rcLimit) throws Exception {
+    Date today = new Date();
+    Calendar cal = new GregorianCalendar();
+    cal.setTime(today);
+    cal.add(Calendar.DAY_OF_MONTH, -days);
+    Date date30daysbefore = cal.getTime();
+    String rcstart = dateToMWTimeStamp(today);
+    String rcend = dateToMWTimeStamp(date30daysbefore);
+    List<Rc> rcList = this.getRecentChanges(rcstart, rcend, rcLimit);
+    List<Rc> result=this.sortByTitleAndFilterDoubles(rcList);
+    return result;
   }
 
 }

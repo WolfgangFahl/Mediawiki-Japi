@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.12|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.13|jar
 
 Maven dependency:
 
@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.12</version>
+  <version>0.0.13</version>
 </dependency>
 ```
 
@@ -111,13 +111,14 @@ unit tests supplied with Wiki.java).
 * 0.0.3  - 2015-01-20: fixes issue #8 refactors to multi implementation approach with guice
 * 0.0.4  - 2015-04-05: adds section handling
 * 0.0.5  - 2015-06-14: improves section handling 
-                      handles uploads in copyToWiki
-											fixes issue with test on en.wikipedia.org
+                       handles uploads in copyToWiki
+					   fixes issue with test on en.wikipedia.org
 * 0.0.6  - 2015-07-02: fixes revprop handling											
 * 0.0.7  - 2015-07-08: fixes #14 namespace handling in copy 
-                      adds #15 - delete function
+                       adds #15 - delete function
 * 0.0.8  - 2015-08-26: fixes #16 allImages support (timestamp based for the time being)  
 * 0.0.9  - 2015-10-10: fixes #17 to #18 and #19: ignore superfluous newlines in xml api results (if any)
 * 0.0.10 - 2015-10-12: fixes #20
 * 0.0.11 - 2015-11-09: fixes #21
 * 0.0.12 - 2016-01-09: fixes issues #21 to #24
+* 0.0.13 - 2016-01-19: fixes #25
