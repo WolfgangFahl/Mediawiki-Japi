@@ -49,6 +49,7 @@ import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.api.Query;
+import com.bitplan.mediawiki.japi.api.Rc;
 import com.bitplan.mediawiki.japi.api.S;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -1124,6 +1125,31 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       result.add(imageinfo);
     }
     return result;
+  }
+
+  /**
+   * get the recent changes 
+   * see https://www.mediawiki.org/wiki/API:RecentChanges
+   * @param rcstart The timestamp to start listing from (May not be more than $wgRCMaxAge into the past, which on Wikimedia wikis is 30 days[1])
+ * @param rcend 
+ * @param rclimit 
+   * @return - the list of recent changes
+ * @throws Exception 
+   */
+  public List<Rc> getRecentChanges(String rcstart, String rcend, Integer rclimit) throws Exception {
+	String query="&list=recentchanges&rcprop=title%7Cids%7Csizes%7Cflags%7Cuser";
+	if (rclimit!=null) {
+		query+="&rclimit="+rclimit;
+	}
+	if (rcstart!=null) {
+		query+="&rcstart="+rcstart;
+	}
+	if (rcend!=null) {
+		query+="&rcend="+rcend;
+	}
+	Api api = getQueryResult(query);
+	List<Rc> rcList = api.getQuery().getRecentchanges();
+	return rcList;
   }
 
 }
