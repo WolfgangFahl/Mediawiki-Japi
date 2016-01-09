@@ -23,7 +23,8 @@ cat << EOF | egrep -v "^#"
 #$l_parse&prop=sections&page=License$l_format
 #file:creataccount.xml
 #file:csrftoken.xml
-file:allimages.xml
+#file:allimages.xml
+file:rcchanges.xml
 #https://en.wikipedia.org/w/api.php?action=paraminfo&modules=parse|phpfm|query+allpages|query+siteinfo&helpformat=none&format=xml
 # set your own username and password here
 # change curl further down to -X POST
@@ -61,7 +62,7 @@ getschema() {
   #curl -s -X --data design=rd --data xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
   xmlschemagen_url="http://xmlgrid.net/xml2xsd.html"
  	echo "posting to $xmlschemagen_url"
-  curls -s -d xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
+  curl -s -d xmlcontent=@$l_xml $xmlschemagen_url -o $l_tmpschemahtml
 	if [ ! -f $l_tmpschemahtml ]
 	then
 	  error "result from xmlschemagen_url missing"
@@ -93,8 +94,7 @@ codegen() {
 	# http://stackoverflow.com/questions/5869547/jaxb-creating-modules-for-reuse/5872659#5872659
 }
 
-codegen images.xsd
-#codegen bl.xsd
+codegen rcchanges.xsd
 exit 1
 for query in `queries`
 do
@@ -103,9 +103,9 @@ do
   # uncomment for POST actions e.g. login
   #  curl -s -X POST "$query" -o $tmpxml
   curl -s "$query" -o $tmpxml
- ue $tmpxml
+  #ue $tmpxml
   echo "getting schema for xml result $tmpxml ..."
-  #getschema $tmpxml
+  getschema $tmpxml
   #xsd="/tmp/result.xsd"
-	#codegen $xsd
+  #codegen $xsd
 done

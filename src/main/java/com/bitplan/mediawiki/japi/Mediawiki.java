@@ -73,7 +73,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.11";
+  protected static final String VERSION = "0.0.12";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -1073,7 +1073,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public Ii getImageInfo(String pageTitle) throws Exception {
     // example
     // https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&prop=imageinfo&format=xml&iiprop=timestamp|user|userid|comment|parsedcomment|canonicaltitle|url|size|dimensions|sha1|mime|thumbmime|mediatype|metadata|commonmetadata|extmetadata|archivename|bitdepth|uploadwarning&titles=File%3AAlbert%20Einstein%20Head.jpg
-    String props = "timestamp%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
+    String props = "timestamp";
+    props+="%7Cuser%7Cuserid%7Ccomment%7Cparsedcomment%7Curl%7Csize%7Cdimensions";
+    props+="%7Csha1%7Cmime%7Cthumbmime%7Cmediatype%7Carchivename%7Cbitdepth";
     Api api = getQueryResult("&prop=imageinfo&iiprop=" + props + "&titles="
         + normalizeTitle(pageTitle));
     handleError(api);
@@ -1137,7 +1139,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
  * @throws Exception 
    */
   public List<Rc> getRecentChanges(String rcstart, String rcend, Integer rclimit) throws Exception {
-	String query="&list=recentchanges&rcprop=title%7Cids%7Csizes%7Cflags%7Cuser";
+	String query="&list=recentchanges&rcprop=title%7Ctimestamp%7Csha1%7Cids%7Csizes%7Cflags%7Cuser";
 	if (rclimit!=null) {
 		query+="&rclimit="+rclimit;
 	}

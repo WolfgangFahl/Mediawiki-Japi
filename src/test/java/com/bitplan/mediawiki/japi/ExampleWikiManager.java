@@ -183,8 +183,10 @@ public class ExampleWikiManager {
       // to the TARGET_WIKI
       final String SOURCE_WIKI = "mediawiki-japi-test1_19";
       final String TARGET_WIKI = "mediawiki-japi-test1_23";
+      final String IMGSRC_WIKI = "mediawiki-japi-test1_24";
       aliases.put("sourceWiki", SOURCE_WIKI);
       aliases.put("targetWiki", TARGET_WIKI);
+      aliases.put("imgsrcWiki", IMGSRC_WIKI);
 
       ExampleWiki sourceWiki = getExampleWikis().get(SOURCE_WIKI);
       ExamplePage testImage=wiki.new ExamplePage("File:Index.png","",false);

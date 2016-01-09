@@ -79,15 +79,18 @@ public class TestAPI_Query extends APITestbase {
 
   @Test
   public void testImageInfo() throws Exception {
-    ExampleWiki sourceWiki = ewm.get("sourceWiki");
-    Ii ii=sourceWiki.getImageInfo("File:Index.png");
-    // debug=true;
+	/// choose the 1.23 targetWiki since it has proper imageinfo implementation
+    ExampleWiki imageWiki = ewm.get("targetWiki");
+    //debug=true;
+    if (debug)
+    	imageWiki.getMediaWikiJapi().setDebug(debug);
+    Ii ii=imageWiki.getImageInfo("File:Index.png");
     if (debug) {
       System.out.println(ii.getUrl());
       // System.out.println(ii.getCanonicaltitle());
       System.out.println(ii.getWidth()+"x"+ii.getHeight());
     }
-    assertEquals("http://mediawiki-japi.bitplan.com/mw1_19/images/a/ae/Index.png",ii.getUrl());
+    assertEquals("http://mediawiki-japi.bitplan.com/mw1_23/images/a/ae/Index.png",ii.getUrl());
     int expectedWidth=32;
     int expectedHeight=32;
     assertTrue(expectedHeight==ii.getHeight());

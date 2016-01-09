@@ -50,7 +50,10 @@ public class TestAPI_Recentchanges extends APITestbase {
 	 */
 	@Test
 	public void testGetRecentChangesWithDays() throws Exception {
+		// debug=true;
 		Mediawiki lwiki = super.getWiki().getMediaWikiJapi();
+		if (debug)
+			lwiki.setDebug(debug);
 		Date today = new Date();
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(today);
@@ -62,11 +65,11 @@ public class TestAPI_Recentchanges extends APITestbase {
 		int rclimit=5;
 		List<Rc> rcList=lwiki.getRecentChanges(rcstart,rcend,rclimit);
 		assertNotNull(rcList);
-		// debug=true;
+
 		if (debug) {
 			LOGGER.log(Level.INFO,"found "+rcList.size()+" recent changes");
 			for (Rc rc:rcList) {
-				LOGGER.log(Level.INFO,rc.getTitle());
+				LOGGER.log(Level.INFO,rc.getTitle()+"("+rc.getPageid()+"/"+rc.getTimestamp()+")");
 			}
 		}
 		assertTrue(rcList.size()==rclimit);

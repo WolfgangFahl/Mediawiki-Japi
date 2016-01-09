@@ -164,7 +164,7 @@ public class TestAPI_Edit extends APITestbase {
   @Test
   public void testCopy() throws Exception {
     // debug = true;
-    ExampleWiki sourceWiki = ewm.get("sourceWiki");
+    ExampleWiki sourceWiki = ewm.get("imgsrcWiki");
     sourceWiki.wiki.setDebug(debug);
     ExampleWiki targetWiki = ewm.get("targetWiki");
     targetWiki.login();
