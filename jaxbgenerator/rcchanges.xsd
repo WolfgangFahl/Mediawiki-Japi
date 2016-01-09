@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+          <!-- XML Schema Generated from XML Document on Sat Jan 09 2016 15:49:34 GMT+0100 (CET) -->
+          <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+       <xs:element name="api">
+              <xs:complexType>
+                     <xs:sequence>
+                            <xs:element name="continue">
+                                   <xs:complexType>
+                                          <xs:attribute name="rccontinue" type="xs:string"></xs:attribute>
+                                          <xs:attribute name="continue" type="xs:string"></xs:attribute>
+                                      </xs:complexType>
+                               </xs:element>
+                            <xs:element name="query">
+                                   <xs:complexType>
+                                          <xs:sequence>
+                                                 <xs:element name="recentchanges">
+                                                        <xs:complexType>
+                                                               <xs:sequence>
+                                                                      <xs:element name="rc" maxOccurs="unbounded">
+                                                                             <xs:complexType>
+                                                                                    <xs:attribute name="type" type="xs:string"></xs:attribute>
+                                                                                    <xs:attribute name="ns" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="title" type="xs:string"></xs:attribute>
+                                                                                    <xs:attribute name="pageid" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="revid" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="old_revid" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="rcid" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="user" type="xs:string"></xs:attribute>
+                                                                                    <xs:attribute name="oldlen" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="newlen" type="xs:int"></xs:attribute>
+                                                                                    <xs:attribute name="timestamp" type="xs:dateTime"></xs:attribute>
+                                                                                </xs:complexType>
+                                                                         </xs:element>
+                                                                  </xs:sequence>
+                                                           </xs:complexType>
+                                                    </xs:element>
+                                             </xs:sequence>
+                                      </xs:complexType>
+                               </xs:element>
+                        </xs:sequence>
+                     <xs:attribute name="batchcomplete" type="xs:string"></xs:attribute>
+                 </xs:complexType>
+          </xs:element>
+   </xs:schema>

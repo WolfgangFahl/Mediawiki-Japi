@@ -1,0 +1,12 @@
+<api batchcomplete="">
+<continue rccontinue="20160109143428|2271792" continue="-||" />
+<query>
+<recentchanges>
+<rc type="log" ns="2" title="User:Tomhanks1121" pageid="0" revid="0" old_revid="0" rcid="2271797" user="Tomhanks1121" oldlen="0" newlen="0" timestamp="2016-01-09T14:40:57Z" />
+<rc type="edit" ns="100" title="Manual:$wgTmpDirectory" pageid="2850" revid="2009803" old_revid="2009798" rcid="2271796" user="Serwadda Joseph." oldlen="1664" newlen="1686" timestamp="2016-01-09T14:40:43Z" sha1="e62051605dcb36fa50be774295c5e2f2853a589b" />
+<rc type="edit" ns="101" title="Manual talk:$wgReadOnly" pageid="28845" revid="2009802" old_revid="941175" rcid="2271795" user="87.123.49.109" anon="" oldlen="1443" newlen="1580" timestamp="2016-01-09T14:39:35Z" sha1="96ec9620d44510706055957ecb31a2a701c10195" />
+<rc type="log" ns="2" title="User:Censoredgames" pageid="0" revid="0" old_revid="0" rcid="2271794" user="Censoredgames" oldlen="0" newlen="0" timestamp="2016-01-09T14:38:34Z" />
+<rc type="new" ns="0" title="Censoredgames" pageid="542952" revid="2009801" old_revid="0" rcid="2271793" user="183.100.225.105" anon="" new="" oldlen="0" newlen="288" timestamp="2016-01-09T14:36:51Z" sha1="916818d5dffb58937c174fbdc1853c3cdd82fc94" />
+</recentchanges>
+</query>
+</api>
