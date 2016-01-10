@@ -130,7 +130,7 @@ public class ExampleWikiManager {
   public ExampleWiki get(String wikiId) throws Exception {
     // this code should be (partly?) replaced by csv-access
     if (getExampleWikis().size() == 0) {
-      String urlString = "http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/-3FMwMinExpectedPages/format%3Dcsv/sep%3D;/offset%3D0";
+      // String urlString = "http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Special:Ask/-5B-5BCategory:ExampleWiki-5D-5D-20-5B-5Bsiteurl::%2B-5D-5D/-3FSiteurl/-3FWikiid/-3FMwversion/-3FMwMinExpectedPages/format%3Dcsv/sep%3D;/offset%3D0";
       // FIXME uncomment to activate
       // readCSV(urlString);
       // Mediawiki site

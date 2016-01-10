@@ -9,17 +9,15 @@
  */
 package com.bitplan.mediawiki.japi;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collection;
 import java.util.logging.Level;
 
 import com.bitplan.mediawiki.guice.ComBITPlanWikiModule;
-import com.bitplan.mediawiki.guice.OrgWikiModule;
 import com.bitplan.mediawiki.japi.api.Api;
-import com.google.inject.AbstractModule;
-
-import static org.junit.Assert.*;
 
 /**
  * Base class for API tests

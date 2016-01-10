@@ -9,18 +9,12 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 import org.junit.Test;
 
-import com.bitplan.mediawiki.japi.ExampleWiki.ExamplePage;
-import com.bitplan.mediawiki.japi.Mediawiki.TokenResult;
-import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
 
 /**

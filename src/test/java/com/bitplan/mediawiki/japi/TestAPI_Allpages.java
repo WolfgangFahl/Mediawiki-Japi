@@ -9,7 +9,8 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -19,7 +20,6 @@ import org.junit.Test;
 import com.bitplan.mediawiki.japi.api.Bl;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Im;
-import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.P;

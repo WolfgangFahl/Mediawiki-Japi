@@ -10,20 +10,11 @@
 package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bitplan.mediawiki.japi.ExampleWiki.ExamplePage;
-import com.bitplan.mediawiki.japi.Mediawiki.TokenResult;
 import com.bitplan.mediawiki.japi.api.Api;
-import com.bitplan.mediawiki.japi.api.Edit;
 
 /**
  * test http://www.mediawiki.org/wiki/API:Account_creation
