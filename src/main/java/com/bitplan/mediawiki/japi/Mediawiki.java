@@ -76,7 +76,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.13";
+  protected static final String VERSION = "0.0.14";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -88,7 +88,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>
    * Iden t i f y i n g your client:User-Agent</a>
    */
-  protected static final String USER_AGENT = "Mediawiki-Japi/" + VERSION
+  protected static final String USER_AGENT = "Mediawiki-Japi/"
+      + VERSION
       + " (https://github.com/WolfgangFahl/Mediawiki-Japi; support@bitplan.com)";
 
   /**
@@ -306,8 +307,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       response = resource.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
           .post(ClientResponse.class, lFormData);
     } else {
-      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE)
-          .post(ClientResponse.class, form);
+      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).post(
+          ClientResponse.class, form);
     }
     return response;
   }
@@ -324,8 +325,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return
    * @throws Exception
    */
-  public ClientResponse getResponse(String url, Method method)
-      throws Exception {
+  public ClientResponse getResponse(String url, Method method) throws Exception {
     Builder resource = getResource(url);
     ClientResponse response = null;
     switch (method) {
@@ -481,15 +481,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public Login login(String username, String password) throws Exception {
     username = encode(username);
     password = encode(password);
-    Api apiResult = getActionResult("login",
-        "&lgname=" + username + "&lgpassword=" + password, null, null);
+    Api apiResult = getActionResult("login", "&lgname=" + username
+        + "&lgpassword=" + password, null, null);
     Login login = apiResult.getLogin();
     TokenResult token = new TokenResult();
     token.token = login.getToken();
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
-    apiResult = getActionResult("login",
-        "&lgname=" + username + "&lgpassword=" + password, token, null);
+    apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
+        + password, token, null);
     login = apiResult.getLogin();
     userid = login.getLguserid();
     return login;
@@ -573,8 +573,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public String getSectionText(String pageTitle, int sectionNumber)
       throws Exception {
-    String result = this.getPageContent(pageTitle,
-        "&rvsection=" + sectionNumber, false);
+    String result = this.getPageContent(pageTitle, "&rvsection="
+        + sectionNumber, false);
     return result;
   }
 
@@ -603,8 +603,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       throws Exception {
     String titles = this.getTitles(titleList);
     // https://www.mediawiki.org/wiki/API:Revisions#Parameters
-    Api api = getQueryResult(
-        "&titles=" + titles + "&prop=revisions&rvprop=" + rvprop);
+    Api api = getQueryResult("&titles=" + titles + "&prop=revisions&rvprop="
+        + rvprop);
     handleError(api);
     Query query = api.getQuery();
     if (query == null) {
@@ -716,9 +716,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
           + pageTitle;
     }
     if (debug) {
-      LOGGER.log(Level.INFO,
-          "handling " + type + " token for wiki version " + getVersion()
-              + " as " + editversion + " with action=" + action + params);
+      LOGGER.log(Level.INFO, "handling " + type + " token for wiki version "
+          + getVersion() + " as " + editversion + " with action=" + action
+          + params);
     }
     Api api = getActionResult(action, params);
     handleError(api);
@@ -774,9 +774,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     } else {
       TokenResult token = getEditToken(pageTitle, "delete");
       if (token.token == null) {
-        throw new IllegalStateException(
-            "could not get " + token.tokenMode.toString() + " delete token for "
-                + pageTitle + " ");
+        throw new IllegalStateException("could not get "
+            + token.tokenMode.toString() + " delete token for " + pageTitle
+            + " ");
       }
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("title", pageTitle);
@@ -790,9 +790,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   @Override
-  public Edit edit(String pageTitle, String text, String summary, boolean minor,
-      boolean bot, int sectionNumber, String sectionTitle, Calendar basetime)
-          throws Exception {
+  public Edit edit(String pageTitle, String text, String summary,
+      boolean minor, boolean bot, int sectionNumber, String sectionTitle,
+      Calendar basetime) throws Exception {
     Edit result = new Edit();
     String pageContent = getPageContent(pageTitle);
     if (pageContent != null && pageContent.contains(protectionMarker)) {
@@ -970,7 +970,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * show Help
    */
   public void showHelp() {
-    String msg = "Help\n" + "Mediawiki-Japi version " + VERSION
+    String msg = "Help\n"
+        + "Mediawiki-Japi version "
+        + VERSION
         + " has no functional command line interface\n"
         + "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
     usage(msg);
@@ -981,15 +983,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * set to true for debugging
    */
-  @Option(name = "-d", aliases = {
-      "--debug" }, usage = "debug\nadds debugging output")
+  @Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
   protected boolean debug = false;
 
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;
 
-  @Option(name = "-v", aliases = {
-      "--version" }, usage = "showVersion\nshow current version if this switch is used")
+  @Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
   boolean showVersion = false;
 
   /**
@@ -1014,8 +1014,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       } else {
         // FIXME - do something
         // implement actions
-        System.err.println(
-            "Commandline interface is not functional in " + VERSION + " yet");
+        System.err.println("Commandline interface is not functional in "
+            + VERSION + " yet");
         exitCode = 1;
         // exitCode = 0;
       }
@@ -1113,11 +1113,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         + "&prop=images&imlimit=" + imLimit;
     Api api = getQueryResult(query);
     handleError(api);
-    List<Page> pages = api.getQuery().getPages();
     List<Im> result = new ArrayList<Im>();
-    if (pages.size() > 0) {
-      Page page = pages.get(0);
-      result = page.getImages();
+    Query lquery = api.getQuery();
+    if (lquery != null) {
+      List<Page> pages = lquery.getPages();
+      if (pages.size() > 0) {
+        Page page = pages.get(0);
+        result = page.getImages();
+      }
     }
     return result;
   }
@@ -1148,8 +1151,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return - the list of recent changes
    * @throws Exception
    */
-  public List<Rc> getRecentChanges(String rcstart, String rcend,
-      Integer rclimit) throws Exception {
+  public List<Rc> getRecentChanges(String rcstart, String rcend, Integer rclimit)
+      throws Exception {
     String query = "&list=recentchanges&rcprop=title%7Ctimestamp%7Csha1%7Cids%7Csizes%7Cflags%7Cuser";
     if (rclimit != null) {
       query += "&rclimit=" + rclimit;
@@ -1181,23 +1184,23 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       @Override
       public int compare(Rc lRc, Rc rRc) {
         int result = lRc.getTitle().compareTo(rRc.getTitle());
-        if (result==0) {
-          result=rRc.getTimestamp().compare(lRc.getTimestamp());
+        if (result == 0) {
+          result = rRc.getTimestamp().compare(lRc.getTimestamp());
         }
         return result;
       }
     });
-    Rc previous=null;
-    for (Rc rc:sorted) {
-      if (previous==null || (!rc.getTitle().equals(previous.getTitle()))) {
-         result.add(rc);
+    Rc previous = null;
+    for (Rc rc : sorted) {
+      if (previous == null || (!rc.getTitle().equals(previous.getTitle()))) {
+        result.add(rc);
       }
-      previous=rc;
+      previous = rc;
     }
     Collections.sort(result, new Comparator<Rc>() {
       @Override
       public int compare(Rc lRc, Rc rRc) {
-        int result=rRc.getTimestamp().compare(lRc.getTimestamp());
+        int result = rRc.getTimestamp().compare(lRc.getTimestamp());
         return result;
       }
     });
@@ -1233,7 +1236,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String rcstart = dateToMWTimeStamp(today);
     String rcend = dateToMWTimeStamp(date30daysbefore);
     List<Rc> rcList = this.getRecentChanges(rcstart, rcend, rcLimit);
-    List<Rc> result=this.sortByTitleAndFilterDoubles(rcList);
+    List<Rc> result = this.sortByTitleAndFilterDoubles(rcList);
     return result;
   }
 
