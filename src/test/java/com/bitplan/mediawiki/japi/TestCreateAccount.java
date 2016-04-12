@@ -12,6 +12,10 @@ package com.bitplan.mediawiki.japi;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Test;
 
 import com.bitplan.mediawiki.japi.api.Api;
@@ -35,7 +39,9 @@ public class TestCreateAccount extends APITestbase {
 		Mediawiki wiki = (Mediawiki) lwiki.wiki;
 		lwiki.login();
 		// lwiki.wiki.setDebug(true);
-		Api api=wiki.createAccount("JohnDoe4","wf@bitplan.com","John%20Doe",true,"SMWCon2015-05","en");
+		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmSS");
+		String nowAsISO = df.format(new Date());
+		Api api=wiki.createAccount("JohnDoe"+nowAsISO,"wf@bitplan.com","John%20Doe",true,"SMWCon2015-05","en");
 		assertNull(api.getWarnings());
 		String result=api.getCreateaccount().getResult();
 		assertEquals("Success",result);
