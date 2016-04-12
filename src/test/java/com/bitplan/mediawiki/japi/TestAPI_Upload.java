@@ -51,6 +51,7 @@ public class TestAPI_Upload extends APITestbase {
 	@Test
 	public void testUploadViaII() throws Exception {
 	  ExampleWiki sourceWiki = ewm.get("sourceWiki");
+	  // sourceWiki.wiki.setDebug(true);
 	  String imageName="Index.png";
 	  String imageTitle="File:"+imageName;
     Ii ii=sourceWiki.getImageInfo(imageTitle);
