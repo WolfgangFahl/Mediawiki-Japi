@@ -46,14 +46,19 @@ public class TestAPI_Meta extends APITestbase {
 			boolean mayBeNull = true;
 			check("generator", general.getGenerator());
 			check("logo", general.getLogo(), mayBeNull);
-			if (general.getGenerator().compareToIgnoreCase("Mediawiki 1.20") >= 0) {
+			String wikiVersion=general.getGenerator();
+			// debug=true;
+			if (debug)
+			  LOGGER.log(Level.INFO,wikiVersion);
+			if (wikiVersion.compareToIgnoreCase("Mediawiki 1.20") >= 0) {
 				assertEquals(lwiki.wiki.getSiteurl()+"/"+lwiki.wiki.getScriptPath(),lwiki.getLogo(), general.getLogo());
 				check("favicon", general.getFavicon());
 				check("langconversion", general.getLangconversion());
 				check("linkprefix", general.getLinkprefix());
 				check("linkprefixcharset", general.getLinkprefixcharset());
 				check("linktrail", general.getLinktrail());
-				check("maxuploadsize", general.getMaxuploadsize());
+				// MediaWiki 1.27.0-wmf.20 does not have this
+				// check("maxuploadsize", general.getMaxuploadsize());
 				List<Limit> imageLimits = general.getImagelimits().getLimit();
 				assertNotNull(imageLimits);
 				for (Limit imageLimit : imageLimits) {
