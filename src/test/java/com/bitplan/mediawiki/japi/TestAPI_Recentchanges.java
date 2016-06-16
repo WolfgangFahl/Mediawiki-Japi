@@ -78,7 +78,7 @@ public class TestAPI_Recentchanges extends APITestbase {
 		Date date30daysbefore = cal.getTime();
 		String rcstart=lwiki.dateToMWTimeStamp(today);
 		String rcend=lwiki.dateToMWTimeStamp(date30daysbefore);
-		int rclimit=5;
+		int rclimit=4;
 		List<Rc> rcList=lwiki.getRecentChanges(rcstart,rcend,rclimit);
 		assertNotNull(rcList);
 
@@ -86,7 +86,7 @@ public class TestAPI_Recentchanges extends APITestbase {
 			showRCList(rcList);
 		
 		}
-		assertTrue(rcList.size()==rclimit);
+		assertEquals(rclimit,rcList.size());
 	}
 	
 	@Test
