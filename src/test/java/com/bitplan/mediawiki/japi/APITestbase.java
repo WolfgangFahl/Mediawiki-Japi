@@ -13,6 +13,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -113,6 +114,21 @@ public class APITestbase {
 	public Collection<ExampleWiki> getWikis() {
 		return wikis;
 	}
+	
+	/**
+	 * get the editable wikis
+	 * @return
+	 */
+	 public Collection<ExampleWiki> getEditableWikis() {
+	   Collection<ExampleWiki> result=new ArrayList<ExampleWiki>();
+	    for (ExampleWiki wiki:wikis) {
+	      if (!wiki.wikiId.contains("org")) {
+	        result.add(wiki);
+	      }
+	    }
+	    return result;
+	  }
+
 
 	/**
 	 * @param wikis the wikis to set

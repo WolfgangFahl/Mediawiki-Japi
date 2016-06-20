@@ -69,17 +69,14 @@ public class TestAPI_Edit extends APITestbase {
   public void testDelete() {
     Map<String, Throwable> errors = new LinkedHashMap<String, Throwable>();
     // debug = true;
-    for (ExampleWiki lwiki : getWikis()) {
+    for (ExampleWiki lwiki : getEditableWikis()) {
       try {
-        if (!lwiki.wikiId.contains("org")) {
-          lwiki.login();
-          lwiki.wiki.setDebug(debug);
-          String pageTitle = "deleteMe";
-          lwiki.wiki.edit(pageTitle, pageTitle, pageTitle);
-          lwiki.wiki.delete(pageTitle, "for test");
-          String content = lwiki.wiki.getPageContent(pageTitle);
-          assertNull(content);
-        }
+        lwiki.login();
+        lwiki.wiki.setDebug(debug);
+        String pageTitle = "deleteMe";
+        lwiki.wiki.edit(pageTitle, pageTitle, pageTitle);
+        lwiki.wiki.delete(pageTitle, "for test");
+        String content = lwiki.wiki.getPageContent(pageTitle);
       } catch (Exception e) {
         errors.put(lwiki.wikiId, e);
       }
@@ -175,8 +172,8 @@ public class TestAPI_Edit extends APITestbase {
       String pageTitle = examplePage.getTitle();
       String summary = "created/edited by TestAPI_Edit at "
           + sourceWiki.wiki.getIsoTimeStamp();
-      Edit copyEdit=sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki, pageTitle,
-          summary);
+      Edit copyEdit = sourceWiki.getMediaWikiJapi().copyToWiki(targetWiki.wiki,
+          pageTitle, summary);
       assertNotNull(copyEdit);
       assertNotNull(copyEdit.getTitle());
       if (pageTitle.startsWith("File:")) {
@@ -229,12 +226,12 @@ public class TestAPI_Edit extends APITestbase {
   @Test
   public void testNormalizeTitle() throws Exception {
     ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
-    String titles[]={"Nice Page"};
-    String expected[]={"Nice_Page"};
-    int index=0;
-    for (String title:titles) {
-      String result=lwiki.wiki.normalizeTitle(title);
-      assertEquals(expected[index++],result);
+    String titles[] = { "Nice Page" };
+    String expected[] = { "Nice_Page" };
+    int index = 0;
+    for (String title : titles) {
+      String result = lwiki.wiki.normalizeTitle(title);
+      assertEquals(expected[index++], result);
     }
   }
 }

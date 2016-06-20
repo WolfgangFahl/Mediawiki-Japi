@@ -46,7 +46,7 @@ public class ExampleWikiManager {
   MediawikiApi defaultWiki;
 
   // the wiki to use for single tests / write access
-  public final String MAIN_TESTWIKI_ID = "mediawiki_org"; // "mediawiki_test2";
+  public final String MAIN_TESTWIKI_ID = "wikipedia_org_test2"; // "mediawiki_test2";
                                                           // //
 
   /**
@@ -134,18 +134,18 @@ public class ExampleWikiManager {
       // FIXME uncomment to activate
       // readCSV(urlString);
       // Mediawiki site
-      ExampleWiki wiki = add("mediawiki_org",
-          "http://www.mediawiki.org",
-          // "http://test.wikipedia.org",
+      ExampleWiki wiki = add("wikipedia_org_test2",
+          //"http://www.mediawiki.org",
+          "https://test2.wikipedia.org",
           Mediawiki.DEFAULT_SCRIPTPATH);
-      wiki.setExpectedPages(290000);
-      wiki.setLogo("//www.mediawiki.org/static/images/project-logos/mediawikiwiki.png");
-      ExamplePage testPage1 = wiki.new ExamplePage("2011 Wikimedia fundraiser",
-          "{{Wikimedia engineering project information");
+      wiki.setExpectedPages(30000);
+      wiki.setLogo("//test2.wikipedia.org/static/images/project-logos/test2wiki.png");
+      ExamplePage testPage1 = wiki.new ExamplePage("Asteroid",
+          "planet");
       wiki.addExamplePage("testGetPages", testPage1);
 
-      ExamplePage testPage2 = wiki.new ExamplePage("2012 Wikimedia fundraiser",
-          "{{Wikimedia engineering project information");
+      ExamplePage testPage2 = wiki.new ExamplePage("Life",
+          "humans");
       wiki.addExamplePage("testGetPages", testPage2);
 
       /*
