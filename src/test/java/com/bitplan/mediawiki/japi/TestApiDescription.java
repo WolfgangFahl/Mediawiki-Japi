@@ -36,7 +36,7 @@ public class TestApiDescription extends APITestbase {
   public void testGetApiDescription() throws Exception {
     // ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_24");
     // com.bitplan.mediawiki.japi.Mediawiki wiki=(Mediawiki) lwiki.wiki;
-    Mediawiki wiki = new Mediawiki("http://en.wikipedia.org");
+    Mediawiki wiki = new Mediawiki("https://en.wikipedia.org");
     // wiki.setDebug(true);
     // |phpfm|query+allpages|query+siteinfo
     String params = "&modules=main%7Clogin%7Clogout%7Cphpfm&helpformat=none";
