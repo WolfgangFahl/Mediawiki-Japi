@@ -30,7 +30,7 @@ public class TestAPI_Parse extends APITestbase {
   @Test
   public void testGetSectionList() throws Exception {
     // http://stackoverflow.com/questions/16840447/retrieve-the-content-of-a-section-via-mediawiki-api
-    Mediawiki wiki = new Mediawiki("http://en.wikipedia.org", "/w");
+    Mediawiki wiki = new Mediawiki("https://en.wikipedia.org", "/w");
     // wiki.debug=true;
     String[] pageTitles = { "License", "Hierarchy" };
     // debug=true;
