@@ -34,7 +34,7 @@ public class TestUsage {
    */
   @Test
   public void testSampleQuery() throws Exception {
-    Mediawiki wiki = new Mediawiki("http://en.wikipedia.org");
+    Mediawiki wiki = new Mediawiki("https://en.wikipedia.org");
     String content = wiki.getPageContent("Main Page");
     assertTrue(content.contains("Wikipedia"));
   }
