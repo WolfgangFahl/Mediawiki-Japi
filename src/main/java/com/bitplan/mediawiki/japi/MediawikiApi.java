@@ -142,6 +142,15 @@ public interface MediawikiApi {
    * @since 0.0.1
    */
   public String getPageContent(String pageTitle) throws Exception;
+  
+  /**
+   * get the html rendered version of a page
+   * @param pageTitle
+   * @return the html for a page
+   * @throws Exception
+   * @since 0.0.15
+   */
+  public String getPageHtml(String pageTitle) throws Exception;
 
   /**
    * get the Images on the given page

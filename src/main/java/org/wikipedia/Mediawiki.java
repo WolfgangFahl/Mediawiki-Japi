@@ -10,7 +10,6 @@
 package org.wikipedia;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
-
-import javax.security.auth.login.LoginException;
 
 import com.bitplan.mediawiki.japi.MediaWikiApiImpl;
 import com.bitplan.mediawiki.japi.MediawikiApi;
@@ -33,7 +30,6 @@ import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.General;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Im;
-import com.bitplan.mediawiki.japi.api.Imageinfo;
 import com.bitplan.mediawiki.japi.api.Img;
 import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.Login;
@@ -134,6 +130,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Override
   public String getPageContent(String pageTitle) throws Exception {
     String result = wiki.getPageText(pageTitle);
+    return result;
+  }
+  
+  @Override
+  public String getPageHtml(String pageTitle) throws Exception {
+    String result = wiki.getRenderedText(pageTitle);
     return result;
   }
 

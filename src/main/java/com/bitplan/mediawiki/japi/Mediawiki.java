@@ -641,13 +641,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return sections;
   }
   
-  /**
-   * get the html from the given parse
-   * @param pageTitle
-   * @return
-   * @throws Exception
-   */
-  public String getHtml(String pageTitle) throws Exception {
+  @Override
+  public String getPageHtml(String pageTitle) throws Exception {
     String params="&page="+pageTitle;
     Parse parse=getParse(params);
     String html=parse.getText();

@@ -48,11 +48,11 @@ public class TestAPI_Parse extends APITestbase {
   }
   
   @Test
-  public void testGetHtml() throws Exception {
+  public void testGetPageHtml() throws Exception {
     Mediawiki wiki = new Mediawiki("https://en.wikipedia.org");
     wiki.setDebug(debug);
     String pageTitle="Quikwriting";
-    String html=wiki.getHtml(pageTitle);
+    String html=wiki.getPageHtml(pageTitle);
     // debug=true;
     if (debug) {
       LOGGER.log(Level.INFO,html);
