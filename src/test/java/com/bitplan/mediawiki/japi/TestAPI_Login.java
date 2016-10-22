@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.bitplan.mediawiki.japi.Mediawiki.TokenResult;
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.jaxb.JaxbFactory;
@@ -34,6 +35,7 @@ public class TestAPI_Login extends APITestbase {
   @Test
   public void testGetUser() throws Exception {
     WikiUser wuser = getWiki().getWikiUser();
+    assertNotNull("User credentials not found/configured",wuser);
     check("email", wuser.getEmail());
     assertNotNull(wuser.getPassword());
   }
@@ -45,15 +47,14 @@ public class TestAPI_Login extends APITestbase {
   public void testLoginToken() throws Exception {
     for (ExampleWiki lwiki : getWikis()) {
       WikiUser wuser = lwiki.getWikiUser();
+      Mediawiki ltWiki = lwiki.getMediaWikiJapi();
       // do not keep uncommented - password will be visible in log
-      // lwiki.setDebug(true);
-      Api api = lwiki.getMediaWikiJapi().getActionResult("login",
-          "&lgname=" + wuser.getUsername());
-      Login login = api.getLogin();
+      // lwiki.getMediaWikiJapi().setDebug(true);
+      TokenResult token = ltWiki.prepareLogin(wuser.getUsername());
+      assertNotNull(token);
+      Login login=ltWiki.login(wuser.getUsername(), wuser.getPassword());
       assertNotNull(login);
-      assertEquals("NeedToken", login.getResult());
-      assertNotNull(login.getToken());
-      assertNotNull(login.getSessionid());
+      assertNotNull("lguserid should not be null for "+lwiki.getWikiId(),login.getLguserid());
     }
   }
 
@@ -96,7 +97,7 @@ public class TestAPI_Login extends APITestbase {
       }
       // avoid uncommenting - will show password information ...
       // lwiki.debug = true;
-      assertFalse(lwiki.wiki.isLoggedIn());
+      assertFalse(ltwiki.isLoggedIn());
       // spoilt the password
       Login login = lwiki.wiki.login(wuser.getUsername(),
           "not" + wuser.getPassword());
@@ -116,7 +117,7 @@ public class TestAPI_Login extends APITestbase {
     for (ExampleWiki lwiki : getEditableWikis()) {
       MediawikiApi ltwiki = lwiki.wiki;
       // System.out.println(ltwiki.getSiteurl());
-      Login login = lwiki.wiki
+      Login login = ltwiki
           .login("someUserThatDoesNotExist", "somePassword");
       assertEquals("NotExists", login.getResult());
     }

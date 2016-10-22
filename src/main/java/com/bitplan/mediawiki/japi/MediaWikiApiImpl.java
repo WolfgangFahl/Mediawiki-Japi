@@ -16,6 +16,8 @@ package com.bitplan.mediawiki.japi;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Error;
@@ -45,6 +47,8 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    * protection Marker - if this shows in  page edits are suppressed and logged with a warning
    */
   protected String protectionMarker="<!-- This page is protected against edits by Mediawiki-Japi -->";
+
+  private String mediawikiVersion;
   
   /**
    * @return the throwExceptionOnError
@@ -198,7 +202,11 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   public String getVersion() throws Exception {
-    String mediawikiVersion=getSiteInfo().getVersion();
+    // is there a cached value of the mediaWikiVersion 
+    if (mediawikiVersion==null) {
+      // get the version (just once)
+      mediawikiVersion=getSiteInfo().getVersion();
+    }
     return mediawikiVersion;
   }
   /**
@@ -210,6 +218,17 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
    */
   protected String encode(String param) throws Exception {
     String result = URLEncoder.encode(param, "UTF-8");
+    return result;
+  }
+  
+  /**
+   * decode the given html markup
+   * @param html
+   * @return decoded html
+   * @throws Exception
+   */
+  protected String decode(String html) throws Exception {
+    String result=StringEscapeUtils.unescapeHtml4(html);
     return result;
   }
 

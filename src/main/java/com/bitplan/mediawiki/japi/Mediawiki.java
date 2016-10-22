@@ -51,6 +51,7 @@ import com.bitplan.mediawiki.japi.api.Iu;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
+import com.bitplan.mediawiki.japi.api.Parse;
 import com.bitplan.mediawiki.japi.api.Query;
 import com.bitplan.mediawiki.japi.api.Rc;
 import com.bitplan.mediawiki.japi.api.S;
@@ -76,7 +77,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.14";
+  protected static final String VERSION = "0.0.15";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -476,25 +477,79 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     General general = query.getGeneral();
     siteinfo = new SiteInfoImpl(general, query.getNamespaces());
   }
-
-  // login implementation
-  public Login login(String username, String password) throws Exception {
+  
+  /**
+   * prepare the login by getting the login token
+   * @param username
+   * @return the ApiResult
+   * @throws Exception 
+   */
+  public TokenResult prepareLogin(String username) throws Exception {  
     username = encode(username);
-    password = encode(password);
-    Api apiResult = getActionResult("login", "&lgname=" + username
-        + "&lgpassword=" + password, null, null);
-    Login login = apiResult.getLogin();
+    Api apiResult=null;
     TokenResult token = new TokenResult();
-    token.token = login.getToken();
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
-    apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
+    // see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/31
+    if (getVersion().compareToIgnoreCase("Mediawiki 1.28") >= 0) {
+      apiResult=this.getQueryResult("&meta=tokens&type=login");
+      super.handleError(apiResult); 
+      token.token=apiResult.getQuery().getTokens().getLogintoken();
+    } else {
+      apiResult = getActionResult("login", "&lgname=" + username, null, null);
+      super.handleError(apiResult); 
+      Login login = apiResult.getLogin();
+      token.token = login.getToken();
+    }
+    return token;
+  }
+
+  /**
+   * second step of login process
+   * @param token
+   * @param username
+   * @param password
+   * @return
+   * @throws Exception 
+   */
+  public Login login(TokenResult token,String username, String password) throws Exception {
+    username = encode(username);
+    Api apiResult=null;
+    // depends on MediaWiki version see
+    // https://test2.wikipedia.org/w/api.php?action=help&modules=clientlogin
+    if (getVersion().compareToIgnoreCase("Mediawiki 1.28") >= 0) {
+      Map<String, String> lFormData = new HashMap<String, String>();
+      lFormData.put("lgpassword", password);
+      lFormData.put("lgtoken",token.token);
+      apiResult=getActionResult("login", "&lgname=" + username, null, lFormData);
+      // apiResult = getActionResult("clientlogin", "&lgname=" + username+"&loginreturnurl="+this.siteurl, null, lFormData);
+    } else {
+      password = encode(password);
+      apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
         + password, token, null);
-    login = apiResult.getLogin();
+    } 
+    Login login = apiResult.getLogin();
     userid = login.getLguserid();
     return login;
   }
 
+
+  /**
+   * login with the given username and password
+   * @param username
+   * @param password
+   * @return Login
+   * @throws Exception
+   */
+  public Login login(String username, String password) throws Exception {
+    // login is a two step process
+    // first we get a token
+    TokenResult token=prepareLogin(username);
+    // and then with the token we login using the password
+    Login login=login(token,username,password);
+    return login;
+  }
+  
   @Override
   public boolean isLoggedIn() {
     boolean result = userid != null;
@@ -580,11 +635,36 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   @Override
   public List<S> getSections(String pageTitle) throws Exception {
-    String action = "parse";
     String params = "&prop=sections&page=" + pageTitle;
-    Api api = getActionResult(action, params);
-    List<S> sections = api.getParse().getSections();
+    Parse parse=getParse(params);
+    List<S> sections = parse.getSections();
     return sections;
+  }
+  
+  /**
+   * get the html from the given parse
+   * @param pageTitle
+   * @return
+   * @throws Exception
+   */
+  public String getHtml(String pageTitle) throws Exception {
+    String params="&page="+pageTitle;
+    Parse parse=getParse(params);
+    String html=parse.getText();
+    return html;
+  }
+  
+  /**
+   * get the parse Result for the given params
+   * @param params
+   * @return the Parse Result
+   * @throws Exception
+   */
+  public Parse getParse(String params) throws Exception {
+    String action = "parse";
+    Api api = getActionResult(action, params);
+    super.handleError(api);
+    return api.getParse();
   }
 
   /**

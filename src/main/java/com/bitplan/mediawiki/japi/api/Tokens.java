@@ -46,8 +46,10 @@ public class Tokens {
     protected String deletetoken;
     @XmlAttribute(name = "csrftoken")
     protected String csrftoken;
-
-
+    // since MW 1.28
+    @XmlAttribute
+    protected String logintoken;
+ 
     /**
      * Ruft den Wert der csrftoken-Eigenschaft ab.
      * 
@@ -132,6 +134,14 @@ public class Tokens {
      */
     public void setDeletetoken(String deletetoken) {
       this.deletetoken = deletetoken;
+    }
+
+    /**
+     * return the login token
+     * @return
+     */
+    public String getLogintoken() {
+      return logintoken;
     }
 
 }

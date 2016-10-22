@@ -69,6 +69,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Parse {
 
     protected List<S> sections=new ArrayList<S>();
+    @XmlElement
+    protected String text;
     
     @XmlAttribute(name = "title")
     protected String title;
@@ -122,5 +124,14 @@ public class Parse {
     public void setTitle(String value) {
         this.title = value;
     }
+    
+    /**
+     * get the text
+     * @return the text (if any)
+     */
+    public String getText() {
+      return text;
+    }
+
 
 }

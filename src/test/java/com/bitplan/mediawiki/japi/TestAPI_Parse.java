@@ -46,5 +46,18 @@ public class TestAPI_Parse extends APITestbase {
       }
     }
   }
+  
+  @Test
+  public void testGetHtml() throws Exception {
+    Mediawiki wiki = new Mediawiki("https://en.wikipedia.org");
+    wiki.setDebug(debug);
+    String pageTitle="Quikwriting";
+    String html=wiki.getHtml(pageTitle);
+    // debug=true;
+    if (debug) {
+      LOGGER.log(Level.INFO,html);
+    }
+    assertTrue(html.contains("<a href=\"/wiki/Graffiti_(Palm_OS)\""));
+  }
 
 }

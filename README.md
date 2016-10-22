@@ -123,3 +123,4 @@ unit tests supplied with Wiki.java).
 * 0.0.12 - 2016-01-09: fixes issues #21 to #24
 * 0.0.13 - 2016-01-19: fixes #25
 * 0.0.14 - 2016-03-12: fixes #26,#27
+* 0.0.15 - 2016-10-22: fixes #30,#31
