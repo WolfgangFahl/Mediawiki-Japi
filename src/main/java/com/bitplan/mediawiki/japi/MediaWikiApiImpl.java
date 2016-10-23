@@ -209,6 +209,19 @@ public abstract class MediaWikiApiImpl implements MediawikiApi {
     }
     return mediawikiVersion;
   }
+  
+  /**
+   * set the version via API
+   * @param version
+   */
+  public void setVersion(String version) {
+    if (mediawikiVersion==null) {
+      mediawikiVersion=version;
+    } else {
+      throw new IllegalStateException("version "+mediawikiVersion+" already set");
+    }
+  }
+  
   /**
    * request parameter encoding
    * 
