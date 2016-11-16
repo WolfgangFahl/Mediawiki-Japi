@@ -491,7 +491,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
     // see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/31
-    if (getVersion().compareToIgnoreCase("Mediawiki 1.28") >= 0) {
+    String mwversion="Mediawiki 1.27 or before";
+    try {
+      mwversion=this.getVersion(); 
+    } catch (Exception e) {
+      LOGGER.log(Level.INFO,"Could not retrieve Mediawiki Version via API - will assume "+mwversion);
+    }
+    if (mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0) {
       apiResult=this.getQueryResult("&meta=tokens&type=login");
       super.handleError(apiResult); 
       token.token=apiResult.getQuery().getTokens().getLogintoken();
