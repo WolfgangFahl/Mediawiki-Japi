@@ -479,6 +479,23 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
   
   /**
+   * check whether this is MediaWiki 1.28 or higher
+   * but make sure getVersion calls with readapidenied are ignored
+   * see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/32
+   * @return
+   */
+  public boolean isVersion128() {
+    String mwversion="Mediawiki 1.27 or before";
+    try {
+      mwversion=this.getVersion(); 
+    } catch (Exception e) {
+      LOGGER.log(Level.INFO,"Could not retrieve Mediawiki Version via API - will assume "+mwversion+" you might want to set the Version actively if you are on 1.28 and have the api blocked for non-logged in users");
+    }
+    boolean result=mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0;
+    return result;
+  }
+  
+  /**
    * prepare the login by getting the login token
    * @param username
    * @return the ApiResult
@@ -490,14 +507,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     TokenResult token = new TokenResult();
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
-    // see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/31
-    String mwversion="Mediawiki 1.27 or before";
-    try {
-      mwversion=this.getVersion(); 
-    } catch (Exception e) {
-      LOGGER.log(Level.INFO,"Could not retrieve Mediawiki Version via API - will assume "+mwversion);
-    }
-    if (mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0) {
+    // see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/31 
+    if (this.isVersion128()) {
       apiResult=this.getQueryResult("&meta=tokens&type=login");
       super.handleError(apiResult); 
       token.token=apiResult.getQuery().getTokens().getLogintoken();
@@ -523,7 +534,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     Api apiResult=null;
     // depends on MediaWiki version see
     // https://test2.wikipedia.org/w/api.php?action=help&modules=clientlogin
-    if (getVersion().compareToIgnoreCase("Mediawiki 1.28") >= 0) {
+    if (this.isVersion128()) {
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("lgpassword", password);
       lFormData.put("lgtoken",token.token);
