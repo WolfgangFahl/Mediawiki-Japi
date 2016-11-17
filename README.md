@@ -126,3 +126,4 @@ unit tests supplied with Wiki.java).
 * 0.0.15 - 2016-10-22: fixes #30,#31
 * 0.0.16 - 2016-11-16: fixes #32
 * 0.0.17 - 2016-11-16: fixes #33
+* 0.0.18 - 2016-11-17: fixes #34 upgrades to Jersey 1.19.3

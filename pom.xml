@@ -6,7 +6,7 @@
 	<artifactId>mediawiki-japi</artifactId>
 	<packaging>jar</packaging>
 	<name>BITPlan-Mediawiki-Japi</name>
-	<version>0.0.17</version>
+	<version>0.0.18</version>
 	<description>Java library to call Mediawiki api</description>
 	<prerequisites>
 		<maven>3.1.1</maven>
@@ -42,7 +42,7 @@
 		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
 		<github.global.server>github</github.global.server>
 		<!-- versions of other libraries to be used -->
-		<jersey.version>1.18</jersey.version>
+		<jersey.version>1.19.3</jersey.version>
 		<junit4.version>4.11</junit4.version>
 		<guice.version>3.0</guice.version>
 		<mockito.version>1.10.16</mockito.version>
