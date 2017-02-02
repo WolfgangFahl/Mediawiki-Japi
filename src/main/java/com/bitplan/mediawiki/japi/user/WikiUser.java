@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 BITPlan GmbH
+ * Copyright (C) 2015-2017 BITPlan GmbH
  *
  * Pater-Delp-Str. 1
  * D-47877 Willich-Schiefbahn
@@ -59,12 +59,15 @@ public class WikiUser {
 
 	/**
 	 * get input from standard in
+	 * 
 	 * @param name
-	 * @param br - the buffered reader to read from
+	 * @param br
+	 *          - the buffered reader to read from
 	 * @return the input returned
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public static String getInput(String name, BufferedReader br) throws IOException {
+	public static String getInput(String name, BufferedReader br)
+			throws IOException {
 		// prompt the user to enter the given name
 		System.out.print("Please Enter " + name + ": ");
 
@@ -74,30 +77,47 @@ public class WikiUser {
 
 	/**
 	 * get the property file for the given wiki
+	 * 
 	 * @param wikiId
 	 * @return the property File
 	 */
 	public static File getPropertyFile(String wikiId) {
 		String user = System.getProperty("user.name");
-		String userPropertiesFileName = System.getProperty("user.home") + "/.mediawiki-japi/"
-				+ user + "_" + wikiId + ".ini";
+		String userPropertiesFileName = System.getProperty("user.home")
+				+ "/.mediawiki-japi/" + user + "_" + wikiId + ".ini";
 		File propFile = new File(userPropertiesFileName);
 		return propFile;
 	}
-	
+
+	/**
+	 * get the Properties for the given wikiId
+	 * @param wikiId
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static Properties getProperties(String wikiId)
+			throws FileNotFoundException, IOException {
+		File propFile = getPropertyFile(wikiId);
+		Properties props = new Properties();
+		props.load(new FileReader(propFile));
+		return props;
+	}
+
 	/**
 	 * get the Wiki user for the given wikiid
 	 * 
-	 * @param wikiId - the id of the wiki
-	 * @param siteurl - the siteurl
+	 * @param wikiId
+	 *          - the id of the wiki
+	 * @param siteurl
+	 *          - the siteurl
 	 * @return a Wikiuser for this site
 	 */
-	public static WikiUser getUser(String wikiId,String siteurl) {
-    File propFile=getPropertyFile(wikiId);
-		Properties props = new Properties();
-		WikiUser result =null;
+	public static WikiUser getUser(String wikiId, String siteurl) {
+
+		WikiUser result = null;
 		try {
-			props.load(new FileReader(propFile));
+			Properties props=getProperties(wikiId);
 			result = new WikiUser();
 			result.setUsername(props.getProperty("user"));
 			result.setEmail(props.getProperty("email"));
@@ -105,7 +125,7 @@ public class WikiUser {
 					props.getProperty("salt"));
 			result.setPassword(pcf.decrypt(props.getProperty("secret")));
 		} catch (FileNotFoundException e) {
-			String msg=help(wikiId,siteurl);
+			String msg = help(wikiId, siteurl);
 			LOGGER.log(Level.SEVERE, msg);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
@@ -144,70 +164,72 @@ public class WikiUser {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	/**
 	 * create a credentials ini file from the command line
 	 */
 	public static void createIniFile(String wikiid) {
 		try {
-		  // open up standard input
-	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			if (wikiid==null)
-				wikiid=getInput("wiki id",br);
-			File propFile=getPropertyFile(wikiid);
-			String username = getInput("username",br);
-			String password = getInput("password",br);
-			String email=getInput("email",br);
-			String remember= getInput("shall i store "+username+"'s credentials encrypted in "+propFile.getName()+" y/n?",br);
+			// open up standard input
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			if (wikiid == null)
+				wikiid = getInput("wiki id", br);
+			File propFile = getPropertyFile(wikiid);
+			String username = getInput("username", br);
+			String password = getInput("password", br);
+			String email = getInput("email", br);
+			String remember = getInput("shall i store " + username
+					+ "'s credentials encrypted in " + propFile.getName() + " y/n?", br);
 			if (remember.trim().toLowerCase().startsWith("y")) {
-				Crypt lCrypt=Crypt.getRandomCrypt();
+				Crypt lCrypt = Crypt.getRandomCrypt();
 				Properties props = new Properties();
 				props.setProperty("cypher", lCrypt.getCypher());
 				props.setProperty("salt", lCrypt.getSalt());
 				props.setProperty("user", username);
-				props.setProperty("email",email);
+				props.setProperty("email", email);
 				props.setProperty("secret", lCrypt.encrypt(password));
 				if (!propFile.getParentFile().exists()) {
 					propFile.getParentFile().mkdirs();
 				}
-				FileOutputStream propsStream=new FileOutputStream(propFile);
-				props.store(propsStream, "Mediawiki JAPI credentials for "+wikiid);
+				FileOutputStream propsStream = new FileOutputStream(propFile);
+				props.store(propsStream, "Mediawiki JAPI credentials for " + wikiid);
 				propsStream.close();
 			}
 		} catch (IOException e1) {
-			LOGGER.log(Level.SEVERE,e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.getMessage());
 		} catch (GeneralSecurityException e1) {
-			LOGGER.log(Level.SEVERE,e1.getMessage());
+			LOGGER.log(Level.SEVERE, e1.getMessage());
 		}
 	}
 
 	/**
 	 * help text
+	 * 
 	 * @param wikiId
 	 * @param siteurl
 	 * @return - the help text
 	 */
 	public static String help(String wikiId, String siteurl) {
-		File propFile=getPropertyFile(wikiId);
-		String help="Need to be able to read Credentials for \n\t"+siteurl+"\nfrom "
-				+ propFile.getPath()+"\n";
-		help+="Please run \n";
-		help+="\tjava -cp target/test-classes com.bitplan.mediawiki.japi.user.WikiUser "+wikiId+"\n";
-		help+="to create it. Then restart your tests.";
+		File propFile = getPropertyFile(wikiId);
+		String help = "Need to be able to read Credentials for \n\t" + siteurl
+				+ "\nfrom " + propFile.getPath() + "\n";
+		help += "Please run \n";
+		help += "\tjava -cp target/test-classes com.bitplan.mediawiki.japi.user.WikiUser "
+				+ wikiId + "\n";
+		help += "to create it. Then restart your tests.";
 		return help;
 	}
 
-	
 	/**
 	 * main program
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		if (args.length==0)
+		if (args.length == 0)
 			createIniFile(null);
 		else
-		  createIniFile(args[0]);
+			createIniFile(args[0]);
 	}
-
 
 }
