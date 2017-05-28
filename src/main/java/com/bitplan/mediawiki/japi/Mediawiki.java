@@ -77,7 +77,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.16";
+  protected static final String VERSION = "0.0.18";
 
   /**
    * if true main can be called without calling system.exit() when finished

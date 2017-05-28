@@ -59,6 +59,12 @@
 			<artifactId>guice</artifactId>
 			<version>${guice.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 		<!-- commons io -->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -89,11 +95,8 @@
 			<artifactId>org.eclipse.persistence.moxy</artifactId>
 			<version>${moxy.version}</version>
 		</dependency>
-		<!--
-			needed by eclipse moxy 2.6.0-M3
-			http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html
-			http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final
-		-->
+		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html 
+			http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -159,13 +162,8 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!--
-				executable jar with dependencies
-				see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
-
-				run with
-				mvn clean compile assembly:single
-			-->
+			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven 
+				run with mvn clean compile assembly:single -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
@@ -192,9 +190,8 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- see http://central.sonatype.org/pages/apache-maven.html Javadoc
-					and Sources Attachments To get Javadoc and Source jar files generated,
-					you
+				<!-- see http://central.sonatype.org/pages/apache-maven.html Javadoc 
+					and Sources Attachments To get Javadoc and Source jar files generated, you 
 					have to configure the javadoc and source Maven plugins. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -221,7 +218,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- GPG Signed Components The Maven GPG plugin is used to sign the components
+			<!-- GPG Signed Components The Maven GPG plugin is used to sign the components 
 				with the following configuration. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -237,13 +234,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- according to : http://central.sonatype.org/pages/apache-maven.html
-				Nexus Staging Maven Plugin for Deployment and Release The Nexus Staging
-				Maven
-				Plugin is the recommended way to deploy your components to OSSRH and
-				release
-				them to the Central Repository. To configure it simply add the plugin
-				to
+			<!-- according to : http://central.sonatype.org/pages/apache-maven.html 
+				Nexus Staging Maven Plugin for Deployment and Release The Nexus Staging Maven 
+				Plugin is the recommended way to deploy your components to OSSRH and release 
+				them to the Central Repository. To configure it simply add the plugin to 
 				your Maven pom.xml. -->
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
@@ -327,11 +321,8 @@
 		</plugins>
 	</build>
 	<profiles>
-		<!--
-			Work around Oracle's (IMHO silly) decision to make doclint default.
-			http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html
-			http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete
-		-->
+		<!-- Work around Oracle's (IMHO silly) decision to make doclint default. 
+			http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete -->
 		<profile>
 			<id>doclint-java8-disable</id>
 			<activation>
