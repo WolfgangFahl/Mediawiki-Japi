@@ -47,6 +47,8 @@ public class TestAPI_Login extends APITestbase {
   public void testLoginToken() throws Exception {
     for (ExampleWiki lwiki : getWikis()) {
       WikiUser wuser = lwiki.getWikiUser();
+      if (wuser==null)
+        throw new Exception("wiki user for "+lwiki.wikiId+" not configured properly");
       Mediawiki ltWiki = lwiki.getMediaWikiJapi();
       // do not keep uncommented - password will be visible in log
       // lwiki.getMediaWikiJapi().setDebug(true);

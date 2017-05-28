@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.17|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.18|jar
 
 Maven dependency:
 
@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.17</version>
+  <version>0.0.18</version>
 </dependency>
 ```
 
