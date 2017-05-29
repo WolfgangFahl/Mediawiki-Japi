@@ -77,7 +77,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.18";
+  protected static final String VERSION = "0.0.19";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -526,11 +526,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @param token
    * @param username
    * @param password
+   * @param domain
    * @return
    * @throws Exception 
    */
-  public Login login(TokenResult token,String username, String password) throws Exception {
+  public Login login(TokenResult token,String username, String password, String domain) throws Exception {
     username = encode(username);
+    if (domain != null) {
+      domain = encode(domain);
+    }
     Api apiResult=null;
     // depends on MediaWiki version see
     // https://test2.wikipedia.org/w/api.php?action=help&modules=clientlogin
@@ -538,18 +542,43 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("lgpassword", password);
       lFormData.put("lgtoken",token.token);
-      apiResult=getActionResult("login", "&lgname=" + username, null, lFormData);
+      if (domain != null) {
+        apiResult=getActionResult("login", "&lgdomain=" + domain + "&lgname=" + username, null, lFormData);
+      } else {
+        apiResult=getActionResult("login", "&lgname=" + username, null, lFormData);
+      }
       // apiResult = getActionResult("clientlogin", "&lgname=" + username+"&loginreturnurl="+this.siteurl, null, lFormData);
     } else {
       password = encode(password);
-      apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
-        + password, token, null);
+      if (domain != null) {
+        apiResult = getActionResult("login", "&lgdomain=" + domain + "&lgname=" + username + "&lgpassword="
+            + password, token, null);
+      } else {
+        apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
+            + password, token, null);
+      }
     } 
     Login login = apiResult.getLogin();
     userid = login.getLguserid();
     return login;
   }
 
+  /**
+   * login with the given username, password and domain
+   * @param username
+   * @param password
+   * @param password
+   * @return Login
+   * @throws Exception
+   */
+  public Login login(String username, String password, String domain) throws Exception {
+    // login is a two step process
+    // first we get a token
+    TokenResult token=prepareLogin(username);
+    // and then with the token we login using the password
+    Login login=login(token,username,password, domain);
+    return login;
+  }
 
   /**
    * login with the given username and password
@@ -559,13 +588,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   public Login login(String username, String password) throws Exception {
-    // login is a two step process
-    // first we get a token
-    TokenResult token=prepareLogin(username);
-    // and then with the token we login using the password
-    Login login=login(token,username,password);
-    return login;
+    return login(username, password, null);
   }
+  
   
   @Override
   public boolean isLoggedIn() {
