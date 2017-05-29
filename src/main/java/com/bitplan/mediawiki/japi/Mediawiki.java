@@ -567,7 +567,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * login with the given username, password and domain
    * @param username
    * @param password
-   * @param password
+   * @param domain
    * @return Login
    * @throws Exception
    */
