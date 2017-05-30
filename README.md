@@ -26,7 +26,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.18|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.19|jar
 
 Maven dependency:
 
@@ -34,7 +34,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.18</version>
+  <version>0.0.19</version>
 </dependency>
 ```
 
@@ -127,3 +127,4 @@ unit tests supplied with Wiki.java).
 * 0.0.16 - 2016-11-16: fixes #32
 * 0.0.17 - 2016-11-16: fixes #33
 * 0.0.18 - 2016-11-17: fixes #34 upgrades to Jersey 1.19.3
+* 0.0.19 - 2017-05-30: pr #37 login to domain support
