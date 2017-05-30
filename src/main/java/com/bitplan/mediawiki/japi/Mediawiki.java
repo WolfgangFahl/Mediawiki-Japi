@@ -526,6 +526,18 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @param token
    * @param username
    * @param password
+   * @return
+   * @throws Exception 
+   */
+  public Login login(TokenResult token,String username, String password) throws Exception {
+    return login(token, username, password, null);
+  }
+
+  /**
+   * second step of login process
+   * @param token
+   * @param username
+   * @param password
    * @param domain
    * @return
    * @throws Exception 
