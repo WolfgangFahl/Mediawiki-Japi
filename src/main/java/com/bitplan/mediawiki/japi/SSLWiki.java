@@ -168,7 +168,7 @@ public class SSLWiki extends Mediawiki {
 	public void login() throws Exception {
 		WikiUser wuser = WikiUser.getUser(getWikiid(), getSiteurl());
 		if (wuser == null) {
-			throw new Exception("user for " + getWikiid() + " not configured");
+			throw new Exception("user for " + getWikiid() + "("+getSiteurl()+") not configured");
 		}
 		// wiki.setDebug(true);
 		try {
