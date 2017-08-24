@@ -130,3 +130,4 @@ unit tests supplied with Wiki.java).
 * 0.0.17 - 2016-11-16: fixes #33
 * 0.0.18 - 2016-11-17: fixes #34 upgrades to Jersey 1.19.3
 * 0.0.19 - 2017-05-30: pr #37 login to domain support
+           2017-08-24: adds travis build check
