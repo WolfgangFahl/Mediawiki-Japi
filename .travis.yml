@@ -1,0 +1,9 @@
+# 
+# this is a java project using maven
+language: java
+# switch off gpg handling
+# be available in test phase
+# let's first compile without tests
+install: mvn install -DskipTests=true -Dgpg.skip=true
+# do the tests separately after xvfb has been installed
+script: mvn test

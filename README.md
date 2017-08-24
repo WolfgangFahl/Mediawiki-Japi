@@ -5,6 +5,8 @@ This is a Java API for the Mediawiki web API described at
 
 http://www.mediawiki.org/wiki/API:Main_page
 
+[![Build Status](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi.svg?branch=master)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
+
 ## Project 
 
 ### Documentation
