@@ -82,15 +82,18 @@ public class TestAPI_Edit extends APITestbase {
     Map<String, Throwable> errors = new LinkedHashMap<String, Throwable>();
     // debug = true;
     for (ExampleWiki lwiki : getEditableWikis()) {
-      try {
-        lwiki.login();
-        lwiki.wiki.setDebug(debug);
-        String pageTitle = "deleteMe";
-        lwiki.wiki.edit(pageTitle, pageTitle, pageTitle);
-        lwiki.wiki.delete(pageTitle, "for test");
-        String content = lwiki.wiki.getPageContent(pageTitle);
-      } catch (Exception e) {
-        errors.put(lwiki.wikiId, e);
+      if (hasWikiUser(lwiki)) {
+        try {
+          lwiki.login();
+          lwiki.wiki.setDebug(debug);
+          String pageTitle = "deleteMe";
+          lwiki.wiki.edit(pageTitle, pageTitle, pageTitle);
+          lwiki.wiki.delete(pageTitle, "for test");
+          @SuppressWarnings("unused")
+          String content = lwiki.wiki.getPageContent(pageTitle);
+        } catch (Exception e) {
+          errors.put(lwiki.wikiId, e);
+        }
       }
     }
     if (debug) {
