@@ -1,13 +1,22 @@
 /**
- * This package contains an alternative one - class solution {@link Wiki } for the Mediawiki API.
- * The class {@link Wiki } has only been slightly modified here and the implementation is neither
- * copyrighted, owned or maintained by the Mediawiki-Japi project. Please look at the javadoc and
- * source code of this class for further details.
- * @see <a href="http://www.mediawiki.org/wiki/API:Main_page">Mediawiki API documentation</a>
- * From a license point of view the package content is not fully part of Mediawiki-Japi 
- * just the Wiki.java modifications are having the different license as outline
- * in the header of the file (see <a href='http://en.wikipedia.org/wiki/GPL_linking_exception#The_classpath_exception'>
- * GPL linking classpath exception </a>
+ *
+ * This file is part of the https://github.com/WolfgangFahl/Mediawiki-Japi open source project
+ *
+ * Copyright 2015-2017 BITPlan GmbH https://github.com/BITPlan
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ *  You may obtain a copy of the License at
+ *
+ *  http:www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.wikipedia;
  
