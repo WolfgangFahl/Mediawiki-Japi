@@ -179,6 +179,7 @@ public class APITestbase {
     return code==200;
   }
   
+  public static boolean showHelp=true;
   /**
    * check whether we have the wiki user configured to run the tests
    * @param exampleWiki
@@ -190,6 +191,11 @@ public class APITestbase {
       return false;
     }
     File propFile = WikiUser.getPropertyFile(exampleWiki.wikiId);
-    return propFile.exists();
+    boolean result=propFile.exists();
+    if (!result && showHelp) {
+      WikiUser.help(exampleWiki.wikiId, exampleWiki.wikiId);
+      showHelp=false;
+    }
+    return  result;
   }
 }

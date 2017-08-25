@@ -20,9 +20,12 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -88,58 +91,65 @@ public class TestAPI_Login extends APITestbase {
   @Test
   public void testLogin() throws Exception {
     for (ExampleWiki lwiki : getEditableWikis()) {
-      WikiUser wuser = lwiki.getWikiUser();
-      if (wuser == null) {
-        fail(WikiUser.help(lwiki.wikiId, lwiki.wiki.getSiteurl()));
+      if (hasWikiUser(lwiki)) {
+        WikiUser wuser = lwiki.getWikiUser();
+        if (wuser == null) {
+          fail(WikiUser.help(lwiki.wikiId, lwiki.wiki.getSiteurl()));
+        }
+        // avoid uncommenting - will show password information ...
+        // lwiki.debug = true;
+        assertFalse(lwiki.wiki.isLoggedIn());
+        Login login = lwiki.wiki.login(wuser.getUsername(),
+            wuser.getPassword());
+        assertNotNull(login.getLguserid());
+        assertEquals(wuser.getUsername().toLowerCase(),
+            login.getLgusername().toLowerCase());
+        assertEquals("Success", login.getResult());
+        assertNotNull(login.getLgtoken());
+        assertTrue(lwiki.wiki.isLoggedIn());
+        // make sure logout also works
+        lwiki.wiki.logout();
+        assertFalse(lwiki.wiki.isLoggedIn());
       }
-      // avoid uncommenting - will show password information ...
-      // lwiki.debug = true;
-      assertFalse(lwiki.wiki.isLoggedIn());
-      Login login = lwiki.wiki.login(wuser.getUsername(), wuser.getPassword());
-      assertNotNull(login.getLguserid());
-      assertEquals(wuser.getUsername().toLowerCase(),
-          login.getLgusername().toLowerCase());
-      assertEquals("Success", login.getResult());
-      assertNotNull(login.getLgtoken());
-      assertTrue(lwiki.wiki.isLoggedIn());
-      // make sure logout also works
-      lwiki.wiki.logout();
-      assertFalse(lwiki.wiki.isLoggedIn());
     }
   }
 
   @Test
   public void testLoginWrongPassword() throws Exception {
     for (ExampleWiki lwiki : getEditableWikis()) {
-      MediawikiApi ltwiki = lwiki.wiki;
-      WikiUser wuser = lwiki.getWikiUser();
-      if (wuser == null) {
-        fail(WikiUser.help(lwiki.wikiId, lwiki.wiki.getSiteurl()));
+      if (hasWikiUser(lwiki)) {
+        MediawikiApi ltwiki = lwiki.wiki;
+        WikiUser wuser = lwiki.getWikiUser();
+        if (wuser == null) {
+          fail(WikiUser.help(lwiki.wikiId, lwiki.wiki.getSiteurl()));
+        }
+        // avoid uncommenting - will show password information ...
+        // lwiki.debug = true;
+        assertFalse(ltwiki.isLoggedIn());
+        // spoilt the password
+        Login login = lwiki.wiki.login(wuser.getUsername(),
+            "not" + wuser.getPassword());
+        assertNull(login.getLguserid());
+        assertNull(login.getLgusername());
+        assertEquals("WrongPass", login.getResult());
+        assertNull(login.getLgtoken());
+        assertFalse(lwiki.wiki.isLoggedIn());
+        // make sure logout also works
+        lwiki.wiki.logout();
+        assertFalse(lwiki.wiki.isLoggedIn());
       }
-      // avoid uncommenting - will show password information ...
-      // lwiki.debug = true;
-      assertFalse(ltwiki.isLoggedIn());
-      // spoilt the password
-      Login login = lwiki.wiki.login(wuser.getUsername(),
-          "not" + wuser.getPassword());
-      assertNull(login.getLguserid());
-      assertNull(login.getLgusername());
-      assertEquals("WrongPass", login.getResult());
-      assertNull(login.getLgtoken());
-      assertFalse(lwiki.wiki.isLoggedIn());
-      // make sure logout also works
-      lwiki.wiki.logout();
-      assertFalse(lwiki.wiki.isLoggedIn());
     }
   }
 
   @Test
   public void testLoginNotExists() throws Exception {
     for (ExampleWiki lwiki : getEditableWikis()) {
-      MediawikiApi ltwiki = lwiki.wiki;
-      // System.out.println(ltwiki.getSiteurl());
-      Login login = ltwiki.login("someUserThatDoesNotExist", "somePassword");
-      assertEquals("NotExists", login.getResult());
+      if (hasWikiUser(lwiki)) {
+        MediawikiApi ltwiki = lwiki.wiki;
+        // System.out.println(ltwiki.getSiteurl());
+        Login login = ltwiki.login("someUserThatDoesNotExist", "somePassword");
+        assertEquals("NotExists", login.getResult());
+      }
     }
   }
 
