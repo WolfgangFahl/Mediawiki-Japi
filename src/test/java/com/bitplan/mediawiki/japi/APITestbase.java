@@ -22,6 +22,7 @@ package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.logging.Level;
 
 import com.bitplan.mediawiki.guice.ComBITPlanWikiModule;
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.user.WikiUser;
 
 /**
  * Base class for API tests
@@ -175,5 +177,19 @@ public class APITestbase {
     huc.connect () ; 
     int code = huc.getResponseCode() ;
     return code==200;
+  }
+  
+  /**
+   * check whether we have the wiki user configured to run the tests
+   * @param exampleWiki
+   * @return
+   */
+  public boolean hasWikiUser(ExampleWiki exampleWiki) {
+    String user = System.getProperty("user.name");
+    if (user.equals("travis")) {
+      return false;
+    }
+    File propFile = WikiUser.getPropertyFile(exampleWiki.wikiId);
+    return propFile.exists();
   }
 }

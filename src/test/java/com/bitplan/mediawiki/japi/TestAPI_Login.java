@@ -22,6 +22,8 @@ package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Test;
 
 import com.bitplan.mediawiki.japi.Mediawiki.TokenResult;
@@ -37,14 +39,6 @@ import com.bitplan.mediawiki.japi.user.WikiUser;
  *
  */
 public class TestAPI_Login extends APITestbase {
-  
-  @Test
-  public void testTravis() {
-    String user=System.getProperty("user.name");
-    if (user.equals("travis")) {
-      
-    }
-  }
 
   /**
    * test secret access to user data
@@ -53,10 +47,12 @@ public class TestAPI_Login extends APITestbase {
    */
   @Test
   public void testGetUser() throws Exception {
-    WikiUser wuser = getWiki().getWikiUser();
-    assertNotNull("User credentials not found/configured",wuser);
-    check("email", wuser.getEmail());
-    assertNotNull(wuser.getPassword());
+    if (hasWikiUser(getWiki())) {
+      WikiUser wuser = getWiki().getWikiUser();
+      assertNotNull("User credentials not found/configured", wuser);
+      check("email", wuser.getEmail());
+      assertNotNull(wuser.getPassword());
+    }
   }
 
   /**
@@ -65,23 +61,27 @@ public class TestAPI_Login extends APITestbase {
   @Test
   public void testLoginToken() throws Exception {
     for (ExampleWiki lwiki : getWikis()) {
-      WikiUser wuser = lwiki.getWikiUser();
-      if (wuser==null)
-        throw new Exception("wiki user for "+lwiki.wikiId+" not configured properly");
-      Mediawiki ltWiki = lwiki.getMediaWikiJapi();
-      // do not keep uncommented - password will be visible in log
-      // lwiki.getMediaWikiJapi().setDebug(true);
-      TokenResult token = ltWiki.prepareLogin(wuser.getUsername());
-      assertNotNull(token);
-      Login login=ltWiki.login(wuser.getUsername(), wuser.getPassword());
-      assertNotNull(login);
-      assertNotNull("lguserid should not be null for "+lwiki.getWikiId(),login.getLguserid());
+      if (hasWikiUser(lwiki)) {
+        WikiUser wuser = lwiki.getWikiUser();
+        if (wuser == null)
+          throw new Exception(
+              "wiki user for " + lwiki.wikiId + " not configured properly");
+        Mediawiki ltWiki = lwiki.getMediaWikiJapi();
+        // do not keep uncommented - password will be visible in log
+        // lwiki.getMediaWikiJapi().setDebug(true);
+        TokenResult token = ltWiki.prepareLogin(wuser.getUsername());
+        assertNotNull(token);
+        Login login = ltWiki.login(wuser.getUsername(), wuser.getPassword());
+        assertNotNull(login);
+        assertNotNull("lguserid should not be null for " + lwiki.getWikiId(),
+            login.getLguserid());
+      }
     }
   }
 
   /**
-   * test Login and logout see <a
-   * href='http://www.mediawiki.org/wiki/API:Login'>API:Login</a>
+   * test Login and logout see
+   * <a href='http://www.mediawiki.org/wiki/API:Login'>API:Login</a>
    * 
    * @throws Exception
    */
@@ -97,8 +97,8 @@ public class TestAPI_Login extends APITestbase {
       assertFalse(lwiki.wiki.isLoggedIn());
       Login login = lwiki.wiki.login(wuser.getUsername(), wuser.getPassword());
       assertNotNull(login.getLguserid());
-      assertEquals(wuser.getUsername().toLowerCase(), login.getLgusername()
-          .toLowerCase());
+      assertEquals(wuser.getUsername().toLowerCase(),
+          login.getLgusername().toLowerCase());
       assertEquals("Success", login.getResult());
       assertNotNull(login.getLgtoken());
       assertTrue(lwiki.wiki.isLoggedIn());
@@ -138,8 +138,7 @@ public class TestAPI_Login extends APITestbase {
     for (ExampleWiki lwiki : getEditableWikis()) {
       MediawikiApi ltwiki = lwiki.wiki;
       // System.out.println(ltwiki.getSiteurl());
-      Login login = ltwiki
-          .login("someUserThatDoesNotExist", "somePassword");
+      Login login = ltwiki.login("someUserThatDoesNotExist", "somePassword");
       assertEquals("NotExists", login.getResult());
     }
   }
