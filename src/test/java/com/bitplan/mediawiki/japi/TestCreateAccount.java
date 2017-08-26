@@ -39,23 +39,26 @@ import com.bitplan.mediawiki.japi.api.Api;
  */
 public class TestCreateAccount extends APITestbase {
 
-	/**
-	 * test getting the create Account token
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	public void testCreateAccount() throws Exception {
-		ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
-		Mediawiki wiki = (Mediawiki) lwiki.wiki;
-		lwiki.login();
-		// lwiki.wiki.setDebug(true);
-		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmSS");
-		String nowAsISO = df.format(new Date());
-		Api api=wiki.createAccount("JohnDoe"+nowAsISO,"wf@bitplan.com","John%20Doe",true,"SMWCon2015-05","en");
-		assertNull(api.getWarnings());
-		String result=api.getCreateaccount().getResult();
-		assertEquals("Success",result);
-	}
+  /**
+   * test getting the create Account token
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void testCreateAccount() throws Exception {
+    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
+    Mediawiki wiki = (Mediawiki) lwiki.wiki;
+    if (hasWikiUser(lwiki)) {
+      lwiki.login();
+      // lwiki.wiki.setDebug(true);
+      DateFormat df = new SimpleDateFormat("yyyyMMddHHmmSS");
+      String nowAsISO = df.format(new Date());
+      Api api = wiki.createAccount("JohnDoe" + nowAsISO, "wf@bitplan.com",
+          "John%20Doe", true, "SMWCon2015-05", "en");
+      assertNull(api.getWarnings());
+      String result = api.getCreateaccount().getResult();
+      assertEquals("Success", result);
+    }
+  }
 
 }
