@@ -50,25 +50,31 @@ public class TestAPI_Parse extends APITestbase {
       assertNotNull(sections);
       assertTrue(sections.size() > 5);
       for (S section : sections) {
-        String sectionMsg = section.getIndex() + "-"+section.getLevel()+":"+section.getToclevel()+" "+section.getNumber()+" "+section.getAnchor();
+        String sectionMsg = section.getIndex() + "-" + section.getLevel() + ":"
+            + section.getToclevel() + " " + section.getNumber() + " "
+            + section.getAnchor();
         if (debug) {
           LOGGER.log(Level.INFO, sectionMsg);
         }
       }
     }
   }
-  
+
   @Test
   public void testGetPageHtml() throws Exception {
     Mediawiki wiki = new Mediawiki("https://en.wikipedia.org");
     wiki.setDebug(debug);
-    String pageTitle="Quikwriting";
-    String html=wiki.getPageHtml(pageTitle);
-    // debug=true;
-    if (debug) {
-      LOGGER.log(Level.INFO,html);
+    String[] pageTitles = { "Quikwriting", "Überlingen" };
+    String[] expected= {"<a href=\"/wiki/Graffiti_(Palm_OS)\"","Constance"};
+    int i=0;
+    for (String pageTitle : pageTitles) {
+      String html = wiki.getPageHtml(pageTitle);
+      // debug=true;
+      if (debug) {
+        LOGGER.log(Level.INFO, html);
+      }
+      assertTrue(html.contains(expected[i++]));
     }
-    assertTrue(html.contains("<a href=\"/wiki/Graffiti_(Palm_OS)\""));
   }
 
 }

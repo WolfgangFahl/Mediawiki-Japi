@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -306,7 +307,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         params += token.asParam();
       }
     }
-    Builder resource = getResource(queryUrl + params);
+    Builder resource = getResource(queryUrl+params);
     // FIXME allow to specify content type (not needed for Mediawiki itself
     // but
     // could be good for interfacing )
@@ -704,7 +705,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   
   @Override
   public String getPageHtml(String pageTitle) throws Exception {
-    String params="&page="+pageTitle;
+    String params="&page="+encode(pageTitle);
     Parse parse=getParse(params);
     String html=parse.getText();
     return html;
