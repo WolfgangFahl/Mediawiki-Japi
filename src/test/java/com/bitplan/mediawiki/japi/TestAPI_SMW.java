@@ -28,6 +28,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.DataItem;
+import com.bitplan.mediawiki.japi.api.Property;
 import com.bitplan.mediawiki.japi.api.Query;
 
 /**
@@ -46,25 +48,24 @@ public class TestAPI_SMW extends APITestbase {
     assertNotNull("the API result should not be null",api);
     Query query = api.getQuery();
     assertNotNull(query);
-    /*assertNotNull(query.subject);
-    assertNotNull(query.serializer);
-    assertNotNull(query.version);
-    assertNotNull(query.data);
-    assertEquals("Amsterdam#202#",query.subject);
-    assertEquals("SMW\\Serializers\\SemanticDataSerializer",query.serializer);
-    assertEquals("0.1",query.version);
-    List<Property> data = query.data;
+    assertNotNull(query.getSubject());
+    assertNotNull(query.getSerializer());
+    assertNotNull(query.getVersion());
+    assertNotNull(query.getData());
+    assertEquals("Amsterdam#202#",query.getSubject());
+    assertEquals("SMW\\Serializers\\SemanticDataSerializer",query.getSerializer());
+    assertEquals("0.1",query.getVersion());
+    List<Property> data = query.getData();
     assertEquals(18,data.size());
     for (Property prop:data) {
-      assertNotNull(prop.dataitem);
-      for (DataItem item:prop.dataitem) {
-        assertNotNull(item.type);
-        assertNotNull(item.item);
+      assertNotNull(prop.getDataitem());
+      for (DataItem item:prop.getDataitem()) {
+        assertNotNull(item.getType());
+        assertNotNull(item.getItem());
         // debug=true;
         if (debug)
-          System.out.println(prop.property+" "+item.type+"="+item.item);
+          System.out.println(prop.getProperty()+" "+item.getType()+"="+item.getItem());
       }
     }
-    */
   }
 }

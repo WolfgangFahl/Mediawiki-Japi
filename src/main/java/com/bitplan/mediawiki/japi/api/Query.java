@@ -20,7 +20,6 @@
  */
 package com.bitplan.mediawiki.japi.api;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,98 +30,103 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "query")
 /**
  * Query Jaxb Wrapping class
+ * 
  * @author wf
  *
  */
 public class Query {
 
-	protected Tokens tokens;
-	protected Statistics statistics;
-	protected General general;
-	protected List<P> allpages = new ArrayList<P>();
-	protected List<Img> allimages = new ArrayList<Img>();
-	protected List<Bl> backlinks=new ArrayList<Bl>();
-	protected List<Iu> imageusages=new ArrayList<Iu>();
-	protected List<Page> pages = new ArrayList<Page>();
-	protected List<Rc> recentchanges = new ArrayList<Rc>();
-	protected List<Ns> namespaces=new ArrayList<Ns>();
+  protected Tokens tokens;
+  protected Statistics statistics;
+  protected General general;
+  protected List<P> allpages = new ArrayList<P>();
+  protected List<Img> allimages = new ArrayList<Img>();
+  protected List<Bl> backlinks = new ArrayList<Bl>();
+  protected List<Iu> imageusages = new ArrayList<Iu>();
+  protected List<Page> pages = new ArrayList<Page>();
+  protected List<Rc> recentchanges = new ArrayList<Rc>();
+  protected List<Ns> namespaces = new ArrayList<Ns>();
+  String subject;
+  String serializer;
+  String version;
+  List<Property> data;
 
-	/**
-	 * Ruft den Wert der tokens-Eigenschaft ab.
-	 * 
-	 * @return possible object is {@link Tokens }
-	 * 
-	 */
-	public Tokens getTokens() {
-		return tokens;
-	}
+  /**
+   * Ruft den Wert der tokens-Eigenschaft ab.
+   * 
+   * @return possible object is {@link Tokens }
+   * 
+   */
+  public Tokens getTokens() {
+    return tokens;
+  }
 
-	/**
-	 * Legt den Wert der tokens-Eigenschaft fest.
-	 * 
-	 * @param value
-	 *          allowed object is {@link Tokens }
-	 * 
-	 */
-	public void setTokens(Tokens value) {
-		this.tokens = value;
-	}
+  /**
+   * Legt den Wert der tokens-Eigenschaft fest.
+   * 
+   * @param value
+   *          allowed object is {@link Tokens }
+   * 
+   */
+  public void setTokens(Tokens value) {
+    this.tokens = value;
+  }
 
-	/**
-	 * @return the statistics
-	 */
-	public Statistics getStatistics() {
-		return statistics;
-	}
+  /**
+   * @return the statistics
+   */
+  public Statistics getStatistics() {
+    return statistics;
+  }
 
-	/**
-	 * @param statistics
-	 *          the statistics to set
-	 */
-	public void setStatistics(Statistics statistics) {
-		this.statistics = statistics;
-	}
+  /**
+   * @param statistics
+   *          the statistics to set
+   */
+  public void setStatistics(Statistics statistics) {
+    this.statistics = statistics;
+  }
 
-	/**
-	 * Gets the value of the general property.
-	 * 
-	 * @return possible object is {@link General }
-	 * 
-	 */
-	public General getGeneral() {
-		return general;
-	}
+  /**
+   * Gets the value of the general property.
+   * 
+   * @return possible object is {@link General }
+   * 
+   */
+  public General getGeneral() {
+    return general;
+  }
 
-	/**
-	 * Sets the value of the general property.
-	 * 
-	 * @param value
-	 *          allowed object is {@link General }
-	 * 
-	 */
-	public void setGeneral(General value) {
-		this.general = value;
-	}
+  /**
+   * Sets the value of the general property.
+   * 
+   * @param value
+   *          allowed object is {@link General }
+   * 
+   */
+  public void setGeneral(General value) {
+    this.general = value;
+  }
 
-	/**
-	 * Gets the value of the allpages property.
-	 * 
-	 */
-	@XmlElementWrapper(name = "allpages")
-	@XmlElement(name = "p", type = P.class)
-	public List<P> getAllpages() {
-		return allpages;
-	}
+  /**
+   * Gets the value of the allpages property.
+   * 
+   */
+  @XmlElementWrapper(name = "allpages")
+  @XmlElement(name = "p", type = P.class)
+  public List<P> getAllpages() {
+    return allpages;
+  }
 
-	/**
-	 * Sets the value of the allpages property.
-	 * 
-	 */
-	public void setAllpages(List<P> value) {
-		this.allpages = value;
-	}
-	
-	/**
+  /**
+   * Sets the value of the allpages property.
+   * 
+   */
+  public void setAllpages(List<P> value) {
+    this.allpages = value;
+  }
+
+  /**
    * Gets the value of the allimages property.
    * 
    */
@@ -139,7 +143,7 @@ public class Query {
   public void setAllImages(List<Img> value) {
     this.allimages = value;
   }
-  
+
   /**
    * Gets the value of the backlinks property.
    * 
@@ -157,7 +161,7 @@ public class Query {
   public void setBacklinks(List<Bl> value) {
     this.backlinks = value;
   }
-  
+
   /**
    * Gets the value of the backlinks property.
    * 
@@ -175,61 +179,93 @@ public class Query {
   public void setImageusage(List<Iu> value) {
     this.imageusages = value;
   }
-  
 
-	/**
-	 * Gets the value of the pages property.
-	 * 
-	 * @return the list of pages
-	 * 
-	 */
-	@XmlElementWrapper(name = "pages")
-	@XmlElement(name = "page", type = Page.class)
-	public List<Page> getPages() {
-		return pages;
-	}
+  /**
+   * Gets the value of the pages property.
+   * 
+   * @return the list of pages
+   * 
+   */
+  @XmlElementWrapper(name = "pages")
+  @XmlElement(name = "page", type = Page.class)
+  public List<Page> getPages() {
+    return pages;
+  }
 
-	/**
-	 * Sets the value of the pages property.
-	 * 
-	 * @param value
-	 * 
-	 */
-	public void setPages(List<Page> value) {
-		this.pages = value;
-	}
+  /**
+   * Sets the value of the pages property.
+   * 
+   * @param value
+   * 
+   */
+  public void setPages(List<Page> value) {
+    this.pages = value;
+  }
 
-	/**
-	 * @return the recentchanges
-	 */
-	@XmlElementWrapper(name = "recentchanges")
-	@XmlElement(name = "rc", type = Rc.class)
-	public List<Rc> getRecentchanges() {
-		return recentchanges;
-	}
+  /**
+   * @return the recentchanges
+   */
+  @XmlElementWrapper(name = "recentchanges")
+  @XmlElement(name = "rc", type = Rc.class)
+  public List<Rc> getRecentchanges() {
+    return recentchanges;
+  }
 
-	/**
-	 * @param recentchanges
-	 *          the recentchanges to set
-	 */
-	public void setRecentchanges(List<Rc> recentchanges) {
-		this.recentchanges = recentchanges;
-	}
+  /**
+   * @param recentchanges
+   *          the recentchanges to set
+   */
+  public void setRecentchanges(List<Rc> recentchanges) {
+    this.recentchanges = recentchanges;
+  }
 
   /**
    * @return the namespaces
    */
-	@XmlElementWrapper(name = "namespaces")
+  @XmlElementWrapper(name = "namespaces")
   @XmlElement(name = "ns", type = Ns.class)
   public List<Ns> getNamespaces() {
     return namespaces;
   }
 
   /**
-   * @param namespaces the namespaces to set
+   * @param namespaces
+   *          the namespaces to set
    */
   public void setNamespaces(List<Ns> namespaces) {
     this.namespaces = namespaces;
+  }
+
+  public String getSubject() {
+    return subject;
+  }
+
+  public void setSubject(String subject) {
+    this.subject = subject;
+  }
+
+  public String getSerializer() {
+    return serializer;
+  }
+
+  public void setSerializer(String serializer) {
+    this.serializer = serializer;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public List<Property> getData() {
+    return data;
+  }
+
+  public void setData(List<Property> data) {
+    this.data = data;
   }
 
 }
