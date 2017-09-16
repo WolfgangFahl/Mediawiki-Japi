@@ -24,13 +24,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -63,6 +62,7 @@ import com.bitplan.mediawiki.japi.api.Parse;
 import com.bitplan.mediawiki.japi.api.Query;
 import com.bitplan.mediawiki.japi.api.Rc;
 import com.bitplan.mediawiki.japi.api.S;
+import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -97,8 +97,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * 'https://www.mediawiki.org/wiki/API:Main_page#Identifying_your_client'>
    * Iden t i f y i n g your client:User-Agent</a>
    */
-  protected static final String USER_AGENT = "Mediawiki-Japi/"
-      + VERSION
+  protected static final String USER_AGENT = "Mediawiki-Japi/" + VERSION
       + " (https://github.com/WolfgangFahl/Mediawiki-Japi; support@bitplan.com)";
 
   /**
@@ -120,6 +119,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   protected String userid;
 
   SiteInfo siteinfo;
+
+  // Json unmarshaller
+  private Gson gson;
 
   /**
    * enable debugging
@@ -307,7 +309,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         params += token.asParam();
       }
     }
-    Builder resource = getResource(queryUrl+params);
+    Builder resource = getResource(queryUrl + params);
     // FIXME allow to specify content type (not needed for Mediawiki itself
     // but
     // could be good for interfacing )
@@ -316,8 +318,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       response = resource.type(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
           .post(ClientResponse.class, lFormData);
     } else {
-      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE).post(
-          ClientResponse.class, form);
+      response = resource.type(MediaType.MULTIPART_FORM_DATA_TYPE)
+          .post(ClientResponse.class, form);
     }
     return response;
   }
@@ -334,7 +336,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return
    * @throws Exception
    */
-  public ClientResponse getResponse(String url, Method method) throws Exception {
+  public ClientResponse getResponse(String url, Method method)
+      throws Exception {
     Builder resource = getResource(url);
     ClientResponse response = null;
     switch (method) {
@@ -391,31 +394,75 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
+   * get the action result for the given parameters
+   * 
+   * @param action
+   * @param params
+   * @param token
+   * @param pFormData
+   * @param format
+   *          - json or xml
+   * @return the String e.g. xml or json
+   * @throws Exception
+   */
+  public String getActionResultText(String action, String params, TokenResult token,
+      Object pFormData, String format) throws Exception {
+    String queryUrl = siteurl + scriptPath + apiPath + "&action=" + action
+        + "&format=" + format;
+    ClientResponse response;
+    // decide for the method to use for api access
+    response = this.getPostResponse(queryUrl, params, token, pFormData);
+    String text = this.getResponseString(response);
+    return text;
+  }
+
+  /**
    * get the result for the given action and params
    * 
    * @param action
    * @param params
    * @param token
    *          (may be null)
+   * @param formData
+   *          (may be null)
+   * @format - the format to use e.g. json or xml         
    * @return the API result for the action
    * @throws Exception
    */
   public Api getActionResult(String action, String params, TokenResult token,
-      Object pFormData) throws Exception {
-    String queryUrl = siteurl + scriptPath + apiPath + "&action=" + action
-        + "&format=" + format;
-    String xml;
-    ClientResponse response;
-    // decide for the method to use for api access
-    response = this.getPostResponse(queryUrl, params, token, pFormData);
-    xml = this.getResponseString(response);
-    if (debug) {
-      // convert the xml to a more readable format
-      String xmlDebug = xml.replace(">", ">\n");
-      LOGGER.log(Level.INFO, xmlDebug);
+      Object pFormData, String format) throws Exception {
+    String text = this.getActionResultText(action, params, token, pFormData,
+        format);
+    Api api = null;
+    if ("xml".equals(format)) {
+      if (debug) {
+        // convert the xml to a more readable format
+        String xmlDebug = text.replace(">", ">\n");
+        LOGGER.log(Level.INFO, xmlDebug);
+      }
+      api = fromXML(text);
+    } else if ("json".equals(format)) {
+      if (gson==null)
+      gson=new Gson();
+      api=gson.fromJson(text, Api.class);
+    } else {
+      throw new IllegalStateException("unknown format " + format);
     }
-    Api api = fromXML(xml);
     return api;
+  }
+
+  /**
+   * get the action result for the default format
+   * @param action
+   * @param params
+   * @param token
+   * @param pFormData
+   * @return - the action result
+   * @throws Exception
+   */
+  public Api getActionResult(String action, String params, TokenResult token,
+      Object pFormData) throws Exception {
+    return getActionResult(action, params, token, pFormData, format);
   }
 
   /**
@@ -485,44 +532,49 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     General general = query.getGeneral();
     siteinfo = new SiteInfoImpl(general, query.getNamespaces());
   }
-  
+
   /**
-   * check whether this is MediaWiki 1.28 or higher
-   * but make sure getVersion calls with readapidenied are ignored
-   * see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/32
+   * check whether this is MediaWiki 1.28 or higher but make sure getVersion
+   * calls with readapidenied are ignored see
+   * https://github.com/WolfgangFahl/Mediawiki-Japi/issues/32
+   * 
    * @return
    */
   public boolean isVersion128() {
-    String mwversion="Mediawiki 1.27 or before";
+    String mwversion = "Mediawiki 1.27 or before";
     try {
-      mwversion=this.getVersion(); 
+      mwversion = this.getVersion();
     } catch (Exception e) {
-      LOGGER.log(Level.INFO,"Could not retrieve Mediawiki Version via API - will assume "+mwversion+" you might want to set the Version actively if you are on 1.28 and have the api blocked for non-logged in users");
+      LOGGER.log(Level.INFO,
+          "Could not retrieve Mediawiki Version via API - will assume "
+              + mwversion
+              + " you might want to set the Version actively if you are on 1.28 and have the api blocked for non-logged in users");
     }
-    boolean result=mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0;
+    boolean result = mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0;
     return result;
   }
-  
+
   /**
    * prepare the login by getting the login token
+   * 
    * @param username
    * @return the ApiResult
-   * @throws Exception 
+   * @throws Exception
    */
-  public TokenResult prepareLogin(String username) throws Exception {  
+  public TokenResult prepareLogin(String username) throws Exception {
     username = encode(username);
-    Api apiResult=null;
+    Api apiResult = null;
     TokenResult token = new TokenResult();
     token.tokenName = "lgtoken";
     token.tokenMode = TokenMode.token1_19;
-    // see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/31 
+    // see https://github.com/WolfgangFahl/Mediawiki-Japi/issues/31
     if (this.isVersion128()) {
-      apiResult=this.getQueryResult("&meta=tokens&type=login");
-      super.handleError(apiResult); 
-      token.token=apiResult.getQuery().getTokens().getLogintoken();
+      apiResult = this.getQueryResult("&meta=tokens&type=login");
+      super.handleError(apiResult);
+      token.token = apiResult.getQuery().getTokens().getLogintoken();
     } else {
       apiResult = getActionResult("login", "&lgname=" + username, null, null);
-      super.handleError(apiResult); 
+      super.handleError(apiResult);
       Login login = apiResult.getLogin();
       token.token = login.getToken();
     }
@@ -531,53 +583,60 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * second step of login process
+   * 
    * @param token
    * @param username
    * @param password
    * @return
-   * @throws Exception 
+   * @throws Exception
    */
-  public Login login(TokenResult token,String username, String password) throws Exception {
+  public Login login(TokenResult token, String username, String password)
+      throws Exception {
     return login(token, username, password, null);
   }
 
   /**
    * second step of login process
+   * 
    * @param token
    * @param username
    * @param password
    * @param domain
    * @return
-   * @throws Exception 
+   * @throws Exception
    */
-  public Login login(TokenResult token,String username, String password, String domain) throws Exception {
+  public Login login(TokenResult token, String username, String password,
+      String domain) throws Exception {
     username = encode(username);
     if (domain != null) {
       domain = encode(domain);
     }
-    Api apiResult=null;
+    Api apiResult = null;
     // depends on MediaWiki version see
     // https://test2.wikipedia.org/w/api.php?action=help&modules=clientlogin
     if (this.isVersion128()) {
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("lgpassword", password);
-      lFormData.put("lgtoken",token.token);
+      lFormData.put("lgtoken", token.token);
       if (domain != null) {
-        apiResult=getActionResult("login", "&lgdomain=" + domain + "&lgname=" + username, null, lFormData);
+        apiResult = getActionResult("login",
+            "&lgdomain=" + domain + "&lgname=" + username, null, lFormData);
       } else {
-        apiResult=getActionResult("login", "&lgname=" + username, null, lFormData);
+        apiResult = getActionResult("login", "&lgname=" + username, null,
+            lFormData);
       }
-      // apiResult = getActionResult("clientlogin", "&lgname=" + username+"&loginreturnurl="+this.siteurl, null, lFormData);
+      // apiResult = getActionResult("clientlogin", "&lgname=" +
+      // username+"&loginreturnurl="+this.siteurl, null, lFormData);
     } else {
       password = encode(password);
       if (domain != null) {
-        apiResult = getActionResult("login", "&lgdomain=" + domain + "&lgname=" + username + "&lgpassword="
-            + password, token, null);
+        apiResult = getActionResult("login", "&lgdomain=" + domain + "&lgname="
+            + username + "&lgpassword=" + password, token, null);
       } else {
-        apiResult = getActionResult("login", "&lgname=" + username + "&lgpassword="
-            + password, token, null);
+        apiResult = getActionResult("login",
+            "&lgname=" + username + "&lgpassword=" + password, token, null);
       }
-    } 
+    }
     Login login = apiResult.getLogin();
     userid = login.getLguserid();
     return login;
@@ -585,23 +644,26 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * login with the given username, password and domain
+   * 
    * @param username
    * @param password
    * @param domain
    * @return Login
    * @throws Exception
    */
-  public Login login(String username, String password, String domain) throws Exception {
+  public Login login(String username, String password, String domain)
+      throws Exception {
     // login is a two step process
     // first we get a token
-    TokenResult token=prepareLogin(username);
+    TokenResult token = prepareLogin(username);
     // and then with the token we login using the password
-    Login login=login(token,username,password, domain);
+    Login login = login(token, username, password, domain);
     return login;
   }
 
   /**
    * login with the given username and password
+   * 
    * @param username
    * @param password
    * @return Login
@@ -610,8 +672,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public Login login(String username, String password) throws Exception {
     return login(username, password, null);
   }
-  
-  
+
   @Override
   public boolean isLoggedIn() {
     boolean result = userid != null;
@@ -690,29 +751,30 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public String getSectionText(String pageTitle, int sectionNumber)
       throws Exception {
-    String result = this.getPageContent(pageTitle, "&rvsection="
-        + sectionNumber, false);
+    String result = this.getPageContent(pageTitle,
+        "&rvsection=" + sectionNumber, false);
     return result;
   }
 
   @Override
   public List<S> getSections(String pageTitle) throws Exception {
     String params = "&prop=sections&page=" + pageTitle;
-    Parse parse=getParse(params);
+    Parse parse = getParse(params);
     List<S> sections = parse.getSections();
     return sections;
   }
-  
+
   @Override
   public String getPageHtml(String pageTitle) throws Exception {
-    String params="&page="+encode(pageTitle);
-    Parse parse=getParse(params);
-    String html=parse.getText();
+    String params = "&page=" + encode(pageTitle);
+    Parse parse = getParse(params);
+    String html = parse.getText();
     return html;
   }
-  
+
   /**
    * get the parse Result for the given params
+   * 
    * @param params
    * @return the Parse Result
    * @throws Exception
@@ -740,8 +802,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       throws Exception {
     String titles = this.getTitles(titleList);
     // https://www.mediawiki.org/wiki/API:Revisions#Parameters
-    Api api = getQueryResult("&titles=" + titles + "&prop=revisions&rvprop="
-        + rvprop);
+    Api api = getQueryResult(
+        "&titles=" + titles + "&prop=revisions&rvprop=" + rvprop);
     handleError(api);
     Query query = api.getQuery();
     if (query == null) {
@@ -853,9 +915,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
           + pageTitle;
     }
     if (debug) {
-      LOGGER.log(Level.INFO, "handling " + type + " token for wiki version "
-          + getVersion() + " as " + editversion + " with action=" + action
-          + params);
+      LOGGER.log(Level.INFO,
+          "handling " + type + " token for wiki version " + getVersion()
+              + " as " + editversion + " with action=" + action + params);
     }
     Api api = getActionResult(action, params);
     handleError(api);
@@ -911,9 +973,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     } else {
       TokenResult token = getEditToken(pageTitle, "delete");
       if (token.token == null) {
-        throw new IllegalStateException("could not get "
-            + token.tokenMode.toString() + " delete token for " + pageTitle
-            + " ");
+        throw new IllegalStateException(
+            "could not get " + token.tokenMode.toString() + " delete token for "
+                + pageTitle + " ");
       }
       Map<String, String> lFormData = new HashMap<String, String>();
       lFormData.put("title", pageTitle);
@@ -927,9 +989,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   @Override
-  public Edit edit(String pageTitle, String text, String summary,
-      boolean minor, boolean bot, int sectionNumber, String sectionTitle,
-      Calendar basetime) throws Exception {
+  public Edit edit(String pageTitle, String text, String summary, boolean minor,
+      boolean bot, int sectionNumber, String sectionTitle, Calendar basetime)
+      throws Exception {
     Edit result = new Edit();
     String pageContent = getPageContent(pageTitle);
     if (pageContent != null && pageContent.contains(protectionMarker)) {
@@ -1107,9 +1169,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * show Help
    */
   public void showHelp() {
-    String msg = "Help\n"
-        + "Mediawiki-Japi version "
-        + VERSION
+    String msg = "Help\n" + "Mediawiki-Japi version " + VERSION
         + " has no functional command line interface\n"
         + "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
     usage(msg);
@@ -1120,13 +1180,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * set to true for debugging
    */
-  @Option(name = "-d", aliases = { "--debug" }, usage = "debug\nadds debugging output")
+  @Option(name = "-d", aliases = {
+      "--debug" }, usage = "debug\nadds debugging output")
   protected boolean debug = false;
 
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;
 
-  @Option(name = "-v", aliases = { "--version" }, usage = "showVersion\nshow current version if this switch is used")
+  @Option(name = "-v", aliases = {
+      "--version" }, usage = "showVersion\nshow current version if this switch is used")
   boolean showVersion = false;
 
   /**
@@ -1151,8 +1213,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       } else {
         // FIXME - do something
         // implement actions
-        System.err.println("Commandline interface is not functional in "
-            + VERSION + " yet");
+        System.err.println(
+            "Commandline interface is not functional in " + VERSION + " yet");
         exitCode = 1;
         // exitCode = 0;
       }
@@ -1288,8 +1350,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return - the list of recent changes
    * @throws Exception
    */
-  public List<Rc> getRecentChanges(String rcstart, String rcend, Integer rclimit)
-      throws Exception {
+  public List<Rc> getRecentChanges(String rcstart, String rcend,
+      Integer rclimit) throws Exception {
     String query = "&list=recentchanges&rcprop=title%7Ctimestamp%7Csha1%7Cids%7Csizes%7Cflags%7Cuser";
     if (rclimit != null) {
       query += "&rclimit=" + rclimit;

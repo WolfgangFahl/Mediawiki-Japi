@@ -33,6 +33,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ TestIssue23.class, TestApiJaxb.class, TestAPI_Query.class,
     TestAPI_Meta.class, TestAPI_Recentchanges.class, TestAPI_Login.class,
     TestAPI_Edit.class, TestAPI_Parse.class, TestAPI_Allpages.class,
+    TestAPI_SMW.class,
     TestProtectionMarker.class, TestUsage.class, TestCommandLine.class,
     TestGetCSV.class,TestPageTitle.class, org.wikipedia.WikiUnitTest.class })
 public class TestSuite {
