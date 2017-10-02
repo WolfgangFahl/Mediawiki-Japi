@@ -440,7 +440,12 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         String xmlDebug = text.replace(">", ">\n");
         LOGGER.log(Level.INFO, xmlDebug);
       }
-      api = fromXML(text);
+      if (text.startsWith("<?xml version"))
+        api = fromXML(text);
+      else {
+        LOGGER.log(Level.SEVERE, text);
+        throw new Exception("invalid xml:"+text);
+      }
     } else if ("json".equals(format)) {
       if (gson==null)
       gson=new Gson();
