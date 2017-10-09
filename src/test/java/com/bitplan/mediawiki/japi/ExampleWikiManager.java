@@ -168,7 +168,7 @@ public class ExampleWikiManager {
       // test sites on mediawiki-japi.bitplan.com
       // uncommment to enable
       // /**
-      String versions[] = { "1_23", "1_25", "1_27" };
+      String versions[] = { "1_23", "1_25", "1_27", "1_29" };
       for (String version : versions) {
         wiki = add("mediawiki-japi-test" + version,
             "http://mediawiki-japi.bitplan.com", "/mw" + version);

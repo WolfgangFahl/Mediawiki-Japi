@@ -129,7 +129,7 @@ public class TestAPI_Meta extends APITestbase {
 			Statistics statistics = query.getStatistics();
 			assertNotNull(statistics);
       assertTrue(
-          lwiki.wiki.getSiteurl() + " " + statistics.getPages() + ">"
+          lwiki.wiki.getSiteurl() + lwiki.wiki.getScriptPath()+" " + statistics.getPages() + ">"
               + lwiki.getExpectedPages(),
           statistics.getPages().intValue() >= lwiki.getExpectedPages());
 		}

@@ -97,7 +97,7 @@ public class TestAPI_Query extends APITestbase {
         if (debug) {
           LOGGER.log(Level.INFO, rev.getValue());
         }
-        assertTrue(rev.getValue().contains(expected.getContentPart()));
+        assertTrue(expected.getContentPart(),rev.getValue().contains(expected.getContentPart()));
       }
     }
   }
