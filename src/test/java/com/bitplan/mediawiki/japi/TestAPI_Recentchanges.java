@@ -151,7 +151,7 @@ public class TestAPI_Recentchanges extends APITestbase {
       testRc.setTimestamp(xdate);
       rcList.add(testRc);
     }
-    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_24");
+    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_27");
     Mediawiki lwiki = lewiki.getMediaWikiJapi();
     // debug=true;
     List<Rc> sortedFilteredList = lwiki.sortByTitleAndFilterDoubles(rcList);

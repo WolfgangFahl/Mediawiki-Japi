@@ -23,6 +23,8 @@ package com.bitplan.mediawiki.japi;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -58,27 +60,39 @@ public class TestAPI_Query extends APITestbase {
     }
   }
 
+  public class PageTitleComparator implements Comparator<Page> {
+    @Override
+    public int compare(Page p1, Page p2) {
+      return p1.getTitle().compareTo(p2.getTitle());
+    }
+  }
+
   @Test
   public void testGetPages() throws Exception {
     for (ExampleWiki lwiki : getWikis()) {
       List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
+      if (debug) {
+        for (ExamplePage epage : examplePages)
+          LOGGER.log(Level.INFO, epage.getTitle());
+      }
       List<String> titles = lwiki.getTitleList(examplePages);
       List<Page> pages = lwiki.getMediaWikiJapi().getPages(titles);
-
+      Collections.sort(pages,new PageTitleComparator());
+      
       assertEquals(2, pages.size());
       int index = 0;
       for (Page page : pages) {
         ExamplePage expected = examplePages.get(index++);
         if (debug) {
-          LOGGER.log(Level.INFO, page.getTitle());
+          LOGGER.log(Level.INFO,
+              lwiki.wiki.getSiteurl() + ":" + page.getTitle());
         }
         assertEquals(lwiki.wiki.getSiteurl(), expected.getTitle(),
             page.getTitle());
         // FIXME add to interface
-        assertTrue(
-            lwiki.wiki.getSiteurl() + "/"
-                + lwiki.getMediaWikiJapi().getScriptPath() + ":"
-                + expected.getTitle(), page.getRevisions().size() > 0);
+        assertTrue(lwiki.wiki.getSiteurl() + "/"
+            + lwiki.getMediaWikiJapi().getScriptPath() + ":"
+            + expected.getTitle(), page.getRevisions().size() > 0);
         Rev rev = page.getRevisions().get(0);
         if (debug) {
           LOGGER.log(Level.INFO, rev.getValue());
@@ -92,19 +106,21 @@ public class TestAPI_Query extends APITestbase {
   public void testImageInfo() throws Exception {
     /// choose the >1.23 targetWiki since it has proper imageinfo implementation
     ExampleWiki imageWiki = ewm.get("targetWiki");
-    //debug=true;
+    // debug=true;
     if (debug)
-    	imageWiki.getMediaWikiJapi().setDebug(debug);
-    Ii ii=imageWiki.getImageInfo("File:Index.png");
+      imageWiki.getMediaWikiJapi().setDebug(debug);
+    Ii ii = imageWiki.getImageInfo("File:Index.png");
     if (debug) {
       System.out.println(ii.getUrl());
       // System.out.println(ii.getCanonicaltitle());
-      System.out.println(ii.getWidth()+"x"+ii.getHeight());
+      System.out.println(ii.getWidth() + "x" + ii.getHeight());
     }
-    assertEquals("http://mediawiki-japi.bitplan.com/mw1_27/images/a/ae/Index.png",ii.getUrl());
-    int expectedWidth=32;
-    int expectedHeight=32;
-    assertTrue(expectedHeight==ii.getHeight());
-    assertTrue(expectedWidth==ii.getWidth());
+    assertEquals(
+        "http://mediawiki-japi.bitplan.com/mw1_27/images/a/ae/Index.png",
+        ii.getUrl());
+    int expectedWidth = 32;
+    int expectedHeight = 32;
+    assertTrue(expectedHeight == ii.getHeight());
+    assertTrue(expectedWidth == ii.getWidth());
   }
 }

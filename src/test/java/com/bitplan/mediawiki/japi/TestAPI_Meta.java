@@ -85,8 +85,10 @@ public class TestAPI_Meta extends APITestbase {
 						check("snapshot", snapshot.trim());
 					}
 				}
-				if (general.getGenerator().compareToIgnoreCase("Mediawiki 1.25") >= 0) {
-					check("githash", general.getGitHash());				
+				String generator=general.getGenerator();
+				if (generator.compareToIgnoreCase("Mediawiki 1.25") >= 0) {
+				  String githash=general.getGitHash();
+					check("githash", githash,true);				
 				}
 			}
 			check("language", general.getLang());
