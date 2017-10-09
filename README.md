@@ -17,6 +17,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
+- tests run against current wikipedia installations as well as 1.23,1.25 and 1.27 test wikis (1.29 test server is out of order as of 2017-10-09)
 
 ### Project info
 * Open Source hosted at https://github.com/WolfgangFahl/Mediawiki-Japi
