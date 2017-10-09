@@ -43,7 +43,7 @@ public class TestAPI_Upload extends APITestbase {
    */
   @Test
   public void testUpload() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_24");
+    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_27");
     if (hasWikiUser(lwiki)) {
       lwiki.login();
       ClassLoader classLoader = getClass().getClassLoader();

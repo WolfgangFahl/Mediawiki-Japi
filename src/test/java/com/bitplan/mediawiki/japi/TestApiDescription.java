@@ -45,7 +45,7 @@ public class TestApiDescription extends APITestbase {
    */
   @Test
   public void testGetApiDescription() throws Exception {
-    // ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_24");
+    // ExampleWiki lwiki=ewm.get("mediawiki-japi-test1_27");
     // com.bitplan.mediawiki.japi.Mediawiki wiki=(Mediawiki) lwiki.wiki;
     Mediawiki wiki = new Mediawiki("https://en.wikipedia.org");
     // wiki.setDebug(true);

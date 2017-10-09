@@ -34,7 +34,7 @@ public class TestProtectionMarker extends APITestbase {
 
   @Test
   public void testProtectionMarker() throws Exception {
-    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_24");
+    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_27");
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       // FIXME add this to the example test pages

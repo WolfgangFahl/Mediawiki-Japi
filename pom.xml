@@ -48,7 +48,7 @@
 		<mockito.version>1.10.16</mockito.version>
 		<commons.io.version>2.4</commons.io.version>
 		<commons.version>3.4</commons.version>
-		<moxy.version>2.6.0-M3</moxy.version>
+		<moxy.version>2.6.5</moxy.version>
 		<!-- <moxy.version>2.5.2</moxy.version> -->
 		<args4j.version>2.0.29</args4j.version>
 	</properties>
