@@ -2,7 +2,7 @@
  *
  * This file is part of the https://github.com/WolfgangFahl/Mediawiki-Japi open source project
  *
- * Copyright 2015-2017 BITPlan GmbH https://github.com/BITPlan
+ * Copyright 2015-2018 BITPlan GmbH https://github.com/BITPlan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.junit.runners.Suite;
     TestAPI_Meta.class, TestAPI_Recentchanges.class, TestAPI_Login.class,
     TestAPI_Edit.class, TestAPI_Parse.class, TestAPI_Allpages.class,
     TestAPI_SMW.class,
+    TestAPI_Upload.class,
     TestProtectionMarker.class, TestUsage.class, TestCommandLine.class,
     TestGetCSV.class,TestPageTitle.class, org.wikipedia.WikiUnitTest.class })
 public class TestSuite {

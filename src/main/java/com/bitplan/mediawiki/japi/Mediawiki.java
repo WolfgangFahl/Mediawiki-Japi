@@ -2,7 +2,7 @@
  *
  * This file is part of the https://github.com/WolfgangFahl/Mediawiki-Japi open source project
  *
- * Copyright 2015-2017 BITPlan GmbH https://github.com/BITPlan
+ * Copyright 2015-2018 BITPlan GmbH https://github.com/BITPlan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.19";
+  protected static final String VERSION = "0.0.21";
 
   /**
    * if true main can be called without calling system.exit() when finished
