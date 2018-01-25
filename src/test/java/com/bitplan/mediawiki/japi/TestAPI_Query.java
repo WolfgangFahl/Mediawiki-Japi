@@ -123,4 +123,15 @@ public class TestAPI_Query extends APITestbase {
     assertTrue(expectedHeight == ii.getHeight());
     assertTrue(expectedWidth == ii.getWidth());
   }
+  
+  /*
+  @Test
+  public void testParamEncoding() throws Exception {
+    String ctbe="!#$&'()*+,/:;=?@[]|";
+    Mediawiki lwiki = (Mediawiki) ewm.get("targetWiki").wiki;
+    String pencoded=lwiki.paramEncode(ctbe);
+    String encoded=lwiki.encode(ctbe);
+    System.out.println(pencoded);
+    System.out.println(encoded);
+  }*/
 }

@@ -48,6 +48,7 @@ public class Api implements JaxbPersistenceApi<Api> {
       .getLogger("com.bitplan.mediawiki.japi.api");
   
   String servedby;
+  protected String rawJson;
   protected Query query;
   protected Login login;
   protected Error error;
@@ -98,6 +99,14 @@ public class Api implements JaxbPersistenceApi<Api> {
    */
   public void setServedby(String servedby) {
     this.servedby = servedby;
+  }
+
+  public String getRawJson() {
+    return rawJson;
+  }
+
+  public void setRawJson(String rawJson) {
+    this.rawJson = rawJson;
   }
 
   /**

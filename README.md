@@ -29,7 +29,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 ### Distribution
 Available at Maven Central see 
 
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.21|jar
+http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.22|jar
 
 Maven dependency:
 
@@ -37,7 +37,7 @@ Maven dependency:
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.21</version>
+  <version>0.0.22</version>
 </dependency>
 ```
 
@@ -134,3 +134,4 @@ unit tests supplied with Wiki.java).
            2017-08-24: adds travis build check
 * 0.0.20 - 2017-09-13: fixes #38
 * 0.0.21 - 2017-09-16: fixes #39
+* 0.1.01 - 2018-01-25: Java 8 and first steps for json support

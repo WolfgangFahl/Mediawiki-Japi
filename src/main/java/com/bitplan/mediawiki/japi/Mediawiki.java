@@ -85,7 +85,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.21";
+  protected static final String VERSION = "0.0.22";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -165,6 +165,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public void setScriptPath(String scriptPath) {
     this.scriptPath = scriptPath;
+  }
+
+  public String getFormat() {
+    return format;
+  }
+
+  public void setFormat(String format) {
+    this.format = format;
   }
 
   /**
@@ -264,6 +272,24 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     Builder result = wrs.header("USER-AGENT", USER_AGENT);
     return result;
   }
+  
+  /**
+  public String paramEncode(String param) {
+    // https://en.wikipedia.org/wiki/Percent-encoding
+    // nead to be encoded
+    String ntbe="!#$&'()*+,/:;=?@[]|";
+    StringBuffer out=new StringBuffer();
+    for (int i=0;i<param.length();i++) {
+      char c = param.charAt(i);
+      if (ntbe.indexOf(c)>=0) {
+        out.append("%");
+        out.append(Integer.toHexString(c));
+      } else {
+        out.append(c);
+      }
+    }
+    return out.toString();
+  }*/
 
   /**
    * get a Post response
@@ -447,9 +473,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         throw new Exception("invalid xml:"+text);
       }
     } else if ("json".equals(format)) {
+      if (debug) {
+        LOGGER.log(Level.INFO,text.substring(0,Math.min(240, text.length()-1)));
+      }
       if (gson==null)
-      gson=new Gson();
+        gson=new Gson();
       api=gson.fromJson(text, Api.class);
+      api.setRawJson(text);
     } else {
       throw new IllegalStateException("unknown format " + format);
     }
