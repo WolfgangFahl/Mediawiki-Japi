@@ -66,6 +66,9 @@ public class Tokens {
     protected String deletetoken;
     @XmlAttribute(name = "csrftoken")
     protected String csrftoken;
+    // since MW 1.27
+    @XmlAttribute
+    protected String createaccounttoken;
     // since MW 1.28
     @XmlAttribute
     protected String logintoken;
@@ -92,6 +95,14 @@ public class Tokens {
      */
     public void setCsrftoken(String value) {
         this.csrftoken = value;
+    }
+
+    public String getCreateaccounttoken() {
+      return createaccounttoken;
+    }
+
+    public void setCreateaccounttoken(String createaccounttoken) {
+      this.createaccounttoken = createaccounttoken;
     }
 
     /**

@@ -13,7 +13,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 * [Javadoc](http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html)
 * [Examples](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples)
 * [Wiki](http://mediawiki-japi.bitplan.com)
-* [Developer info](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Developer_Info)
+* [Developer info](http://mediawiki-japi.bitplan.com/index.php/Developer_Info)
 
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
@@ -135,3 +135,4 @@ unit tests supplied with Wiki.java).
 * 0.0.20 - 2017-09-13: fixes #38
 * 0.0.21 - 2017-09-16: fixes #39
 * 0.1.01 - 2018-01-25: Java 8 and first steps for json support
+* 0.1.02 - 2018-08-20: fixes #40,#41  

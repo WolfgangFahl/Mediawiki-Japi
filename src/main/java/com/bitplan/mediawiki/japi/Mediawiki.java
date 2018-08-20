@@ -272,24 +272,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     Builder result = wrs.header("USER-AGENT", USER_AGENT);
     return result;
   }
-  
+
   /**
-  public String paramEncode(String param) {
-    // https://en.wikipedia.org/wiki/Percent-encoding
-    // nead to be encoded
-    String ntbe="!#$&'()*+,/:;=?@[]|";
-    StringBuffer out=new StringBuffer();
-    for (int i=0;i<param.length();i++) {
-      char c = param.charAt(i);
-      if (ntbe.indexOf(c)>=0) {
-        out.append("%");
-        out.append(Integer.toHexString(c));
-      } else {
-        out.append(c);
-      }
-    }
-    return out.toString();
-  }*/
+   * public String paramEncode(String param) { //
+   * https://en.wikipedia.org/wiki/Percent-encoding // nead to be encoded String
+   * ntbe="!#$&'()*+,/:;=?@[]|"; StringBuffer out=new StringBuffer(); for (int
+   * i=0;i<param.length();i++) { char c = param.charAt(i); if
+   * (ntbe.indexOf(c)>=0) { out.append("%"); out.append(Integer.toHexString(c));
+   * } else { out.append(c); } } return out.toString(); }
+   */
 
   /**
    * get a Post response
@@ -307,6 +298,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public ClientResponse getPostResponse(String queryUrl, String params,
       TokenResult token, Object pFormDataObject) throws Exception {
     params = params.replace("|", "%7C");
+    params = params.replace("+", "%20");  
     // modal handling of post
     FormDataMultiPart form = null;
     MultivaluedMap<String, String> lFormData = null;
@@ -431,9 +423,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return the String e.g. xml or json
    * @throws Exception
    */
-  public String getActionResultText(String action, String params, TokenResult token,
-      Object pFormData, String format) throws Exception {
-    String queryUrl = siteurl + scriptPath + apiPath + "&action=" + action
+  public String getActionResultText(String action, String params,
+      TokenResult token, Object pFormData, String format) throws Exception {
+    String queryUrl = siteurl + scriptPath + apiPath + "action=" + action
         + "&format=" + format;
     ClientResponse response;
     // decide for the method to use for api access
@@ -451,7 +443,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    *          (may be null)
    * @param formData
    *          (may be null)
-   * @format - the format to use e.g. json or xml         
+   * @format - the format to use e.g. json or xml
    * @return the API result for the action
    * @throws Exception
    */
@@ -470,15 +462,16 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         api = fromXML(text);
       else {
         LOGGER.log(Level.SEVERE, text);
-        throw new Exception("invalid xml:"+text);
+        throw new Exception("invalid xml:" + text);
       }
     } else if ("json".equals(format)) {
       if (debug) {
-        LOGGER.log(Level.INFO,text.substring(0,Math.min(240, text.length()-1)));
+        LOGGER.log(Level.INFO,
+            text.substring(0, Math.min(240, text.length() - 1)));
       }
-      if (gson==null)
-        gson=new Gson();
-      api=gson.fromJson(text, Api.class);
+      if (gson == null)
+        gson = new Gson();
+      api = gson.fromJson(text, Api.class);
       api.setRawJson(text);
     } else {
       throw new IllegalStateException("unknown format " + format);
@@ -488,6 +481,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   /**
    * get the action result for the default format
+   * 
    * @param action
    * @param params
    * @param token
@@ -1294,17 +1288,37 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public Api createAccount(String name, String eMail, String realname,
       boolean mailpassword, String reason, String language) throws Exception {
-    String params = "&name=" + name;
-    params += "&email=" + eMail;
-    params += "&realname=" + realname;
-    params += "&mailpassword=" + mailpassword;
-    params += "&reason=" + reason;
-    params += "&token=";
-    Api api = getActionResult("createaccount", params);
-    handleError(api);
-    String token = api.getCreateaccount().getToken();
-    params += token;
-    api = getActionResult("createaccount", params);
+    String createtoken="?";
+    if (getVersion().compareToIgnoreCase("Mediawiki 1.27") >= 0) {
+      Api apiResult = this.getQueryResult("&meta=tokens&type=createaccount");
+      super.handleError(apiResult);
+      createtoken = apiResult.getQuery().getTokens().getCreateaccounttoken();
+    }
+    Api api=null;
+    if (getVersion().compareToIgnoreCase("Mediawiki 1.27") >= 0) {
+      Map<String, String> lFormData = new HashMap<String, String>();
+      lFormData.put("createtoken",createtoken);
+      lFormData.put("username",name);
+      lFormData.put("email",eMail);
+      lFormData.put("realname",realname);
+      lFormData.put("mailpassword", mailpassword?"1":"0");
+      lFormData.put("reason", reason);
+      lFormData.put("createcontinue", "1");
+      String params="";
+      api = getActionResult("createaccount", params,null,lFormData);
+    } else {
+      String params = "&name=" + this.encode(name);
+      params += "&email=" + this.encode(eMail);
+      params += "&realname=" + this.encode(realname);
+      params += "&mailpassword=" + mailpassword;
+      params += "&reason=" + this.encode(reason);
+      params += "&token=";
+      api = getActionResult("createaccount", params);
+      handleError(api);
+      String token = api.getCreateaccount().getToken();
+      params += token;
+      api = getActionResult("createaccount", params);
+    }
     return api;
   }
 
