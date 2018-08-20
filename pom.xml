@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2015-2017 BITPlan GmbH Project details and license at: 
+<!-- Copyright (c) 2015-2018 BITPlan GmbH Project details and license at: 
 	https://github.com/WolfgangFahl/Mediawiki-Japi -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan</groupId>
@@ -158,27 +158,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>${maven-project-info-reports-plugin.version}</version>
-				<configuration>
-					<dependencyDetailsEnabled>true</dependencyDetailsEnabled>
-					<dependencyLocationsEnabled>true</dependencyLocationsEnabled>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin.version}</version>
-				<configuration>
-					<overview>${basedir}\src\main\java\overview.html</overview>
-					<verbose>true</verbose>
-					<additionalJOption>${javadoc.opts}</additionalJOption>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 </project>
