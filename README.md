@@ -1,9 +1,7 @@
-Mediawiki-Japi
-==============
-
-This is a Java API for the Mediawiki web API described at 
-
-http://www.mediawiki.org/wiki/API:Main_page
+# Mediawiki-Japi
+Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page
+# Creator 
+[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
 [![Build Status](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi.svg?branch=master)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
 
@@ -26,20 +24,10 @@ http://www.mediawiki.org/wiki/API:Main_page
 * Maven based Java project including JUnit 4 tests.
 * Project page at http://wolfgangfahl.github.io/Mediawiki-Japi/
 
-### Distribution
-Available at Maven Central see 
-
-http://search.maven.org/#artifactdetails|com.bitplan|mediawiki-japi|0.0.22|jar
-
-Maven dependency:
-
-```xml
-<dependency>
-  <groupId>com.bitplan</groupId>
-  <artifactId>mediawiki-japi</artifactId>
-  <version>0.0.22</version>
-</dependency>
-```
+# Mediawiki-Japi
+Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page
+# Creator 
+[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
 ### How to build
 ```
