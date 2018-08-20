@@ -11,7 +11,7 @@ http://www.mediawiki.org/wiki/API:Main_page
 
 ### Documentation
 * [Javadoc](http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html)
-* [Examples](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples)
+* [Examples](http://mediawiki-japi.bitplan.com/index.php/Examples)
 * [Wiki](http://mediawiki-japi.bitplan.com)
 * [Developer info](http://mediawiki-japi.bitplan.com/index.php/Developer_Info)
 
