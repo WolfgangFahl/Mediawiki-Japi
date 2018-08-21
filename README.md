@@ -8,8 +8,11 @@
 [![GitHub](https://img.shields.io/github/license/WolfgangFahl/Mediawiki-Japi.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
-### Project pages
-[Mediawiki-Japi](https://WolfgangFahl.github.io/Mediawiki-Japi)
+### Documentation
+* [Wiki](http://mediawiki-japi.bitplan.com/index.php/Main_Page)
+* [Mediawiki-Japi Project pages](https://WolfgangFahl.github.io/Mediawiki-Japi)
+* [Javadoc](https://WolfgangFahl.github.io/Mediawiki-Japi/apidocs/index.html)
+* [Test-Report](https://WolfgangFahl.github.io/Mediawiki-Japi/surefire-report.html)
 
 ### Maven dependency
 
