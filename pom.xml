@@ -20,6 +20,8 @@
 		<!-- for parent pom to work -->
 		<github.project>Mediawiki-Japi</github.project>
 		<github.owner>WolfgangFahl</github.owner>
+		<!-- for README.md generation -->
+		<documentation.wiki>http://mediawiki-japi.bitplan.com/index.php/Main_Page</documentation.wiki>
 		<!--  can be removed when com.bitplan.pom 0.0.6 is available -->
 		<maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
 		<!-- versions of other libraries to be used -->

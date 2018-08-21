@@ -1,43 +1,41 @@
-# Mediawiki-Japi
-Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page
-# Creator 
+### Mediawiki-Japi
+[Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page](http://mediawiki-japi.bitplan.com/index.php/Main_Page) 
+
+[![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.1.02/jar)
+[![GitHub issues](https://img.shields.io/github/issues/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues)
+[![GitHub issues](https://img.shields.io/github/issues-closed/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues/?q=is%3Aissue+is%3Aclosed)
+[![GitHub](https://img.shields.io/github/license/WolfgangFahl/Mediawiki-Japi.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
-[![Build Status](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi.svg?branch=master)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
+### Project pages
+[Mediawiki-Japi](https://WolfgangFahl.github.io/Mediawiki-Japi)
 
-## Project 
+### Maven dependency
 
-### Documentation
-* [Javadoc](http://wolfgangfahl.github.io/Mediawiki-Japi/apidocs/index.html)
-* [Examples](http://mediawiki-japi.bitplan.com/index.php/Examples)
-* [Wiki](http://mediawiki-japi.bitplan.com)
-* [Developer info](http://mediawiki-japi.bitplan.com/index.php/Developer_Info)
+Maven dependency
+```xml
+<dependency>
+  <groupId>com.bitplan</groupId>
+  <artifactId>mediawiki-japi</artifactId>
+  <version>0.1.02</version>
+</dependency>
+```
 
-### Status
-- Implemented Features are limited to what the test cases of the current version check
-- tests run against current wikipedia installations as well as 1.23.17,1.25.6,1.27.3 and 1.29.1 test wikis 
-
-### Project info
-* Open Source hosted at https://github.com/WolfgangFahl/Mediawiki-Japi
-* Issues via https://github.com/WolfgangFahl/Mediawiki-Japi/issues
-* Apache License
-* Maven based Java project including JUnit 4 tests.
-* Project page at http://wolfgangfahl.github.io/Mediawiki-Japi/
-
-# Mediawiki-Japi
-Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page
-# Creator 
-[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
+[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/mediawiki-japi/0.1.02/)
 
 ### How to build
 ```
 git clone https://github.com/WolfgangFahl/Mediawiki-Japi
 cd Mediawiki-Japi
-mvn install -DskipTests=true -Dgpg.skip=true
+mvn install
 ```
+### Status
+- Implemented Features are limited to what the test cases of the current version check
+- tests run against current wikipedia installations as well as 1.23.17,1.25.6,1.27.3 and 1.29.1 test wikis 
 
 ## Examples
-See also [Examples] (http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples) on the Mediawiki-Japi Wiki
+See also [Examples](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples) on the Mediawiki-Japi Wiki
 
 ### Sample query:get a single page
 http://www.mediawiki.org/wiki/API:Query#Sample_query
@@ -45,7 +43,7 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
 ```java
 	Mediawiki wiki=new Mediawiki("http://en.wikipedia.org");
 	String content=wiki.getPageContent("Main Page");
-```		
+```
 
 #### junit test
 ```java
@@ -60,7 +58,7 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
 		String content=wiki.getPageContent("Main Page");
 		assertTrue(content.contains("Wikipedia"));
 	}
-```		
+```
 
 ### login/logout
 http://www.mediawiki.org/wiki/API:Login
@@ -68,7 +66,7 @@ http://www.mediawiki.org/wiki/API:Login
 ```java
 Login login=wiki.login("scott","tiger");
 wiki.logout();
-```		
+```
 
 #### junit test
 ```java
@@ -87,15 +85,14 @@ wiki.logout();
 		assertNotNull(login.getLgtoken());
 		wiki.logout();
 	}
-```		
-
+```
 ## Design decisions
 [Jaxb-Generator](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Jaxbgenerator)
 
 This is a semi-automatic process. The resulting java code needs to be adapted to be workable. For a start
 18 Java classes have been generated that allow some 19 JUnit tests to pass (to a total of 43 including the 24
 unit tests supplied with Wiki.java).
-  
+
 ## Version history
 * 0.0.1  - 2015-01-01: first version as JMediawiki
 * 0.0.2  - 2015-01-18: fixes issues #1 - #7 
