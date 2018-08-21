@@ -3,7 +3,7 @@
 - tests run against current wikipedia installations as well as 1.23.17,1.25.6,1.27.3 and 1.29.1 test wikis 
 
 ## Examples
-See also [Examples](http://mediawiki-japi.bitplan.com/mediawiki-japi/index.php/Examples) on the Mediawiki-Japi Wiki
+See also [Examples](http://mediawiki-japi.bitplan.com/index.php/Examples) on the Mediawiki-Japi Wiki
 
 ### Sample query:get a single page
 http://www.mediawiki.org/wiki/API:Query#Sample_query
