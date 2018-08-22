@@ -13,7 +13,6 @@
 * [Mediawiki-Japi Project pages](https://WolfgangFahl.github.io/Mediawiki-Japi)
 * [Javadoc](https://WolfgangFahl.github.io/Mediawiki-Japi/apidocs/index.html)
 * [Test-Report](https://WolfgangFahl.github.io/Mediawiki-Japi/surefire-report.html)
-
 ### Maven dependency
 
 Maven dependency

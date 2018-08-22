@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.6</version>
+		<version>0.0.9</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan</groupId>
@@ -22,18 +22,14 @@
 		<github.owner>WolfgangFahl</github.owner>
 		<!-- for README.md generation -->
 		<documentation.wiki>http://mediawiki-japi.bitplan.com/index.php/Main_Page</documentation.wiki>
-		<!--  can be removed when com.bitplan.pom 0.0.6 is available -->
-		<maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
 		<!-- versions of other libraries to be used -->
 		<jersey.version>1.19.3</jersey.version>
-		<junit4.version>4.11</junit4.version>
 		<guice.version>3.0</guice.version>
 		<mockito.version>1.10.16</mockito.version>
 		<commons.io.version>2.4</commons.io.version>
 		<commons.version>3.4</commons.version>
 		<moxy.version>2.6.5</moxy.version>
 		<!-- <moxy.version>2.5.2</moxy.version> -->
-		<args4j.version>2.0.29</args4j.version>
 		<dependency.locations.enabled>false</dependency.locations.enabled>
 	</properties>
 	<dependencies>
