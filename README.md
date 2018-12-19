@@ -1,5 +1,5 @@
 ### Mediawiki-Japi
-[Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page](http://mediawiki-japi.bitplan.com/index.php/Main_Page) 
+[Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page](http://mediawiki-japi.bitplan.com/index.php/Main_Page)
 
 [![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
 [![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.1.02/jar)
@@ -17,6 +17,7 @@
 
 Maven dependency
 ```xml
+<!-- Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page http://mediawiki-japi.bitplan.com/index.php/Main_Page -->
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
