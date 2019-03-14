@@ -26,42 +26,18 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.bitplan.mediawiki.japi.api.*;
+import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
-import com.bitplan.mediawiki.japi.api.Api;
-import com.bitplan.mediawiki.japi.api.Bl;
-import com.bitplan.mediawiki.japi.api.Delete;
-import com.bitplan.mediawiki.japi.api.Edit;
-import com.bitplan.mediawiki.japi.api.General;
-import com.bitplan.mediawiki.japi.api.Ii;
-import com.bitplan.mediawiki.japi.api.Im;
-import com.bitplan.mediawiki.japi.api.Imageinfo;
-import com.bitplan.mediawiki.japi.api.Img;
-import com.bitplan.mediawiki.japi.api.Iu;
-import com.bitplan.mediawiki.japi.api.Login;
-import com.bitplan.mediawiki.japi.api.P;
-import com.bitplan.mediawiki.japi.api.Page;
-import com.bitplan.mediawiki.japi.api.Parse;
-import com.bitplan.mediawiki.japi.api.Query;
-import com.bitplan.mediawiki.japi.api.Rc;
-import com.bitplan.mediawiki.japi.api.S;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -756,6 +732,48 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       this.handleError(errMsg);
     }
     return content;
+  }
+
+
+  /**
+   * Gets the last revisions of the page with the given <code>pageTitle</code> or an empty <code>List</code> if no revisions can be found.
+   * <p>
+   * Latest revisions first unless specified otherwise in the <code>queryParams</code>.
+   * <p>
+   * {@see https://www.mediawiki.org/wiki/API:Revisions}
+   *
+   * @param pageTitle title of the page whose revisions to retrieve
+   * @param revisionLimit  max number of revisions >0, <=500
+   * @param rvprop  revision properties to return, e.g. "content|ids|timestamp"
+   * @param queryParams  extra query params e.g. for sections
+   * @return page revisions
+   * @throws Exception
+   */
+  public List<Rev> getPageRevisions(String pageTitle, int revisionLimit, final String rvprop, String queryParams) throws Exception {
+    if (StringUtils.isBlank(pageTitle)) {
+      throw new IllegalArgumentException("Please provide a valid page title.");
+    }
+    if (revisionLimit < 1 || revisionLimit > 500) {
+      throw new IllegalArgumentException("Revision limit must be > 0 and <= 500.");
+    }
+    if (StringUtils.isBlank(rvprop)) {
+      throw new IllegalArgumentException("Please provide a meaningful rvprop string.");
+    }
+    final Api api = getQueryResult("" +
+        "&prop=revisions" +
+        "&rvprop=" + rvprop +
+        "&rvlimit=" + revisionLimit + (queryParams != null ? queryParams : "") +
+        "&titles=" + normalizeTitle(pageTitle));
+    handleError(api);
+    final List<Page> pages = api.getQuery().getPages();
+    final List<Rev> pageRevisions = new LinkedList<>();
+    if (pages != null) {
+      Page page = pages.get(0);
+      if (page != null) {
+        pageRevisions.addAll(page.getRevisions());
+      }
+    }
+    return Collections.unmodifiableList(pageRevisions);
   }
 
   /**

@@ -20,9 +20,7 @@
  */
 package com.bitplan.mediawiki.japi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +34,8 @@ import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.P;
 import com.bitplan.mediawiki.japi.api.Page;
 import com.bitplan.mediawiki.japi.api.Rev;
+
+import static org.junit.Assert.*;
 
 /**
  * test some of the Mediawiki API calls at
@@ -100,6 +100,41 @@ public class TestAPI_Query extends APITestbase {
         assertTrue(expected.getContentPart(),rev.getValue().contains(expected.getContentPart()));
       }
     }
+  }
+
+  @Test
+  public void testGetRevisions() throws Exception {
+    boolean sawResultWithMoreThanOneRevision = false;
+    for (ExampleWiki lwiki : getWikis()) {
+      final List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
+      final List<String> titles = lwiki.getTitleList(examplePages);
+      final Mediawiki mediaWikiJapi = lwiki.getMediaWikiJapi();
+      final List<Page> pages = mediaWikiJapi.getPages(titles);
+      for (Page page : pages) {
+        final int nrOfRevisionsFromPageObject = page.getRevisions().size();
+        assertEquals("Expected exactly one revision, since multiple revisions are only available in single page mode.", 1, nrOfRevisionsFromPageObject);
+        final List<Rev> revisions = mediaWikiJapi.getPageRevisions(page.getTitle(), 500, "content|ids|timestamp", "");
+        assertTrue("Expected a non-empty list of revisions.", revisions.size() > 0);
+        if (revisions.size() > 1) {
+          sawResultWithMoreThanOneRevision = true;
+        }
+        final Rev revFromPageObject = page.getRevisions().get(0);
+        final Rev rev0FromList = revisions.get(0);
+        assertEquals("Expected the same ID on top of the list.", revFromPageObject.getRevid(), rev0FromList.getRevid());
+        assertEquals("Expected the same content on top of the list.", revFromPageObject.getValue(), rev0FromList.getValue());
+        assertEquals("Expected the same timestamp on top of the list.", revFromPageObject.getTimestamp(), rev0FromList.getTimestamp());
+        final List<Rev> revisionsSortedById = new ArrayList<>(revisions);
+        Collections.sort(revisionsSortedById, new Comparator<Rev>() {
+          @Override
+          public int compare(Rev rev1, Rev rev2) {
+            return rev2.getRevid().compareTo(rev1.getRevid());
+          }
+        });
+        assertEquals(revisionsSortedById, revisions);
+
+      }
+    }
+    assertTrue(sawResultWithMoreThanOneRevision);
   }
 
   @Test
