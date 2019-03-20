@@ -1,13 +1,13 @@
 ## Version history
 * 0.0.1  - 2015-01-01: first version as JMediawiki
-* 0.0.2  - 2015-01-18: fixes issues #1 - #7 
+* 0.0.2  - 2015-01-18: fixes issues #1 - #7
 * 0.0.3  - 2015-01-20: fixes issue #8 refactors to multi implementation approach with guice
 * 0.0.4  - 2015-04-05: adds section handling
-* 0.0.5  - 2015-06-14: improves section handling 
+* 0.0.5  - 2015-06-14: improves section handling
                        handles uploads in copyToWiki
 					   fixes issue with test on en.wikipedia.org
 * 0.0.6  - 2015-07-02: fixes revprop handling											
-* 0.0.7  - 2015-07-08: fixes #14 namespace handling in copy 
+* 0.0.7  - 2015-07-08: fixes #14 namespace handling in copy
                        adds #15 - delete function
 * 0.0.8  - 2015-08-26: fixes #16 allImages support (timestamp based for the time being)  
 * 0.0.9  - 2015-10-10: fixes #17 to #18 and #19: ignore superfluous newlines in xml api results (if any)
@@ -26,3 +26,4 @@
 * 0.0.21 - 2017-09-16: fixes #39
 * 0.1.01 - 2018-01-25: Java 8 and first steps for json support
 * 0.1.02 - 2018-08-20: fixes #40,#41  
+* 0.1.03 - 2019-03-20: merges #43

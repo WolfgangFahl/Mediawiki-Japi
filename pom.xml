@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2015-2018 BITPlan GmbH Project details and license at: 
+<!-- Copyright (c) 2015-2018 BITPlan GmbH Project details and license at:
 	https://github.com/WolfgangFahl/Mediawiki-Japi -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,14 +7,14 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.9</version>
+		<version>0.0.28</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan</groupId>
 	<artifactId>mediawiki-japi</artifactId>
 	<packaging>jar</packaging>
 	<name>BITPlan-Mediawiki-Japi</name>
-	<version>0.1.02</version>
+	<version>0.1.03</version>
 	<description>Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page</description>
 	<properties>
 		<!-- for parent pom to work -->
@@ -75,7 +75,7 @@
 			<artifactId>org.eclipse.persistence.moxy</artifactId>
 			<version>${moxy.version}</version>
 		</dependency>
-		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html 
+		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html
 			http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -138,7 +138,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven 
+			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
 				run with mvn clean compile assembly:single -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
