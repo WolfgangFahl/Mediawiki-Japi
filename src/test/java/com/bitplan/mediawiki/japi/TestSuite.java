@@ -36,7 +36,7 @@ import org.junit.runners.Suite;
     TestAPI_SMW.class,
     TestAPI_Upload.class,
     TestProtectionMarker.class, TestUsage.class, TestCommandLine.class,
-    TestGetCSV.class,TestPageTitle.class, org.wikipedia.WikiUnitTest.class })
+    TestGetCSV.class,TestPageTitle.class, TestCreateAccount.class, org.wikipedia.WikiUnitTest.class })
 public class TestSuite {
 
 }

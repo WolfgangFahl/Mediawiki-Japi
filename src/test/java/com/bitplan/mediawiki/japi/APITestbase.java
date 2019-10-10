@@ -193,7 +193,8 @@ public class APITestbase {
     File propFile = WikiUser.getPropertyFile(exampleWiki.wikiId);
     boolean result=propFile.exists();
     if (!result && showHelp) {
-      WikiUser.help(exampleWiki.wikiId, exampleWiki.wikiId);
+      String help=WikiUser.help(exampleWiki.wikiId, exampleWiki.wikiId);
+      System.err.println(help);
       showHelp=false;
     }
     return  result;

@@ -108,7 +108,7 @@ public class TestAPI_Recentchanges extends APITestbase {
   @Test
   public void testGetMostRecentChanges() throws Exception {
     // debug=true;
-    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_27");
+    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_31");
     if (hasWikiUser(lewiki)) {
       lewiki.login();
       Mediawiki lwiki = lewiki.getMediaWikiJapi();
@@ -151,7 +151,7 @@ public class TestAPI_Recentchanges extends APITestbase {
       testRc.setTimestamp(xdate);
       rcList.add(testRc);
     }
-    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_27");
+    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_31");
     Mediawiki lwiki = lewiki.getMediaWikiJapi();
     // debug=true;
     List<Rc> sortedFilteredList = lwiki.sortByTitleAndFilterDoubles(rcList);

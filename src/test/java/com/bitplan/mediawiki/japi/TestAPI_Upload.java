@@ -43,7 +43,7 @@ public class TestAPI_Upload extends APITestbase {
    */
   @Test
   public void testUpload() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_27");
+    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
     if (hasWikiUser(lwiki)) {
       lwiki.login();
       ClassLoader classLoader = getClass().getClassLoader();
@@ -52,7 +52,9 @@ public class TestAPI_Upload extends APITestbase {
               "upload/Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg")
           .getFile());
       String filename = file.getName();
-      String contents = "http://commons.wikimedia.org/wiki/File:Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg";
+      String filePageTitle="File:Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg";
+      lwiki.wiki.delete(filePageTitle, "avoid exact duplicate message");
+      String contents = "http://commons.wikimedia.org/wiki/"+filePageTitle;
       String reason = "test upload " + lwiki.wiki.getIsoTimeStamp();
       lwiki.wiki.upload(file, filename, contents, reason);
       String targetUrl = lwiki.wiki.getImageInfo("File:" + filename).getUrl();
@@ -77,6 +79,7 @@ public class TestAPI_Upload extends APITestbase {
     String pageContent = sourceWiki.wiki.getPageContent(imageTitle);
     if (hasWikiUser(targetWiki)) {
       targetWiki.login();
+      targetWiki.wiki.delete(imageTitle, "avoid exact duplicate message");
       targetWiki.wiki.upload(ii, imageName, pageContent);
       // targetWiki.wiki.setDebug(true);
       String targetUrl = targetWiki.wiki.getImageInfo(imageTitle).getUrl();

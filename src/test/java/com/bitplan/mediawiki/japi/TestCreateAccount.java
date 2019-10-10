@@ -21,15 +21,19 @@
 package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Warnings;
 
 /**
  * test http://www.mediawiki.org/wiki/API:Account_creation
@@ -40,22 +44,49 @@ import com.bitplan.mediawiki.japi.api.Api;
 public class TestCreateAccount extends APITestbase {
 
   /**
-   * test getting the create Account token
-   * 
+   * test creating an account with Mediawiki 27 and up style
    * @throws Exception
    */
   @Test
-  public void testCreateAccount() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_27");
+  public void testCreateAccountMW27Up() throws Exception {
+    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
     Mediawiki wiki = (Mediawiki) lwiki.wiki;
     if (hasWikiUser(lwiki)) {
       lwiki.login();
-      // lwiki.wiki.setDebug(true);
+      // uncomment to debug
+      debug=true;
+      lwiki.wiki.setDebug(debug);
+      Mediawiki lmwiki = (com.bitplan.mediawiki.japi.Mediawiki)lwiki.wiki;
+      Api api = lmwiki.getAuthManagerInfo();
+      assertNotNull(api);
+      String json = api.getRawJson();
+      if (debug)
+        LOGGER.log(Level.INFO,json);
+    }
+  }
+  
+  /**
+   * test getting the create Account token
+   * see https://www.mediawiki.org/wiki/API:Account_creation
+   * 
+   * @throws Exception
+   */
+  @Ignore
+  public void testCreateAccount() throws Exception {
+    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
+    Mediawiki wiki = (Mediawiki) lwiki.wiki;
+    if (hasWikiUser(lwiki)) {
+      lwiki.login();
+      // uncomment to debug
+      lwiki.wiki.setDebug(true);
       DateFormat df = new SimpleDateFormat("yyyyMMddHHmmSS");
       String nowAsISO = df.format(new Date());
       Api api = wiki.createAccount("JohnDoe" + nowAsISO, "wf@bitplan.com",
           "John%20Doe", true, "SMWCon2015-05", "en");
-      assertNull(api.getWarnings());
+      Warnings warnings = api.getWarnings();
+      if (warnings!=null)
+        System.err.println(warnings);
+      assertNull(warnings);
       String result = api.getCreateaccount().getResult();
       assertEquals("Success", result);
     }

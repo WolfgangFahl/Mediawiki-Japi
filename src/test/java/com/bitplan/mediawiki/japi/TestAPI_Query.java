@@ -69,7 +69,12 @@ public class TestAPI_Query extends APITestbase {
 
   @Test
   public void testGetPages() throws Exception {
+    //debug=true;
     for (ExampleWiki lwiki : getWikis()) {
+      if (debug) {
+        Mediawiki llwiki = lwiki.getMediaWikiJapi();
+        LOGGER.log(Level.INFO,String.format("wiki %s:%s%s",lwiki.getWikiId(),llwiki.siteurl,llwiki.scriptPath));
+      }
       List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
       if (debug) {
         for (ExamplePage epage : examplePages)
@@ -139,8 +144,8 @@ public class TestAPI_Query extends APITestbase {
 
   @Test
   public void testImageInfo() throws Exception {
-    /// choose the >1.23 targetWiki since it has proper imageinfo implementation
-    ExampleWiki imageWiki = ewm.get("targetWiki");
+    /// choose the >1.23 wiki since it has proper imageinfo implementation
+    ExampleWiki imageWiki = ewm.get("imgsrcWiki");
     // debug=true;
     if (debug)
       imageWiki.getMediaWikiJapi().setDebug(debug);
@@ -151,7 +156,7 @@ public class TestAPI_Query extends APITestbase {
       System.out.println(ii.getWidth() + "x" + ii.getHeight());
     }
     assertEquals(
-        "http://mediawiki-japi.bitplan.com/mw1_27/images/a/ae/Index.png",
+        "http://mediawiki-japi.bitplan.com/mw1_31/images/a/ae/Index.png",
         ii.getUrl());
     int expectedWidth = 32;
     int expectedHeight = 32;

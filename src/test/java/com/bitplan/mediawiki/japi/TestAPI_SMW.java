@@ -56,7 +56,7 @@ public class TestAPI_SMW extends APITestbase {
     assertEquals("SMW\\Serializers\\SemanticDataSerializer",query.getSerializer());
     assertEquals("2",query.getVersion());
     List<Property> data = query.getData();
-    assertEquals(18,data.size());
+    assertEquals(19,data.size());
     for (Property prop:data) {
       assertNotNull(prop.getDataitem());
       for (DataItem item:prop.getDataitem()) {

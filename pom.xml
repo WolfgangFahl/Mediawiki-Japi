@@ -14,7 +14,7 @@
 	<artifactId>mediawiki-japi</artifactId>
 	<packaging>jar</packaging>
 	<name>BITPlan-Mediawiki-Japi</name>
-	<version>0.1.03</version>
+	<version>0.1.04</version>
 	<description>Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page</description>
 	<properties>
 		<!-- for parent pom to work -->

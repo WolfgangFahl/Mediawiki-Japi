@@ -85,6 +85,8 @@ public class TestAPI_Login extends APITestbase {
   /**
    * test Login and logout see
    * <a href='http://www.mediawiki.org/wiki/API:Login'>API:Login</a>
+   * beware of https://phabricator.wikimedia.org/T137805 deprecation of action=login with
+   * main account
    * 
    * @throws Exception
    */
@@ -97,15 +99,16 @@ public class TestAPI_Login extends APITestbase {
           fail(WikiUser.help(lwiki.wikiId, lwiki.wiki.getSiteurl()));
         }
         // avoid uncommenting - will show password information ...
-        // lwiki.debug = true;
+        // lwiki.getMediaWikiJapi().debug=true;
         assertFalse(lwiki.wiki.isLoggedIn());
         Login login = lwiki.wiki.login(wuser.getUsername(),
             wuser.getPassword());
         assertNotNull(login.getLguserid());
-        assertEquals(wuser.getUsername().toLowerCase(),
-            login.getLgusername().toLowerCase());
+        String wUsername=wuser.getUsername().toLowerCase();
+        String lUsername=login.getLgusername().toLowerCase();
+        assertEquals(wUsername,lUsername);
         assertEquals("Success", login.getResult());
-        assertNotNull(login.getLgtoken());
+        assertNotNull(String.format("There should be a login token for %s",lwiki.wikiId),login.getLgtoken());
         assertTrue(lwiki.wiki.isLoggedIn());
         // make sure logout also works
         lwiki.wiki.logout();
@@ -131,7 +134,7 @@ public class TestAPI_Login extends APITestbase {
             "not" + wuser.getPassword());
         assertNull(login.getLguserid());
         assertNull(login.getLgusername());
-        assertEquals("WrongPass", login.getResult());
+        assertEquals("Failed", login.getResult());
         assertNull(login.getLgtoken());
         assertFalse(lwiki.wiki.isLoggedIn());
         // make sure logout also works
@@ -148,7 +151,7 @@ public class TestAPI_Login extends APITestbase {
         MediawikiApi ltwiki = lwiki.wiki;
         // System.out.println(ltwiki.getSiteurl());
         Login login = ltwiki.login("someUserThatDoesNotExist", "somePassword");
-        assertEquals("NotExists", login.getResult());
+        assertEquals("Failed", login.getResult());
       }
     }
   }

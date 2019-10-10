@@ -663,6 +663,11 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     TokenResult token = prepareLogin(username);
     // and then with the token we login using the password
     Login login = login(token, username, password, domain);
+    // make sure the token is preserved since we are using the deprecated 
+    // action=login see https://phabricator.wikimedia.org/T137805
+    if ("Success".equals(login.getResult())) {
+      login.setLgtoken(token.token);
+    }
     return login;
   }
 
@@ -690,7 +695,11 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   public void logout() throws Exception {
-    Api apiResult = getActionResult("logout", "", null, null);
+    TokenResult token=null;
+    if (getVersion().compareToIgnoreCase("Mediawiki 1.31") >= 0) {
+      token=this.getCSRF_Token();
+    }
+    Api apiResult = getActionResult("logout", "", token, null);
     if (apiResult != null) {
       userid = null;
       // FIXME check apiResult
@@ -892,6 +901,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String tokenName;
     String token;
     TokenMode tokenMode;
+    
+    /**
+     * default constructor
+     */
+    public TokenResult() {
+      this.tokenMode=TokenMode.token1_24;
+      this.tokenName="token";
+    }
 
     /**
      * set my token - remove trailing backslash or +\ if necessary
@@ -927,6 +944,21 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         LOGGER.log(Level.INFO, "token " + token + "=>" + result);
       return result;
     }
+  }
+  
+  /**
+   * get a CSRF token
+   * @return - the token
+   * @throws Exception
+   */
+  public TokenResult getCSRF_Token() throws Exception {
+    TokenResult token = new TokenResult();
+    String action = "query";
+    String params = "&meta=tokens";
+    Api api = getActionResult(action, params);
+    handleError(api);
+    token.setToken(api.getQuery().getTokens().getCsrftoken());
+    return token;
   }
 
   /**
@@ -1292,7 +1324,23 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       e.printStackTrace();
     }
   }
-
+  
+  /**
+   * since 
+   * https://www.mediawiki.org/wiki/API:Account_creation
+   * now has dynamic content we use the json form and the api result is not really
+   * further analyzed - the rawJson contains the field information
+   * @throws Exception 
+   */
+  public Api getAuthManagerInfo() throws Exception {
+    String oldFormat = this.format;
+    format="json";
+    Api apiResult = this.getQueryResult("&meta=authmanagerinfo&amirequestsfor=create");
+    super.handleError(apiResult);
+    format=oldFormat;
+    return apiResult;
+  }
+  
   /**
    * create the given user account
    * 
@@ -1303,7 +1351,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @param reason
    * @param language
    * @throws Exception
+   * @deprecated since MW 1.27
    */
+  @Deprecated
   public Api createAccount(String name, String eMail, String realname,
       boolean mailpassword, String reason, String language) throws Exception {
     String createtoken="?";

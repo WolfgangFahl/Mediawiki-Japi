@@ -36,6 +36,9 @@ import com.google.inject.Injector;
  *
  */
 public class ExampleWikiManager {
+  final String SOURCE_WIKI = "mediawiki-japi-test1_31";
+  final String TARGET_WIKI = "mediawiki-japi-test1_32";
+  final String IMGSRC_WIKI = "mediawiki-japi-test1_31";
   
   // FIXME this is not only for test ...
   Injector injector;
@@ -168,7 +171,7 @@ public class ExampleWikiManager {
       // test sites on mediawiki-japi.bitplan.com
       // uncommment to enable
       // /**
-      String versions[] = { "1_23", "1_25", "1_27", "1_29" };
+      String versions[] = { "1_31", "1_32" };
       for (String version : versions) {
         wiki = add("mediawiki-japi-test" + version,
             "http://mediawiki-japi.bitplan.com", "/mw" + version);
@@ -193,9 +196,7 @@ public class ExampleWikiManager {
       // this is for a copy test - you need read access to the SOURCE_WIKI and
       // write access
       // to the TARGET_WIKI
-      final String SOURCE_WIKI = "mediawiki-japi-test1_23";
-      final String TARGET_WIKI = "mediawiki-japi-test1_27";
-      final String IMGSRC_WIKI = "mediawiki-japi-test1_25";
+     
       aliases.put("sourceWiki", SOURCE_WIKI);
       aliases.put("targetWiki", TARGET_WIKI);
       aliases.put("imgsrcWiki", IMGSRC_WIKI);
