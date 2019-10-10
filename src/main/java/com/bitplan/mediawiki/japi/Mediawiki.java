@@ -33,6 +33,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import com.bitplan.mediawiki.japi.api.*;
+import com.bitplan.mediawiki.japi.api.Error;
+
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -1138,8 +1140,22 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     if (!comment.isEmpty())
       multiPart.field("comment", comment);
     String params = "";
+    // remember the old state of exception handling
+    boolean oldThrowExceptionOnError=this.throwExceptionOnError;
+    // do not throw an exception it might just be "The upload is an exact duplicate"
+    this.throwExceptionOnError=false;
     Api api = this.getActionResult("upload", params, token, multiPart);
-    handleError(api);
+    this.throwExceptionOnError=oldThrowExceptionOnError;
+    String info=null;
+    // filter the error handling
+    if (api!=null) {
+      Error error = api.getError();
+      info = error.getInfo();
+      // ignore "The upload is an exact duplicate"
+      if (!info.contains("duplicate")) {
+        handleError(api);        
+      }
+    }
   }
 
   @Override
