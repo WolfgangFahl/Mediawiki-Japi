@@ -551,14 +551,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return
    */
   public boolean isVersion128() {
-    String mwversion = "Mediawiki 1.27 or before";
+    String mwversion = "Mediawiki 1.28 or after";
     try {
       mwversion = this.getVersion();
     } catch (Exception e) {
       LOGGER.log(Level.INFO,
           "Could not retrieve Mediawiki Version via API - will assume "
               + mwversion
-              + " you might want to set the Version actively if you are on 1.28 and have the api blocked for non-logged in users");
+              + " you might want to set the Version actively if you are on a different version and have the api blocked for non-logged in users");
     }
     boolean result = mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0;
     return result;
