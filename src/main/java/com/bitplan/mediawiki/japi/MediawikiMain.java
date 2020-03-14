@@ -4,16 +4,18 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.StringArrayOptionHandler;
+
 /**
  * command line interface to Mediawiki API
+ * 
  * @author wf
  *
  */
 public class MediawikiMain extends Mediawiki {
- 
-  
+
   /**
    * default contructor
+   * 
    * @throws Exception
    */
   public MediawikiMain() throws Exception {
@@ -38,7 +40,8 @@ public class MediawikiMain extends Mediawiki {
     System.err.println(msg);
 
     showVersion();
-    String usageMsg=String.format("  usage: java %s",this.getClass().getName());
+    String usageMsg = String.format("  usage: java %s",
+        this.getClass().getName());
     System.err.println(usageMsg);
     parser.printUsage(System.err);
     exitCode = 1;
@@ -57,16 +60,20 @@ public class MediawikiMain extends Mediawiki {
 
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;
-  
+
+  @Option(name = "-l", aliases = {
+      "--imageLimit" }, usage = "the maximum number of images per page to push")
+  int imageLimit = 100;
+
   @Option(name = "-s", aliases = { "--source" }, usage = "the source wiki")
   String sourceWiki = null;
-  
+
   @Option(name = "-t", aliases = { "--target" }, usage = "the target wiki")
   String targetWiki = null;
-  
-  @Option(name = "-p", aliases = { "--pages" },handler = StringArrayOptionHandler.class, usage = "the pages to be transferred")
-  String[] pageTitles= {};
-  
+
+  @Option(name = "-p", aliases = {
+      "--pages" }, handler = StringArrayOptionHandler.class, usage = "the pages to be transferred")
+  String[] pageTitles = {};
 
   @Option(name = "-v", aliases = {
       "--version" }, usage = "showVersion\nshow current version if this switch is used")
@@ -91,12 +98,13 @@ public class MediawikiMain extends Mediawiki {
         showVersion();
       } else if (this.showHelp) {
         showHelp();
+      } else if (this.targetWiki != null && this.sourceWiki != null
+          && this.pageTitles != null) {
+        PushPages pp = new PushPages(this.sourceWiki, this.targetWiki,
+            imageLimit);
+        pp.push(pageTitles);
       } else {
-        if (this.targetWiki!=null && this.sourceWiki!=null && this.pageTitles!=null) {
-          PushPages.push(this.sourceWiki,this.targetWiki,pageTitles);
-        } else {
-          showHelp();
-        }
+        showHelp();
       }
     } catch (CmdLineException e) {
       // handling of wrong arguments
@@ -125,5 +133,5 @@ public class MediawikiMain extends Mediawiki {
       e.printStackTrace();
     }
   }
-  
+
 }

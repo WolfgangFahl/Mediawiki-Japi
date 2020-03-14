@@ -31,6 +31,10 @@ import java.security.GeneralSecurityException;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+
 /**
  * Wiki User information
  * 
@@ -45,9 +49,18 @@ public class WikiUser {
   protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
       .getLogger("com.bitplan.mediawiki.japi.user");
 
+  @Option(name = "-u", aliases = { "--user" }, usage = "username")
   String username;
+  @Option(name = "-p", aliases = { "--password" }, usage = "password")
   String password;
+  @Option(name = "-e", aliases = { "--email" }, usage = "email")
   String email;
+  @Option(name = "-w", aliases = { "--wikiId" }, usage = "wiki id")
+  String wikiid;
+  @Option(name = "-y", aliases = { "--store" }, usage = "store without asking")
+  boolean yes = false;
+
+  private CmdLineParser parser;
 
   /**
    * @return the email
@@ -85,8 +98,10 @@ public class WikiUser {
   /**
    * get the property file for the given wikiId and user
    * 
-   * @param wikiId - the wiki to get the data for
-   * @param user - the user
+   * @param wikiId
+   *          - the wiki to get the data for
+   * @param user
+   *          - the user
    * @return the property File
    */
   public static File getPropertyFile(String wikiId, String user) {
@@ -98,6 +113,7 @@ public class WikiUser {
 
   /**
    * get the propertyFile for the given wikiId
+   * 
    * @param wikiId
    * @return the propertyFile
    */
@@ -186,39 +202,28 @@ public class WikiUser {
   /**
    * create a credentials ini file from the command line
    */
-  public static void createIniFile(String... args) {
+  public void createIniFile(String... args) {
     try {
+      parser = new CmdLineParser(this);
+      parser.parseArgument(args);
       // open up standard input
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      String wikiid = null;
-      if (args.length > 0)
-        wikiid = args[0];
-      else
+      if (wikiid == null)
         wikiid = getInput("wiki id", br);
-      String username = null;
-      if (args.length > 1)
-        username = args[1];
-      else
+      if (username == null)
         username = getInput("username", br);
-      String password = null;
-      if (args.length > 2)
-        password = args[2];
-      else
+      if (password == null)
         password = getInput("password", br);
-      String email = null;
-      if (args.length > 3)
-        email = args[3];
-      else
+      if (email == null)
         email = getInput("email", br);
       File propFile = getPropertyFile(wikiid, username);
-      String remember = null;
-      if (args.length > 4)
-        remember = args[4];
-      else
-        remember = getInput("shall i store " + username
+      if (!yes) {
+        String remember = getInput("shall i store " + username
             + "'s credentials encrypted in " + propFile.getName() + " y/n?",
             br);
-      if (remember.trim().toLowerCase().startsWith("y")) {
+        yes = remember.trim().toLowerCase().startsWith("y");
+      }
+      if (yes) {
         Crypt lCrypt = Crypt.getRandomCrypt();
         Properties props = new Properties();
         props.setProperty("cypher", lCrypt.getCypher());
@@ -237,6 +242,8 @@ public class WikiUser {
       LOGGER.log(Level.SEVERE, e1.getMessage());
     } catch (GeneralSecurityException e1) {
       LOGGER.log(Level.SEVERE, e1.getMessage());
+    } catch (CmdLineException e) {
+      parser.printUsage(System.err);
     }
   }
 
@@ -264,7 +271,8 @@ public class WikiUser {
    * @param args
    */
   public static void main(String args[]) {
-    createIniFile(args);
+    WikiUser wikiUser = new WikiUser();
+    wikiUser.createIniFile(args);
   }
 
 }

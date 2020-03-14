@@ -124,7 +124,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   // Json unmarshaller
   private Gson gson;
-  
+
   static int exitCode;
   /**
    * set to true for debugging
@@ -308,7 +308,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   public ClientResponse getPostResponse(String queryUrl, String params,
       TokenResult token, Object pFormDataObject) throws Exception {
     params = params.replace("|", "%7C");
-    params = params.replace("+", "%20");  
+    params = params.replace("+", "%20");
     // modal handling of post
     FormDataMultiPart form = null;
     MultivaluedMap<String, String> lFormData = null;
@@ -462,8 +462,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String text = this.getActionResultText(action, params, token, pFormData,
         format);
     // remove superfluous whitespace
-    if (text!=null)
-      text=text.trim();
+    if (text != null)
+      text = text.trim();
     Api api = null;
     if ("xml".equals(format)) {
       if (debug) {
@@ -700,7 +700,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     TokenResult token = prepareLogin(username);
     // and then with the token we login using the password
     Login login = login(token, username, password, domain);
-    // make sure the token is preserved since we are using the deprecated 
+    // make sure the token is preserved since we are using the deprecated
     // action=login see https://phabricator.wikimedia.org/T137805
     if ("Success".equals(login.getResult())) {
       login.setLgtoken(token.token);
@@ -732,9 +732,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @throws Exception
    */
   public void logout() throws Exception {
-    TokenResult token=null;
+    TokenResult token = null;
     if (getVersion().compareToIgnoreCase("Mediawiki 1.31") >= 0) {
-      token=this.getCSRF_Token();
+      token = this.getCSRF_Token();
     }
     Api apiResult = getActionResult("logout", "", token, null);
     if (apiResult != null) {
@@ -780,36 +780,42 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     return content;
   }
 
-
   /**
-   * Gets the last revisions of the page with the given <code>pageTitle</code> or an empty <code>List</code> if no revisions can be found.
+   * Gets the last revisions of the page with the given <code>pageTitle</code>
+   * or an empty <code>List</code> if no revisions can be found.
    * <p>
-   * Latest revisions first unless specified otherwise in the <code>queryParams</code>.
+   * Latest revisions first unless specified otherwise in the
+   * <code>queryParams</code>.
    * <p>
    * {@see https://www.mediawiki.org/wiki/API:Revisions}
    *
-   * @param pageTitle title of the page whose revisions to retrieve
-   * @param revisionLimit  max number of revisions >0, <=500
-   * @param rvprop  revision properties to return, e.g. "content|ids|timestamp"
-   * @param queryParams  extra query params e.g. for sections
+   * @param pageTitle
+   *          title of the page whose revisions to retrieve
+   * @param revisionLimit
+   *          max number of revisions >0, <=500
+   * @param rvprop
+   *          revision properties to return, e.g. "content|ids|timestamp"
+   * @param queryParams
+   *          extra query params e.g. for sections
    * @return page revisions
    * @throws Exception
    */
-  public List<Rev> getPageRevisions(String pageTitle, int revisionLimit, final String rvprop, String queryParams) throws Exception {
+  public List<Rev> getPageRevisions(String pageTitle, int revisionLimit,
+      final String rvprop, String queryParams) throws Exception {
     if (StringUtils.isBlank(pageTitle)) {
       throw new IllegalArgumentException("Please provide a valid page title.");
     }
     if (revisionLimit < 1 || revisionLimit > 500) {
-      throw new IllegalArgumentException("Revision limit must be > 0 and <= 500.");
+      throw new IllegalArgumentException(
+          "Revision limit must be > 0 and <= 500.");
     }
     if (StringUtils.isBlank(rvprop)) {
-      throw new IllegalArgumentException("Please provide a meaningful rvprop string.");
+      throw new IllegalArgumentException(
+          "Please provide a meaningful rvprop string.");
     }
-    final Api api = getQueryResult("" +
-        "&prop=revisions" +
-        "&rvprop=" + rvprop +
-        "&rvlimit=" + revisionLimit + (queryParams != null ? queryParams : "") +
-        "&titles=" + normalizeTitle(pageTitle));
+    final Api api = getQueryResult("" + "&prop=revisions" + "&rvprop=" + rvprop
+        + "&rvlimit=" + revisionLimit + (queryParams != null ? queryParams : "")
+        + "&titles=" + normalizeTitle(pageTitle));
     handleError(api);
     final List<Page> pages = api.getQuery().getPages();
     final List<Rev> pageRevisions = new LinkedList<>();
@@ -938,13 +944,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     String tokenName;
     String token;
     TokenMode tokenMode;
-    
+
     /**
      * default constructor
      */
     public TokenResult() {
-      this.tokenMode=TokenMode.token1_24;
-      this.tokenName="token";
+      this.tokenMode = TokenMode.token1_24;
+      this.tokenName = "token";
     }
 
     /**
@@ -982,9 +988,10 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       return result;
     }
   }
-  
+
   /**
    * get a CSRF token
+   * 
    * @return - the token
    * @throws Exception
    */
@@ -1173,19 +1180,22 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       multiPart.field("comment", comment);
     String params = "";
     // remember the old state of exception handling
-    boolean oldThrowExceptionOnError=this.throwExceptionOnError;
-    // do not throw an exception it might just be "The upload is an exact duplicate"
-    this.throwExceptionOnError=false;
+    boolean oldThrowExceptionOnError = this.throwExceptionOnError;
+    // do not throw an exception it might just be "The upload is an exact
+    // duplicate"
+    this.throwExceptionOnError = false;
     Api api = this.getActionResult("upload", params, token, multiPart);
-    this.throwExceptionOnError=oldThrowExceptionOnError;
-    String info=null;
+    this.throwExceptionOnError = oldThrowExceptionOnError;
+    String info = null;
     // filter the error handling
-    if (api!=null) {
+    if (api != null) {
       Error error = api.getError();
-      info = error.getInfo();
-      // ignore "The upload is an exact duplicate"
-      if (!info.contains("duplicate")) {
-        handleError(api);        
+      if (error != null) {
+        info = error.getInfo();
+        // ignore "The upload is an exact duplicate"
+        if (!info.contains("duplicate")) {
+          handleError(api);
+        }
       }
     }
   }
@@ -1272,23 +1282,23 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       t.printStackTrace();
   }
 
- 
   /**
-   * since 
-   * https://www.mediawiki.org/wiki/API:Account_creation
-   * now has dynamic content we use the json form and the api result is not really
-   * further analyzed - the rawJson contains the field information
-   * @throws Exception 
+   * since https://www.mediawiki.org/wiki/API:Account_creation now has dynamic
+   * content we use the json form and the api result is not really further
+   * analyzed - the rawJson contains the field information
+   * 
+   * @throws Exception
    */
   public Api getAuthManagerInfo() throws Exception {
     String oldFormat = this.format;
-    format="json";
-    Api apiResult = this.getQueryResult("&meta=authmanagerinfo&amirequestsfor=create");
+    format = "json";
+    Api apiResult = this
+        .getQueryResult("&meta=authmanagerinfo&amirequestsfor=create");
     super.handleError(apiResult);
-    format=oldFormat;
+    format = oldFormat;
     return apiResult;
   }
-  
+
   /**
    * create the given user account
    * 
@@ -1304,24 +1314,24 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   @Deprecated
   public Api createAccount(String name, String eMail, String realname,
       boolean mailpassword, String reason, String language) throws Exception {
-    String createtoken="?";
+    String createtoken = "?";
     if (getVersion().compareToIgnoreCase("Mediawiki 1.27") >= 0) {
       Api apiResult = this.getQueryResult("&meta=tokens&type=createaccount");
       super.handleError(apiResult);
       createtoken = apiResult.getQuery().getTokens().getCreateaccounttoken();
     }
-    Api api=null;
+    Api api = null;
     if (getVersion().compareToIgnoreCase("Mediawiki 1.27") >= 0) {
       Map<String, String> lFormData = new HashMap<String, String>();
-      lFormData.put("createtoken",createtoken);
-      lFormData.put("username",name);
-      lFormData.put("email",eMail);
-      lFormData.put("realname",realname);
-      lFormData.put("mailpassword", mailpassword?"1":"0");
+      lFormData.put("createtoken", createtoken);
+      lFormData.put("username", name);
+      lFormData.put("email", eMail);
+      lFormData.put("realname", realname);
+      lFormData.put("mailpassword", mailpassword ? "1" : "0");
       lFormData.put("reason", reason);
       lFormData.put("createcontinue", "1");
-      String params="";
-      api = getActionResult("createaccount", params,null,lFormData);
+      String params = "";
+      api = getActionResult("createaccount", params, null, lFormData);
     } else {
       String params = "&name=" + this.encode(name);
       params += "&email=" + this.encode(eMail);
