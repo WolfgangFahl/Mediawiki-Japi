@@ -36,7 +36,7 @@ import org.junit.Test;
  */
 public class TestCommandLine {
 
-	boolean debug = false;
+	boolean debug = true;
 
 	/**
 	 * test the Mediawiki-Japi command line
@@ -78,7 +78,7 @@ public class TestCommandLine {
 
 	@Test
 	public void testUsage() {
-		String[] args = { "-h" };
+		String[] args = { "-h","-d" };
 		GrabSyserr.start();
 		callMediawiki(args, 1);
 		String output = GrabSyserr.end();

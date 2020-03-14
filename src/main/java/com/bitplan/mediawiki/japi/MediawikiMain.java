@@ -1,7 +1,5 @@
 package com.bitplan.mediawiki.japi;
 
-import java.util.List;
-
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -51,7 +49,6 @@ public class MediawikiMain extends Mediawiki {
    */
   public void showHelp() {
     String msg = "Help\n" + "Mediawiki-Japi version " + VERSION
-        + " has no functional command line interface\n"
         + "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
     usage(msg);
   }
@@ -68,7 +65,7 @@ public class MediawikiMain extends Mediawiki {
   String targetWiki = null;
   
   @Option(name = "-p", aliases = { "--pages" },handler = StringArrayOptionHandler.class, usage = "the pages to be transferred")
-  String[] pageTitles;
+  String[] pageTitles= {};
   
 
   @Option(name = "-v", aliases = {
