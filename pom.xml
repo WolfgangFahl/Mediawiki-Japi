@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2015-2018 BITPlan GmbH Project details and license at:
+<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at:
 	https://github.com/WolfgangFahl/Mediawiki-Japi -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -7,14 +7,14 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.28</version>
+		<version>0.0.30</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan</groupId>
 	<artifactId>mediawiki-japi</artifactId>
 	<packaging>jar</packaging>
 	<name>BITPlan-Mediawiki-Japi</name>
-	<version>0.1.04</version>
+	<version>0.1.05</version>
 	<description>Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page</description>
 	<properties>
 		<!-- for parent pom to work -->
@@ -26,8 +26,6 @@
 		<jersey.version>1.19.3</jersey.version>
 		<guice.version>3.0</guice.version>
 		<mockito.version>1.10.16</mockito.version>
-		<commons.io.version>2.4</commons.io.version>
-		<commons.version>3.4</commons.version>
 		<moxy.version>2.6.5</moxy.version>
 		<!-- <moxy.version>2.5.2</moxy.version> -->
 		<dependency.locations.enabled>false</dependency.locations.enabled>
@@ -49,7 +47,6 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>${commons.io.version}</version>
 		</dependency>
 		<!-- Jersey client -->
 		<dependency>
@@ -93,14 +90,12 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit4.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- args4j command line utility -->
 		<dependency>
 			<groupId>args4j</groupId>
 			<artifactId>args4j</artifactId>
-			<version>${args4j.version}</version>
 		</dependency>
 		<!-- Mockito -->
 		<dependency>
@@ -113,13 +108,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${commons.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.8.1</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -146,7 +139,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.bitplan.mediawiki.japi.Mediawiki</mainClass>
+							<mainClass>com.bitplan.mediawiki.japi.MediawikiMain</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

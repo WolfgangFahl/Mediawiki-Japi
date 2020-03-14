@@ -26,20 +26,44 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.bitplan.mediawiki.japi.api.*;
-import com.bitplan.mediawiki.japi.api.Error;
-
 import org.apache.commons.lang3.StringUtils;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
+import com.bitplan.mediawiki.japi.api.Api;
+import com.bitplan.mediawiki.japi.api.Bl;
+import com.bitplan.mediawiki.japi.api.Delete;
+import com.bitplan.mediawiki.japi.api.Edit;
+import com.bitplan.mediawiki.japi.api.Error;
+import com.bitplan.mediawiki.japi.api.General;
+import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Im;
+import com.bitplan.mediawiki.japi.api.Imageinfo;
+import com.bitplan.mediawiki.japi.api.Img;
+import com.bitplan.mediawiki.japi.api.Iu;
+import com.bitplan.mediawiki.japi.api.Login;
+import com.bitplan.mediawiki.japi.api.P;
+import com.bitplan.mediawiki.japi.api.Page;
+import com.bitplan.mediawiki.japi.api.Parse;
+import com.bitplan.mediawiki.japi.api.Query;
+import com.bitplan.mediawiki.japi.api.Rc;
+import com.bitplan.mediawiki.japi.api.Rev;
+import com.bitplan.mediawiki.japi.api.S;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -63,7 +87,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.0.22";
+  protected static final String VERSION = "0.1.05";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -100,6 +124,14 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
 
   // Json unmarshaller
   private Gson gson;
+  
+  static int exitCode;
+  /**
+   * set to true for debugging
+   */
+  @Option(name = "-d", aliases = {
+      "--debug" }, usage = "debug\nadds debugging output")
+  protected boolean debug = false;
 
   /**
    * enable debugging
@@ -1240,110 +1272,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       t.printStackTrace();
   }
 
-  /**
-   * show the Version
-   */
-  public static void showVersion() {
-    System.err.println("Mediawiki-Japi Version: " + VERSION);
-    System.err.println();
-    System.err
-        .println(" github: https://github.com/WolfgangFahl/Mediawiki-Japi");
-    System.err.println("");
-  }
-
-  /**
-   * show a usage
-   */
-  public void usage(String msg) {
-    System.err.println(msg);
-
-    showVersion();
-    System.err.println("  usage: java com.bitplan.mediawiki.japi.Mediawiki");
-    parser.printUsage(System.err);
-    exitCode = 1;
-  }
-
-  /**
-   * show Help
-   */
-  public void showHelp() {
-    String msg = "Help\n" + "Mediawiki-Japi version " + VERSION
-        + " has no functional command line interface\n"
-        + "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
-    usage(msg);
-  }
-
-  private CmdLineParser parser;
-  static int exitCode;
-  /**
-   * set to true for debugging
-   */
-  @Option(name = "-d", aliases = {
-      "--debug" }, usage = "debug\nadds debugging output")
-  protected boolean debug = false;
-
-  @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
-  boolean showHelp = false;
-
-  @Option(name = "-v", aliases = {
-      "--version" }, usage = "showVersion\nshow current version if this switch is used")
-  boolean showVersion = false;
-
-  /**
-   * main instance - this is the non-static version of main - it will run as a
-   * static main would but return it's exitCode to the static main the static
-   * main will then decide whether to do a System.exit(exitCode) or not.
-   * 
-   * @param args
-   *          - command line arguments
-   * @return - the exit Code to be used by the static main program
-   */
-  protected int maininstance(String[] args) {
-    parser = new CmdLineParser(this);
-    try {
-      parser.parseArgument(args);
-      if (debug)
-        showVersion();
-      if (this.showVersion) {
-        showVersion();
-      } else if (this.showHelp) {
-        showHelp();
-      } else {
-        // FIXME - do something
-        // implement actions
-        System.err.println(
-            "Commandline interface is not functional in " + VERSION + " yet");
-        exitCode = 1;
-        // exitCode = 0;
-      }
-    } catch (CmdLineException e) {
-      // handling of wrong arguments
-      usage(e.getMessage());
-    } catch (Exception e) {
-      handle(e);
-      exitCode = 1;
-    }
-    return exitCode;
-  }
-
-  /**
-   * entry point e.g. for java -jar called provides a command line interface
-   * 
-   * @param args
-   */
-  public static void main(String args[]) {
-    Mediawiki wiki;
-    try {
-      wiki = new Mediawiki();
-      int result = wiki.maininstance(args);
-      if (!testMode && result != 0)
-        System.exit(result);
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-  
+ 
   /**
    * since 
    * https://www.mediawiki.org/wiki/API:Account_creation

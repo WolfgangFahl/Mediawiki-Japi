@@ -47,8 +47,8 @@ public class TestCommandLine {
 	 *          - the expected exit code
 	 */
 	public void callMediawiki(String args[], int expectedExit) {
-		Mediawiki.testMode = true;
-		Mediawiki.main(args);
+		MediawikiMain.testMode = true;
+		MediawikiMain.main(args);
 		assertEquals(expectedExit, Mediawiki.exitCode);
 	}
 

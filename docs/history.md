@@ -27,3 +27,5 @@
 * 0.1.01 - 2018-01-25: Java 8 and first steps for json support
 * 0.1.02 - 2018-08-20: fixes #40,#41  
 * 0.1.03 - 2019-03-20: merges #43
+* 0.1.04 - 2019      : not released to maven central
+* 0.1.05 - 2020-03-14: 
