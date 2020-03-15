@@ -2,9 +2,8 @@ package com.bitplan.mediawiki.japi;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -14,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
+import com.bitplan.mediawiki.japi.api.Edit;
 import com.bitplan.mediawiki.japi.api.Ii;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Page;
@@ -195,9 +195,14 @@ public class PushPages {
    */
   public void pushPage(String pageTitle) throws Exception {
     String pageContent = this.getPageContent(pageTitle);
+    Edit edit=null;
     if (!check)
-      targetWiki.edit(pageTitle, pageContent, getSummary());
+      edit=targetWiki.edit(pageTitle, pageContent, getSummary());
     pushImages(pageTitle);
+    if (edit!=null && showDebug) {
+      String url=targetWiki.siteurl+"/"+targetWiki.getScriptPath()+"index.php/"+targetWiki.normalizeTitle(pageTitle);
+      Desktop.getDesktop().browse(new URI(url));
+    }
   }
 
   /**
@@ -222,6 +227,12 @@ public class PushPages {
     List<Ii> imageInfos = sourceWiki.getImageInfosForPage(pageTitle,
         this.imageLimit);
     for (Ii imageInfo : imageInfos) {
+      // fix https quirk
+      if (sourceWiki.siteurl.toLowerCase().startsWith("https:") && imageInfo.getUrl().startsWith("http:")) {
+        String url=imageInfo.getUrl();
+        url=url.replace("http:", "https:");
+        imageInfo.setUrl(url);
+      }
       System.out.println(imageInfo.getCanonicaltitle());
       System.out.println(imageInfo.getUrl());
       String contents = sourceWiki
@@ -243,10 +254,9 @@ public class PushPages {
    * 
    * @param imageInfo
    * @return the file downloaded
-   * @throws IOException
-   * @throws MalformedURLException
+   * @throws Exception 
    */
-  public File download(Ii imageInfo) throws MalformedURLException, IOException {
+  public File download(Ii imageInfo) throws Exception {
     String url = imageInfo.getUrl();
     URL uri = new URL(url);
     URLConnection connection = uri.openConnection();
@@ -255,7 +265,8 @@ public class PushPages {
     InputStream in = connection.getInputStream();
     String suffix = FilenameUtils.getExtension(url);
     String prefix = FilenameUtils.getBaseName(url);
-    File tmpFile = File.createTempFile(prefix, suffix);
+    prefix=targetWiki.normalizeTitle(prefix).replace(".","");
+    File tmpFile = File.createTempFile("download-"+prefix, suffix);
     tmpFile.delete();
     Files.copy(in, Paths.get(tmpFile.toURI()));
     return tmpFile;
