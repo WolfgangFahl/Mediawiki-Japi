@@ -43,6 +43,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.kohsuke.args4j.Option;
 
 import com.bitplan.mediawiki.japi.api.Api;
@@ -244,9 +246,13 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         "org.apache.commons.httpclient",
         "org.apache.commons.httpclient.HttpClient",
         "org.apache.commons.httpclient.params.DefaultHttpParams" };
-    for (String clazz : clazzes)
-      org.apache.log4j.Logger.getLogger(clazz)
-          .setLevel(org.apache.log4j.Level.ERROR);
+
+    for (String clazz : clazzes) {
+      // https://stackoverflow.com/a/41717213/1497139
+      Logger logger = org.apache.logging.log4j.LogManager.getLogger(clazz);
+      Configurator.setLevel(logger.getName(),
+          org.apache.logging.log4j.Level.ERROR);
+    }
   }
 
   /**

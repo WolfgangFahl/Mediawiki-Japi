@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at:
+<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at: 
 	https://github.com/WolfgangFahl/Mediawiki-Japi -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -38,10 +38,11 @@
 			<version>${guice.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.27</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.13.1</version>
 		</dependency>
 		<!-- commons io -->
 		<dependency>
@@ -72,7 +73,7 @@
 			<artifactId>org.eclipse.persistence.moxy</artifactId>
 			<version>${moxy.version}</version>
 		</dependency>
-		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html
+		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html 
 			http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -131,7 +132,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
+			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven 
 				run with mvn clean compile assembly:single -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
