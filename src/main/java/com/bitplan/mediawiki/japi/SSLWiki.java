@@ -92,22 +92,7 @@ public class SSLWiki extends Mediawiki {
     }
   }
 
-  private String wikiid;
-
-  /**
-   * @return the wikiid
-   */
-  public String getWikiid() {
-    return wikiid;
-  }
-
-  /**
-   * @param wikiid
-   *          the wikiid to set
-   */
-  public void setWikiid(String wikiid) {
-    this.wikiid = wikiid;
-  }
+  private WikiUser wikiUser;
 
   /**
    * initialize this wiki
@@ -124,58 +109,44 @@ public class SSLWiki extends Mediawiki {
     HttpsURLConnection.setDefaultHostnameVerifier(hv);
   }
 
-  @Override
-  public void init(String siteurl, String scriptpath) throws Exception {
-    // make httpclient shut up see http://stackoverflow.com/a/15798443/1497139
-    org.apache.log4j.Logger.getLogger("org.apache.commons.httpclient")
-        .setLevel(org.apache.log4j.Level.ERROR);
-    org.apache.log4j.Logger.getLogger("httpclient.wire.header")
-        .setLevel(org.apache.log4j.Level.WARN);
-    org.apache.log4j.Logger.getLogger("httpclient.wire.content")
-        .setLevel(org.apache.log4j.Level.WARN);
-    java.util.logging.Logger.getLogger("org.apache.http.wire")
-        .setLevel(java.util.logging.Level.FINEST);
-    java.util.logging.Logger.getLogger("org.apache.http.headers")
-        .setLevel(java.util.logging.Level.FINEST);
-    super.init(siteurl, scriptpath);
-  }
-
   /**
-   * constructor
+   * construct me from the given wiki user
    * 
-   * @param url
+   * @param wikiUser
    * @throws Exception
    */
-  public SSLWiki(String url) throws Exception {
-    super(url);
+  public SSLWiki(WikiUser wikiUser) throws Exception {
+    Mediawiki.initLog4J();
+    this.wikiUser = wikiUser;
     init();
+    super.init(wikiUser.getUrl(), wikiUser.getScriptPath());
   }
 
   /**
-   * construct me from an url and scriptPath
+   * create an SSLWiki from the given wikiId and user
    * 
-   * @param url
-   * @param scriptPath
+   * @param wikiId
+   * @param user
+   * @return
    * @throws Exception
    */
-  public SSLWiki(String url, String scriptPath) throws Exception {
-    super(url, scriptPath);
-    init();
-  }
-
-  /**
-   * constructor with three params
-   * 
-   * @param url
-   * @param scriptPath
-   * @param wikiid
-   * @throws Exception
-   */
-  public SSLWiki(String url, String scriptPath, String wikiid)
+  public static SSLWiki ofIdAndUser(String wikiId, String user)
       throws Exception {
-    super(url, scriptPath);
-    this.wikiid = wikiid;
-    init();
+    WikiUser wikiUser = WikiUser.getUser(wikiId, user);
+    SSLWiki wiki = new SSLWiki(wikiUser);
+    return wiki;
+  }
+
+  /**
+   * create a wiki for the given wikiId
+   * 
+   * @param wikiId
+   * @return
+   * @throws Exception
+   */
+  public static SSLWiki ofId(String wikiId) throws Exception {
+    String user = System.getProperty("user.name");
+    return ofIdAndUser(wikiId, user);
   }
 
   /**
@@ -184,10 +155,10 @@ public class SSLWiki extends Mediawiki {
    * @throws Exception
    */
   public void login() throws Exception {
-    WikiUser wuser = WikiUser.getUser(getWikiid(), getSiteurl());
+    WikiUser wuser=wikiUser;
     if (wuser == null) {
       throw new Exception(
-          "user for " + getWikiid() + "(" + getSiteurl() + ") not configured");
+          "user for " + wikiUser.getWikiid() + "(" + getSiteurl() + ") not configured");
     }
     // wiki.setDebug(true);
     try {
@@ -196,7 +167,7 @@ public class SSLWiki extends Mediawiki {
           + login.getResult());
       if (!"Success".equals(login.getResult())) {
         throw new Exception("login for '" + wuser.getUsername() + "' at '"
-            + getWikiid() + "(" + this.getSiteurl() + this.getScriptPath()
+            + wikiUser.getWikiid() + "(" + this.getSiteurl() + this.getScriptPath()
             + ")' failed: " + login.getResult());
       }
     } catch (javax.net.ssl.SSLHandshakeException she) {

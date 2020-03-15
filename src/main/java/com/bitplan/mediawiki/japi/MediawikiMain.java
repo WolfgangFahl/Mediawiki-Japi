@@ -5,6 +5,8 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.StringArrayOptionHandler;
 
+import com.bitplan.mediawiki.japi.user.WikiUser;
+
 /**
  * command line interface to Mediawiki API
  * 
@@ -61,15 +63,24 @@ public class MediawikiMain extends Mediawiki {
   @Option(name = "-h", aliases = { "--help" }, usage = "help\nshow this usage")
   boolean showHelp = false;
 
-  @Option(name = "-l", aliases = {
+  @Option(name = "-i", aliases = {
       "--imageLimit" }, usage = "the maximum number of images per page to push")
   int imageLimit = 100;
+  
+  @Option(name = "-l", aliases = { "--login" }, usage = "login to source wiki for access permission")
+  boolean login= false;
 
   @Option(name = "-s", aliases = { "--source" }, usage = "the source wiki")
   String sourceWiki = null;
 
   @Option(name = "-t", aliases = { "--target" }, usage = "the target wiki")
   String targetWiki = null;
+  
+  @Option(name = "-u", aliases = { "--user" }, usage = "activates credential mode\nuse -u -h to see options\nsee http://mediawiki-japi.bitplan.com/index.php/CommandLine")
+  String username=null;
+  
+  @Option(name = "-c", aliases = { "--check" }, usage = "check mode - tries access without writing to target")
+  boolean check= false;
 
   @Option(name = "-p", aliases = {
       "--pages" }, handler = StringArrayOptionHandler.class, usage = "the pages to be transferred")
@@ -91,6 +102,16 @@ public class MediawikiMain extends Mediawiki {
   protected int maininstance(String[] args) {
     parser = new CmdLineParser(this);
     try {
+      boolean credentialMode=false;
+      for (String arg:args) {
+        if ("-u".equals(arg))
+          credentialMode=true;
+      }
+      // credential mode - call WikiUser
+      if (credentialMode) {
+        WikiUser wikiUser=new WikiUser();
+        return wikiUser.maininstance(args);
+      }
       parser.parseArgument(args);
       if (debug)
         showVersion();
@@ -100,8 +121,11 @@ public class MediawikiMain extends Mediawiki {
         showHelp();
       } else if (this.targetWiki != null && this.sourceWiki != null
           && this.pageTitles != null) {
+        PushPages.debug=debug;
         PushPages pp = new PushPages(this.sourceWiki, this.targetWiki,
-            imageLimit);
+            imageLimit,login);
+        pp.setCheck(check);
+        pp.setShowDebug(debug);
         pp.push(pageTitles);
       } else {
         showHelp();
@@ -123,6 +147,7 @@ public class MediawikiMain extends Mediawiki {
    */
   public static void main(String args[]) {
     MediawikiMain wiki;
+    Mediawiki.initLog4J();
     try {
       wiki = new MediawikiMain();
       int result = wiki.maininstance(args);

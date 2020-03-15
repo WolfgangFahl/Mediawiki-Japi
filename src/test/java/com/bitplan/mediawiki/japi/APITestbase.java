@@ -62,6 +62,7 @@ public class APITestbase {
 	 */
 	public APITestbase()  {
 		try {
+		  Mediawiki.initLog4J();
 		  ComBITPlanWikiModule module = new ComBITPlanWikiModule();
 		  // AbstractModule module=new OrgWikiModule();
 		  ewm=new ExampleWikiManager(module);
@@ -190,10 +191,10 @@ public class APITestbase {
     if (user.equals("travis")) {
       return false;
     }
-    File propFile = WikiUser.getPropertyFile(exampleWiki.wikiId);
+    File propFile = WikiUser.getPropertyFile(exampleWiki.wikiId,user);
     boolean result=propFile.exists();
     if (!result && showHelp) {
-      String help=WikiUser.help(exampleWiki.wikiId, exampleWiki.wikiId);
+      String help=WikiUser.help(exampleWiki.wikiId, user);
       System.err.println(help);
       showHelp=false;
     }

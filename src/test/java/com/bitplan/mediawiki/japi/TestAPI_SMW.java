@@ -31,6 +31,7 @@ import com.bitplan.mediawiki.japi.api.Api;
 import com.bitplan.mediawiki.japi.api.DataItem;
 import com.bitplan.mediawiki.japi.api.Property;
 import com.bitplan.mediawiki.japi.api.Query;
+import com.bitplan.mediawiki.japi.user.WikiUser;
 
 /**
  * test the API for Semantic Mediawiki 
@@ -42,7 +43,8 @@ public class TestAPI_SMW extends APITestbase {
     // semantic-mediawiki.org has a certificate that
     // is not in the chain understood by java
     SSLWiki.ignoreCertificates=true;
-    SSLWiki wiki = new SSLWiki("https://www.semantic-mediawiki.org","/w");
+    WikiUser wikiUser=new WikiUser("smw","https://www.semantic-mediawiki.org","/w");
+    SSLWiki wiki = new SSLWiki(wikiUser);
     String params="&subject=Demo:Amsterdam";
     Api api=wiki.getActionResult("browsebysubject", params,null,null,"json");
     assertNotNull("the API result should not be null",api);

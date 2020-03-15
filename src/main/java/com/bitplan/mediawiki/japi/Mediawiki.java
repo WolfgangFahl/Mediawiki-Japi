@@ -230,9 +230,23 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         true);
     client = ApacheHttpClient.create(config);
     client.setFollowRedirects(true);
-    // org.apache.log4j.Logger.getLogger("httpclient").setLevel(Level.ERROR);
     this.siteurl = siteurl;
     this.scriptPath = scriptpath;
+  }
+
+  /**
+   * initialize log4J
+   */
+  public static void initLog4J() {
+    // make httpclient shut up see http://stackoverflow.com/a/15798443/1497139
+    String clazzes[] = { "org.apache.http.wire", "org.apache.http.headers",
+        "httpclient.wire.content", "httpclient.wire.header",
+        "org.apache.commons.httpclient",
+        "org.apache.commons.httpclient.HttpClient",
+        "org.apache.commons.httpclient.params.DefaultHttpParams" };
+    for (String clazz : clazzes)
+      org.apache.log4j.Logger.getLogger(clazz)
+          .setLevel(org.apache.log4j.Level.ERROR);
   }
 
   /**

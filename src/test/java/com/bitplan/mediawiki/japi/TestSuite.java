@@ -37,6 +37,19 @@ import org.junit.runners.Suite;
     TestAPI_Upload.class,
     TestProtectionMarker.class, TestUsage.class, TestCommandLine.class,
     TestGetCSV.class,TestPageTitle.class, TestCreateAccount.class, org.wikipedia.WikiUnitTest.class })
+/**
+ * the testsuite - confige by adding classes to the above Suite
+ * @author wf
+ *
+ */
 public class TestSuite {
-
+  /**
+   * check if we are in the Travis-CI environment
+   * 
+   * @return true if Travis user was detected
+   */
+  public static boolean isTravis() {
+    String user = System.getProperty("user.name");
+    return user.equals("travis");
+  }
 }

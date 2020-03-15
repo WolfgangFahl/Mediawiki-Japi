@@ -8,11 +8,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Page;
 
 /**
  * transfer pages from one wiki to another
@@ -24,19 +26,26 @@ public class PushPages {
 
   public static final int DEFAULT_IMAGE_LIMIT = 100;
   private int imageLimit;
-  private Mediawiki sourceWiki;
-  private Mediawiki targetWiki;
-  public static boolean showDebug=true;
+  private SSLWiki sourceWiki;
+  private SSLWiki targetWiki;
+  private boolean check = false; // dry run mode
+  private boolean showDebug = false;
+  public static boolean debug=false;
 
-  /**
-   * construct me with the given parameters
-   * 
-   * @param sourceWikiId
-   * @param targetWikiId
-   * @throws Exception
-   */
-  public PushPages(String sourceWikiId, String targetWikiId) throws Exception {
-    init(sourceWikiId, targetWikiId, DEFAULT_IMAGE_LIMIT);
+  public boolean isCheck() {
+    return check;
+  }
+
+  public void setCheck(boolean check) {
+    this.check = check;
+  }
+
+  public boolean isShowDebug() {
+    return showDebug;
+  }
+
+  public void setShowDebug(boolean showDebug) {
+    this.showDebug = showDebug;
   }
 
   /**
@@ -44,12 +53,25 @@ public class PushPages {
    * 
    * @param sourceWikiId
    * @param targetWikiId
-   * @param imageLimit
+   * @param login 
    * @throws Exception
    */
-  public PushPages(String sourceWikiId, String targetWikiId, int imageLimit)
+  public PushPages(String sourceWikiId, String targetWikiId, boolean login) throws Exception {
+    init(sourceWikiId, targetWikiId, DEFAULT_IMAGE_LIMIT,login);
+  }
+
+  /**
+   * construct me with the given parameters
+   * 
+   * @param sourceWikiId
+   * @param targetWikiId
+   * @param imageLimit
+   * @param login
+   * @throws Exception
+   */
+  public PushPages(String sourceWikiId, String targetWikiId, int imageLimit, boolean login)
       throws Exception {
-    init(sourceWikiId, targetWikiId, imageLimit);
+    init(sourceWikiId, targetWikiId, imageLimit,login);
   }
 
   /**
@@ -57,9 +79,11 @@ public class PushPages {
    * 
    * @param sourceWiki
    * @param targetWiki
+   * @param login
+   * @throws Exception 
    */
-  public PushPages(Mediawiki sourceWiki, Mediawiki targetWiki) {
-    init(sourceWiki, targetWiki, DEFAULT_IMAGE_LIMIT);
+  public PushPages(SSLWiki sourceWiki, SSLWiki targetWiki,boolean login) throws Exception {
+    init(sourceWiki, targetWiki, DEFAULT_IMAGE_LIMIT,login);
   }
 
   /**
@@ -68,22 +92,26 @@ public class PushPages {
    * @param sourceWiki
    * @param targetWiki
    * @param imageLimit
+   * @param login
+   * @throws Exception 
    */
-  public PushPages(Mediawiki sourceWiki, Mediawiki targetWiki, int imageLimit) {
-    init(sourceWiki, targetWiki, imageLimit);
+  public PushPages(SSLWiki sourceWiki, SSLWiki targetWiki, int imageLimit, boolean login) throws Exception {
+    init(sourceWiki, targetWiki, imageLimit,login);
   }
 
   /**
-   * 
+   *  initialize me with the given parameters
+   * @param sourceWikiId
+   * @param targetWikiId
    * @param imageLimit
+   * @param login
    * @throws Exception
    */
-  public void init(String sourceWikiId, String targetWikiId, int imageLimit)
+  public void init(String sourceWikiId, String targetWikiId, int imageLimit, boolean login)
       throws Exception {
-    SSLWiki sourceWiki = new SSLWiki(sourceWikiId);
-    SSLWiki targetWiki = new SSLWiki(targetWikiId);
-    targetWiki.login();
-    this.init(sourceWiki, targetWiki, imageLimit);
+    SSLWiki sourceWiki = SSLWiki.ofId(sourceWikiId);
+    SSLWiki targetWiki = SSLWiki.ofId(targetWikiId);
+    this.init(sourceWiki, targetWiki, imageLimit,login);
   }
 
   /**
@@ -92,10 +120,17 @@ public class PushPages {
    * @param sourceWiki
    * @param targetWiki
    * @param imageLimit
+   * @param login
+   * @throws Exception 
    */
-  public void init(Mediawiki sourceWiki, Mediawiki targetWiki, int imageLimit) {
+  public void init(SSLWiki sourceWiki, SSLWiki targetWiki, int imageLimit, boolean login) throws Exception {
     this.sourceWiki = sourceWiki;
     this.targetWiki = targetWiki;
+    if (login)
+      sourceWiki.login();
+    targetWiki.login();
+    // this.sourceWiki.setDebug(debug);
+    // this.targetWiki.setDebug(debug);
     this.imageLimit = imageLimit;
   }
 
@@ -106,9 +141,21 @@ public class PushPages {
    * @throws Exception
    */
   public void push(String... pageTitles) throws Exception {
+    if (showDebug) {
+      List<Page> pages = sourceWiki.getPages(Arrays.asList(pageTitles));
+      for (Page page:pages) {
+        show4Debug(page);
+      }
+    }
     for (String pageTitle : pageTitles) {
       pushPage(pageTitle);
     }
+  }
+
+  public void show4Debug(Page page) {
+    String info=String.format("%s:%s",page.getTitle(), page.getPageid());
+    System.out.println(info);
+    
   }
 
   /**
@@ -128,9 +175,21 @@ public class PushPages {
    * @throws Exception
    */
   public void pushPage(String pageTitle) throws Exception {
-    String pageContent = sourceWiki.getPageContent(pageTitle);
-    targetWiki.edit(pageTitle, pageContent, getSummary());
+    String pageContent = this.getPageContent(pageTitle);
+    if (!check)
+      targetWiki.edit(pageTitle, pageContent, getSummary());
     pushImages(pageTitle);
+  }
+  
+  /**
+   * get the content of a page optionally showing the page in the browser
+   * @param pageTitle
+   * @return the pageContent
+   * @throws Exception
+   */
+  public String getPageContent(String pageTitle) throws Exception {
+    String pageContent=sourceWiki.getPageContent(pageTitle);
+    return pageContent;
   }
 
   /**
@@ -150,8 +209,9 @@ public class PushPages {
       File downloaded = this.download(imageInfo);
       if (showDebug)
         Desktop.getDesktop().open(downloaded);
-      targetWiki.upload(downloaded, imageInfo.getCanonicaltitle(), contents==null?"":contents,
-          imageInfo.getComment());
+      if (!check)
+        targetWiki.upload(downloaded, imageInfo.getCanonicaltitle(),
+            contents == null ? "" : contents, imageInfo.getComment());
     }
   }
 
