@@ -67,6 +67,8 @@ public class WikiUser {
   boolean test = false;
   @Option(name = "-a", aliases = { "--all" }, usage = "all available wikis")
   boolean all = false;
+  @Option(name = "-v", aliases = { "--version" }, usage = "version of the wiki")
+  String version=null;
 
   @Option(name = "-y", aliases = { "--store" }, usage = "store without asking")
   boolean yes = false;
@@ -162,6 +164,14 @@ public class WikiUser {
    */
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
   }
 
   public String getWikiid() {
@@ -295,6 +305,7 @@ public class WikiUser {
     setEmail(props.getProperty("email"));
     setUrl(props.getProperty("url"));
     setScriptPath(props.getProperty("scriptPath"));
+    setVersion(props.getProperty("version"));
   }
 
   /**
@@ -333,6 +344,8 @@ public class WikiUser {
         props.setProperty("scriptPath", scriptPath);
         props.setProperty("user", username);
         props.setProperty("email", email);
+        if (version!=null)
+          props.setProperty("version",version);
         props.setProperty("secret", lCrypt.encrypt(password));
         FileOutputStream propsStream = new FileOutputStream(propFile);
         props.store(propsStream, "Mediawiki JAPI credentials for " + wikiid);

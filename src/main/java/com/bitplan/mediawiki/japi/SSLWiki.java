@@ -120,6 +120,7 @@ public class SSLWiki extends Mediawiki {
     this.wikiUser = wikiUser;
     init();
     super.init(wikiUser.getUrl(), wikiUser.getScriptPath());
+    super.setVersion(wikiUser.getVersion());
   }
 
   /**
