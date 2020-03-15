@@ -16,7 +16,7 @@ import com.bitplan.mediawiki.japi.user.WikiUser;
 public class MediawikiMain extends Mediawiki {
 
   /**
-   * default contructor
+   * default constructor
    * 
    * @throws Exception
    */
@@ -54,7 +54,7 @@ public class MediawikiMain extends Mediawiki {
    */
   public void showHelp() {
     String msg = "Help\n" + "Mediawiki-Japi version " + VERSION
-        + "Please visit http://mediawiki-japi.bitplan.com for usage instructions";
+        + "\nPlease visit http://mediawiki-japi.bitplan.com for usage instructions";
     usage(msg);
   }
 
@@ -81,6 +81,9 @@ public class MediawikiMain extends Mediawiki {
   
   @Option(name = "-c", aliases = { "--check" }, usage = "check mode - tries access without writing to target")
   boolean check= false;
+  
+  @Option(name = "--cookie", usage="use given cookie for download")
+  String cookie=null;
 
   @Option(name = "-p", aliases = {
       "--pages" }, handler = StringArrayOptionHandler.class, usage = "the pages to be transferred")
@@ -125,6 +128,7 @@ public class MediawikiMain extends Mediawiki {
         PushPages pp = new PushPages(this.sourceWiki, this.targetWiki,
             imageLimit,login);
         pp.setCheck(check);
+        pp.setCookie(cookie);
         pp.setShowDebug(debug);
         pp.push(pageTitles);
       } else {

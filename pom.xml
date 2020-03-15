@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at: 
+<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at:
 	https://github.com/WolfgangFahl/Mediawiki-Japi -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -23,12 +23,13 @@
 		<!-- for README.md generation -->
 		<documentation.wiki>http://mediawiki-japi.bitplan.com/index.php/Main_Page</documentation.wiki>
 		<!-- versions of other libraries to be used -->
-		<jersey.version>1.19.3</jersey.version>
+		<jersey.version>1.19.4</jersey.version>
 		<guice.version>3.0</guice.version>
 		<mockito.version>1.10.16</mockito.version>
 		<moxy.version>2.6.5</moxy.version>
 		<!-- <moxy.version>2.5.2</moxy.version> -->
 		<dependency.locations.enabled>false</dependency.locations.enabled>
+		<assemblyMainClass>com.bitplan.mediawiki.japi.MediawikiMain</assemblyMainClass>
 	</properties>
 	<dependencies>
 		<!-- Google Guice dependency injection -->
@@ -73,7 +74,7 @@
 			<artifactId>org.eclipse.persistence.moxy</artifactId>
 			<version>${moxy.version}</version>
 		</dependency>
-		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html 
+		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html
 			http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -116,38 +117,4 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<!-- jar creation -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>${maven-jar-plugin.version}</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.bitplan.mediawiki.japi.Mediawiki</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<!-- executable jar with dependencies see http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven 
-				run with mvn clean compile assembly:single -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${maven-assembly-plugin.version}</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.bitplan.mediawiki.japi.MediawikiMain</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

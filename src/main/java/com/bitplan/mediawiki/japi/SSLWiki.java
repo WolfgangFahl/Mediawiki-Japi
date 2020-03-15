@@ -154,7 +154,7 @@ public class SSLWiki extends Mediawiki {
    * 
    * @throws Exception
    */
-  public void login() throws Exception {
+  public Login login() throws Exception {
     WikiUser wuser=wikiUser;
     if (wuser == null) {
       throw new Exception(
@@ -170,6 +170,7 @@ public class SSLWiki extends Mediawiki {
             + wikiUser.getWikiid() + "(" + this.getSiteurl() + this.getScriptPath()
             + ")' failed: " + login.getResult());
       }
+      return login;
     } catch (javax.net.ssl.SSLHandshakeException she) {
       String msg = "login via SSL  to " + this.getSiteurl() + " failed\n";
       msg += "Exception: " + she.getMessage();

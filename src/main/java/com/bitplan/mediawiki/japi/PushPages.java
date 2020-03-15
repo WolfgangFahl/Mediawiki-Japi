@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import com.bitplan.mediawiki.japi.api.Ii;
+import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.api.Page;
 
 /**
@@ -28,9 +30,10 @@ public class PushPages {
   private int imageLimit;
   private SSLWiki sourceWiki;
   private SSLWiki targetWiki;
+  private String cookie;
   private boolean check = false; // dry run mode
   private boolean showDebug = false;
-  public static boolean debug=false;
+  public static boolean debug = false;
 
   public boolean isCheck() {
     return check;
@@ -38,6 +41,14 @@ public class PushPages {
 
   public void setCheck(boolean check) {
     this.check = check;
+  }
+
+  public String getCookie() {
+    return cookie;
+  }
+
+  public void setCookie(String cookie) {
+    this.cookie = cookie;
   }
 
   public boolean isShowDebug() {
@@ -53,11 +64,12 @@ public class PushPages {
    * 
    * @param sourceWikiId
    * @param targetWikiId
-   * @param login 
+   * @param login
    * @throws Exception
    */
-  public PushPages(String sourceWikiId, String targetWikiId, boolean login) throws Exception {
-    init(sourceWikiId, targetWikiId, DEFAULT_IMAGE_LIMIT,login);
+  public PushPages(String sourceWikiId, String targetWikiId, boolean login)
+      throws Exception {
+    init(sourceWikiId, targetWikiId, DEFAULT_IMAGE_LIMIT, login);
   }
 
   /**
@@ -69,9 +81,9 @@ public class PushPages {
    * @param login
    * @throws Exception
    */
-  public PushPages(String sourceWikiId, String targetWikiId, int imageLimit, boolean login)
-      throws Exception {
-    init(sourceWikiId, targetWikiId, imageLimit,login);
+  public PushPages(String sourceWikiId, String targetWikiId, int imageLimit,
+      boolean login) throws Exception {
+    init(sourceWikiId, targetWikiId, imageLimit, login);
   }
 
   /**
@@ -80,10 +92,11 @@ public class PushPages {
    * @param sourceWiki
    * @param targetWiki
    * @param login
-   * @throws Exception 
+   * @throws Exception
    */
-  public PushPages(SSLWiki sourceWiki, SSLWiki targetWiki,boolean login) throws Exception {
-    init(sourceWiki, targetWiki, DEFAULT_IMAGE_LIMIT,login);
+  public PushPages(SSLWiki sourceWiki, SSLWiki targetWiki, boolean login)
+      throws Exception {
+    init(sourceWiki, targetWiki, DEFAULT_IMAGE_LIMIT, login);
   }
 
   /**
@@ -93,25 +106,27 @@ public class PushPages {
    * @param targetWiki
    * @param imageLimit
    * @param login
-   * @throws Exception 
+   * @throws Exception
    */
-  public PushPages(SSLWiki sourceWiki, SSLWiki targetWiki, int imageLimit, boolean login) throws Exception {
-    init(sourceWiki, targetWiki, imageLimit,login);
+  public PushPages(SSLWiki sourceWiki, SSLWiki targetWiki, int imageLimit,
+      boolean login) throws Exception {
+    init(sourceWiki, targetWiki, imageLimit, login);
   }
 
   /**
-   *  initialize me with the given parameters
+   * initialize me with the given parameters
+   * 
    * @param sourceWikiId
    * @param targetWikiId
    * @param imageLimit
    * @param login
    * @throws Exception
    */
-  public void init(String sourceWikiId, String targetWikiId, int imageLimit, boolean login)
-      throws Exception {
+  public void init(String sourceWikiId, String targetWikiId, int imageLimit,
+      boolean login) throws Exception {
     SSLWiki sourceWiki = SSLWiki.ofId(sourceWikiId);
     SSLWiki targetWiki = SSLWiki.ofId(targetWikiId);
-    this.init(sourceWiki, targetWiki, imageLimit,login);
+    this.init(sourceWiki, targetWiki, imageLimit, login);
   }
 
   /**
@@ -121,13 +136,17 @@ public class PushPages {
    * @param targetWiki
    * @param imageLimit
    * @param login
-   * @throws Exception 
+   * @throws Exception
    */
-  public void init(SSLWiki sourceWiki, SSLWiki targetWiki, int imageLimit, boolean login) throws Exception {
+  public void init(SSLWiki sourceWiki, SSLWiki targetWiki, int imageLimit,
+      boolean sourceLogin) throws Exception {
     this.sourceWiki = sourceWiki;
     this.targetWiki = targetWiki;
-    if (login)
-      sourceWiki.login();
+    if (sourceLogin) {
+      Login login=sourceWiki.login();
+      if (login.getCookieprefix()!=null)
+         setCookie(login.getCookieprefix());
+    }
     targetWiki.login();
     // this.sourceWiki.setDebug(debug);
     // this.targetWiki.setDebug(debug);
@@ -143,7 +162,7 @@ public class PushPages {
   public void push(String... pageTitles) throws Exception {
     if (showDebug) {
       List<Page> pages = sourceWiki.getPages(Arrays.asList(pageTitles));
-      for (Page page:pages) {
+      for (Page page : pages) {
         show4Debug(page);
       }
     }
@@ -153,9 +172,9 @@ public class PushPages {
   }
 
   public void show4Debug(Page page) {
-    String info=String.format("%s:%s",page.getTitle(), page.getPageid());
+    String info = String.format("%s:%s", page.getTitle(), page.getPageid());
     System.out.println(info);
-    
+
   }
 
   /**
@@ -180,15 +199,16 @@ public class PushPages {
       targetWiki.edit(pageTitle, pageContent, getSummary());
     pushImages(pageTitle);
   }
-  
+
   /**
    * get the content of a page optionally showing the page in the browser
+   * 
    * @param pageTitle
    * @return the pageContent
    * @throws Exception
    */
   public String getPageContent(String pageTitle) throws Exception {
-    String pageContent=sourceWiki.getPageContent(pageTitle);
+    String pageContent = sourceWiki.getPageContent(pageTitle);
     return pageContent;
   }
 
@@ -209,9 +229,12 @@ public class PushPages {
       File downloaded = this.download(imageInfo);
       if (showDebug)
         Desktop.getDesktop().open(downloaded);
-      if (!check)
-        targetWiki.upload(downloaded, imageInfo.getCanonicaltitle(),
+      if (!check) {
+        String imageTitle=imageInfo.getCanonicaltitle();
+        imageTitle=imageTitle.replaceAll("(Datei|File):","");
+        targetWiki.upload(downloaded, imageTitle,
             contents == null ? "" : contents, imageInfo.getComment());
+      }
     }
   }
 
@@ -225,7 +248,11 @@ public class PushPages {
    */
   public File download(Ii imageInfo) throws MalformedURLException, IOException {
     String url = imageInfo.getUrl();
-    InputStream in = new URL(url).openStream();
+    URL uri = new URL(url);
+    URLConnection connection = uri.openConnection();
+    if (cookie != null)
+      connection.addRequestProperty("Cookie", cookie);
+    InputStream in = connection.getInputStream();
     String suffix = FilenameUtils.getExtension(url);
     String prefix = FilenameUtils.getBaseName(url);
     File tmpFile = File.createTempFile(prefix, suffix);

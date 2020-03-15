@@ -1,5 +1,5 @@
 #!/bin/bash
 # WF 2020-03-14
 version=0.1.05
-jar=target/mediawiki-japi-${version}-jar-with-dependencies.jar
+jar=release/BITPlan-Mediawiki-Japi.jar
 java -jar $jar $@

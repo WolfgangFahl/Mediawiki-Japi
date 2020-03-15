@@ -35,8 +35,6 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
-import com.bitplan.mediawiki.japi.Mediawiki;
-
 /**
  * Wiki User information
  * 
@@ -394,6 +392,15 @@ public class WikiUser {
     }
     return !problem;
   }
+  
+  private void showHelp() {
+    String usageMsg = String.format("  usage: java %s\nPlease visit http://mediawiki-japi.bitplan.com for usage instructions\n",
+        this.getClass().getName());
+    
+    System.err.println(usageMsg);
+    parser.printUsage(System.err);
+    
+  }
 
   /**
    * main function as instance function
@@ -407,7 +414,7 @@ public class WikiUser {
       parser = new CmdLineParser(this);
       parser.parseArgument(args);
       if (this.showHelp) {
-        parser.printUsage(System.err);
+        this.showHelp();
       } else if (this.test) {
         if (this.all) {
           File propertyDir = getPropertyDir();
@@ -422,6 +429,8 @@ public class WikiUser {
             returnCode++;
           }
         }
+        String msg=String.format("There are %3d problems",returnCode);
+        System.err.println(msg);
       } else {
         createIniFile();
       }
