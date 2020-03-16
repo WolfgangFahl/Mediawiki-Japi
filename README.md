@@ -3,6 +3,7 @@
 
 [![Join the chat at https://gitter.im/Mediawiki-Japi/community](https://badges.gitter.im/Mediawiki-Japi/community.svg)](https://gitter.im/Mediawiki-Japi/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
+[![codecov](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi/branch/master/graph/badge.svg)](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi)
 [![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.1.05/jar)
 [![GitHub issues](https://img.shields.io/github/issues/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues)
 [![GitHub issues](https://img.shields.io/github/issues-closed/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues/?q=is%3Aissue+is%3Aclosed)
