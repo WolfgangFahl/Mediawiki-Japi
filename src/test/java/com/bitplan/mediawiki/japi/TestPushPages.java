@@ -32,7 +32,8 @@ public class TestPushPages extends APITestbase {
     PushPages pp = this.getTestPushPages();
     if (pp != null) {
       pp.setCheck(true);
-      pp.setShowDebug(true);
+      // uncomment to see images in desktop environment
+      // pp.setShowDebug(true);
       pp.push(pageTitles);
     }
   }
