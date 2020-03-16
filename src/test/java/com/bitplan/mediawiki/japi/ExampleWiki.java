@@ -133,7 +133,7 @@ public class ExampleWiki  {
 	 */
 	public WikiUser getWikiUser() {
 		if (wikiuser == null) {
-			wikiuser = WikiUser.getUser(wikiId, wiki.getSiteurl());
+			wikiuser = WikiUser.getUser(wikiId);
 			if (wiki.isDebug()) {
 				LOGGER.log(Level.INFO, "user=" + wikiuser.getUsername());
 			}
