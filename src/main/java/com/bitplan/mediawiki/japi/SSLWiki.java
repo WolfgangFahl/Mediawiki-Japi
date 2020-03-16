@@ -159,7 +159,7 @@ public class SSLWiki extends Mediawiki {
     WikiUser wuser=wikiUser;
     if (wuser == null) {
       throw new Exception(
-          "user for " + wikiUser.getWikiid() + "(" + getSiteurl() + ") not configured");
+          "user for " + wikiUser.getWikiId() + "(" + getSiteurl() + ") not configured");
     }
     // wiki.setDebug(true);
     try {
@@ -168,7 +168,7 @@ public class SSLWiki extends Mediawiki {
           + login.getResult());
       if (!"Success".equals(login.getResult())) {
         throw new Exception("login for '" + wuser.getUsername() + "' at '"
-            + wikiUser.getWikiid() + "(" + this.getSiteurl() + this.getScriptPath()
+            + wikiUser.getWikiId() + "(" + this.getSiteurl() + this.getScriptPath()
             + ")' failed: " + login.getResult());
       }
       return login;

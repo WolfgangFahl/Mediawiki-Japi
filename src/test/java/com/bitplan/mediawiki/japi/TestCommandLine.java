@@ -49,7 +49,7 @@ public class TestCommandLine {
 	public void callMediawiki(String args[], int expectedExit) {
 		MediawikiMain.testMode = true;
 		MediawikiMain.main(args);
-		assertEquals(expectedExit, Mediawiki.exitCode);
+		assertEquals(expectedExit, MediawikiMain.exitCode);
 	}
 
 	static class GrabSyserr {

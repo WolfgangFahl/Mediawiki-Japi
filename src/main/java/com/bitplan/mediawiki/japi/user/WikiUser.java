@@ -28,6 +28,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -62,13 +64,13 @@ public class WikiUser {
   @Option(name = "-e", aliases = { "--email" }, usage = "email")
   String email;
   @Option(name = "-w", aliases = { "--wikiId" }, usage = "wiki id")
-  String wikiid;
+  String wikiId;
   @Option(name = "-t", aliases = { "--test" }, usage = "test")
   boolean test = false;
   @Option(name = "-a", aliases = { "--all" }, usage = "all available wikis")
   boolean all = false;
   @Option(name = "-v", aliases = { "--version" }, usage = "version of the wiki")
-  String version=null;
+  String version = null;
 
   @Option(name = "-y", aliases = { "--store" }, usage = "store without asking")
   boolean yes = false;
@@ -77,18 +79,22 @@ public class WikiUser {
 
   /**
    * construct me from the given parameters
+   * 
    * @param wikiId
    * @param url
    * @param scriptPath
    */
   public WikiUser(String wikiId, String url, String scriptPath) {
-    this.wikiid=wikiId;
-    this.url=url;
-    this.scriptPath=scriptPath;
+    this.wikiId = wikiId;
+    this.url = url;
+    this.scriptPath = scriptPath;
   }
 
+  /**
+   * default constructor
+   */
   public WikiUser() {
-    // TODO Auto-generated constructor stub
+
   }
 
   /**
@@ -174,12 +180,12 @@ public class WikiUser {
     this.version = version;
   }
 
-  public String getWikiid() {
-    return wikiid;
+  public String getWikiId() {
+    return wikiId;
   }
 
-  public void setWikiid(String wikiid) {
-    this.wikiid = wikiid;
+  public void setWikiId(String wikiId) {
+    this.wikiId = wikiId;
   }
 
   /**
@@ -211,6 +217,21 @@ public class WikiUser {
     if (!propertydir.exists())
       propertydir.mkdirs();
     return propertydir;
+  }
+  
+  /**
+   * get all property files
+   * @return all property files
+   */
+  public static List<File> getPropertyFiles() {
+    List<File> files=new ArrayList<File>();
+    File propertyDir = getPropertyDir();
+    for (String propertyFileName : propertyDir.list()) {
+      if (!propertyFileName.endsWith(".ini"))
+        continue;
+      files.add(new File(propertyDir, propertyFileName));
+    }
+    return files;
   }
 
   /**
@@ -259,12 +280,17 @@ public class WikiUser {
 
   /**
    * get the Wiki User
+   * 
    * @param wikiId
    * @return the wiki user
    */
   public static WikiUser getUser(String wikiId) {
-    String user = System.getProperty("user.name");
+    String user = getSystemUserName();
     return getUser(wikiId, user);
+  }
+  
+  public static String getSystemUserName() {
+    return System.getProperty("user.name");
   }
 
   /**
@@ -279,11 +305,7 @@ public class WikiUser {
     try {
       Properties props = getProperties(wikiId, user);
       result = new WikiUser();
-      result.wikiid=wikiId;
       result.initFromProperties(props);
-      Crypt pcf = new Crypt(props.getProperty("cypher"),
-          props.getProperty("salt"));
-      result.setPassword(pcf.decrypt(props.getProperty("secret")));
     } catch (FileNotFoundException e) {
       String msg = help(wikiId, user);
       LOGGER.log(Level.SEVERE, msg);
@@ -299,13 +321,19 @@ public class WikiUser {
    * initialize me from the given properties
    * 
    * @param props
+   * @throws IOException 
+   * @throws GeneralSecurityException 
    */
-  public void initFromProperties(Properties props) {
+  public void initFromProperties(Properties props) throws GeneralSecurityException, IOException {
+    setWikiId(props.getProperty("wikiId"));
     setUsername(props.getProperty("user"));
     setEmail(props.getProperty("email"));
     setUrl(props.getProperty("url"));
     setScriptPath(props.getProperty("scriptPath"));
     setVersion(props.getProperty("version"));
+    Crypt pcf = new Crypt(props.getProperty("cypher"),
+        props.getProperty("salt"));
+    setPassword(pcf.decrypt(props.getProperty("secret")));
   }
 
   /**
@@ -315,19 +343,19 @@ public class WikiUser {
     try {
       // open up standard input
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      if (wikiid == null)
-        wikiid = getInput("wiki id", br);
-      if (url==null)
-        url=getInput("url",br);
-      if (scriptPath==null)
-        scriptPath=getInput("scriptPath",br);
+      if (wikiId == null)
+        wikiId = getInput("wiki id", br);
+      if (url == null)
+        url = getInput("url", br);
+      if (scriptPath == null)
+        scriptPath = getInput("scriptPath", br);
       if (username == null)
         username = getInput("username", br);
-      if (password == null)
-        password = getInput("password", br);
       if (email == null)
         email = getInput("email", br);
-      File propFile = getPropertyFile(wikiid, username);
+      if (password == null)
+        password = getInput("password", br);
+      File propFile = getPropertyFile(wikiId, getSystemUserName());
       if (!yes) {
         String remember = getInput("shall i store " + username
             + "'s credentials encrypted in " + propFile.getName() + " y/n?",
@@ -337,21 +365,22 @@ public class WikiUser {
       if (yes) {
         Crypt lCrypt = Crypt.getRandomCrypt();
         Properties props = new Properties();
-        props.setProperty("wikiId",wikiid);
+        props.setProperty("wikiId", wikiId);
         props.setProperty("cypher", lCrypt.getCypher());
         props.setProperty("salt", lCrypt.getSalt());
-        props.setProperty("url",url);
+        props.setProperty("url", url);
         props.setProperty("scriptPath", scriptPath);
         props.setProperty("user", username);
         props.setProperty("email", email);
-        if (version!=null)
-          props.setProperty("version",version);
+        if (version != null)
+          props.setProperty("version", version);
         props.setProperty("secret", lCrypt.encrypt(password));
         FileOutputStream propsStream = new FileOutputStream(propFile);
-        props.store(propsStream, "Mediawiki JAPI credentials for " + wikiid);
+        props.store(propsStream, "Mediawiki JAPI credentials for " + wikiId);
         propsStream.close();
-        System.out.println("created/updated properties in "+propFile.getPath());
-        
+        System.out
+            .println("created/updated properties in " + propFile.getPath());
+
       }
     } catch (IOException e1) {
       LOGGER.log(Level.SEVERE, e1.getMessage());
@@ -387,13 +416,16 @@ public class WikiUser {
    * @throws Exception
    */
   public boolean testPropertyFile(File propFile) {
-    boolean problem=true;
+    boolean problem = true;
     try {
       Properties props = getProperties(propFile);
       this.initFromProperties(props);
       problem = url == null || scriptPath == null;
-      String info = String.format("%s:\n\turl=%s\n\tscriptPath=%s\n\tuser=%s\n\te-mail=%s",
-          propFile.getName(),url == null ? "?" : url,scriptPath==null?"?":scriptPath, username, email);
+      String info = String.format(
+          "%s %s:\n\turl=%s\n\tscriptPath=%s\n\tuser=%s\n\te-mail=%s",
+          propFile.getName(), 
+          problem?"❌":"✅",url == null ? "?" : url,
+          scriptPath == null ? "?" : scriptPath, username, email);
       if (problem)
         System.err.println(info);
       else
@@ -405,14 +437,18 @@ public class WikiUser {
     }
     return !problem;
   }
-  
-  private void showHelp() {
-    String usageMsg = String.format("  usage: java %s\nPlease visit http://mediawiki-japi.bitplan.com for usage instructions\n",
+
+  /**
+   * show the help
+   */
+  public void showHelp() {
+    String usageMsg = String.format(
+        "  usage: java %s\nPlease visit http://mediawiki-japi.bitplan.com for usage instructions\n",
         this.getClass().getName());
-    
+
     System.err.println(usageMsg);
     parser.printUsage(System.err);
-    
+
   }
 
   /**
@@ -422,7 +458,7 @@ public class WikiUser {
    * @return - the return code
    */
   public int maininstance(String[] args) {
-    int returnCode=0;
+    int returnCode = 0;
     try {
       parser = new CmdLineParser(this);
       parser.parseArgument(args);
@@ -430,19 +466,19 @@ public class WikiUser {
         this.showHelp();
       } else if (this.test) {
         if (this.all) {
-          File propertyDir = getPropertyDir();
-          for (String propertyFileName : propertyDir.list()) {
-            if (!this.testPropertyFile(new File(propertyDir, propertyFileName))) {
+          for (File propertyFile:getPropertyFiles()) {
+            if (!this
+                .testPropertyFile(propertyFile)) {
               returnCode++;
             }
           }
         } else {
-          File propFile = getPropertyFile(wikiid, username);
+          File propFile = getPropertyFile(wikiId, username);
           if (!this.testPropertyFile(propFile)) {
             returnCode++;
           }
         }
-        String msg=String.format("There are %3d problems",returnCode);
+        String msg = String.format("There are %3d problems", returnCode);
         System.err.println(msg);
       } else {
         createIniFile();

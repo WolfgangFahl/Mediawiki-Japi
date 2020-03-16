@@ -127,7 +127,6 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   // Json unmarshaller
   private Gson gson;
 
-  static int exitCode;
   /**
    * set to true for debugging
    */

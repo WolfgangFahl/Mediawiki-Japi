@@ -2,4 +2,4 @@
 # WF 2020-03-14
 version=0.1.05
 jar=release/BITPlan-Mediawiki-Japi.jar
-java -jar $jar $@
+java -jar $jar "$@"
