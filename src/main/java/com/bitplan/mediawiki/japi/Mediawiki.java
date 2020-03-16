@@ -77,6 +77,7 @@ import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.file.StreamDataBodyPart;
+import com.sun.jersey.multipart.impl.MultiPartWriter;
 
 /**
  * access to Mediawiki api
@@ -226,11 +227,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   @Override
   public void init(String siteurl, String scriptpath) throws Exception {
-    ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
-    config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES,
-        true);
-    client = ApacheHttpClient.create(config);
-    client.setFollowRedirects(true);
+    client=getClient();
     this.siteurl = siteurl;
     this.scriptPath = scriptpath;
   }
@@ -268,13 +265,27 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   }
 
   /**
+   * get an ApacheHttpClient
+   * @return - the client with a fix for the MultiPartWriter issue
+   */
+  public static ApacheHttpClient getClient() {
+    ApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
+    config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES,
+        true);
+    // https://stackoverflow.com/a/23769757/1497139
+    config.getClasses().add(MultiPartWriter.class);
+    ApacheHttpClient lClient = ApacheHttpClient.create(config);
+    lClient.setFollowRedirects(true);
+    return lClient;
+  }
+  /**
    * get a String from a given URL
    * 
    * @param urlString
    * @return
    */
   public static String getStringFromUrl(String urlString) {
-    ApacheHttpClient lclient = ApacheHttpClient.create();
+    ApacheHttpClient lclient = getClient();
     WebResource webResource = lclient.resource(urlString);
     ClientResponse response = webResource.get(ClientResponse.class);
 
