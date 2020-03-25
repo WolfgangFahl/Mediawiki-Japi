@@ -34,6 +34,7 @@ import org.junit.runners.Suite;
     TestAPI_Meta.class, TestAPI_Recentchanges.class, TestAPI_Login.class,
     TestAPI_Edit.class, TestAPI_Parse.class, TestAPI_Allpages.class,
     TestAPI_SMW.class,
+    TestCrypt.class,
     TestAPI_Upload.class,
     TestProtectionMarker.class, TestUsage.class, TestCommandLine.class,
     TestGetCSV.class,TestPageTitle.class, TestCreateAccount.class, org.wikipedia.WikiUnitTest.class })
