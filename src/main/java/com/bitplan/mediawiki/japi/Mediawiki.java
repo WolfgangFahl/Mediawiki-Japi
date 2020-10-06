@@ -90,7 +90,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.1.05";
+  protected static final String VERSION = "0.1.06";
 
   /**
    * if true main can be called without calling system.exit() when finished
@@ -622,6 +622,16 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
               + mwversion
               + " you might want to set the Version actively if you are on a different version and have the api blocked for non-logged in users");
     }
+    boolean result=this.checkVersion128(mwversion);
+    return result;
+  }
+   
+  /**
+   * check the mediawiki version to be higher than 1.28
+   * @param mwversion
+   * @return true if version is above 128
+   */
+  public boolean checkVersion128(String mwversion) {
     boolean result = mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0;
     return result;
   }
