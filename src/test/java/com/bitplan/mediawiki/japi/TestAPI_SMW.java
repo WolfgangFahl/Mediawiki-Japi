@@ -22,6 +22,7 @@ package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class TestAPI_SMW extends APITestbase {
     assertEquals("SMW\\Serializers\\SemanticDataSerializer",query.getSerializer());
     assertEquals("2",query.getVersion());
     List<Property> data = query.getData();
-    assertEquals(19,data.size());
+    assertTrue(data.size()>=19);
     for (Property prop:data) {
       assertNotNull(prop.getDataitem());
       for (DataItem item:prop.getDataitem()) {
