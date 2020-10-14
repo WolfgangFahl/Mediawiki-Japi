@@ -427,7 +427,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
       LOGGER.log(Level.INFO, "status: " + response.getStatus());
     String responseText = response.getEntity(String.class);
     if (response.getStatus() != 200) {
-      handleError("status " + response.getStatus() + ":'" + responseText + "'");
+      String msg="status " + response.getStatus() + ":'" + responseText + "'";
+      handleError(msg);
+      responseText=msg+responseText;
     }
     return responseText;
   }
