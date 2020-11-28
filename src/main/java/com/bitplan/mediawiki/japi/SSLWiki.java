@@ -34,7 +34,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
-import com.bitplan.mediawiki.japi.Mediawiki;
 import com.bitplan.mediawiki.japi.api.Login;
 import com.bitplan.mediawiki.japi.user.WikiUser;
 
