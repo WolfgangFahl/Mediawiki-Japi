@@ -78,5 +78,15 @@ public class TestIssues {
 	    index++;
 	  }
 	}
+	
+	/**
+	 * see <a href='https://github.com/WolfgangFahl/Mediawiki-Japi/issues/50'>Spaces in pageTitles for CommandLine #50</a>
+	 */
+	
+	@Test
+	public void testIssue50() {
+	  
+	}
+	
 
 }

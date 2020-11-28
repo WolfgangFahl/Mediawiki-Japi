@@ -16,7 +16,7 @@ public class TestPushPages extends APITestbase {
    * @return the PushPages to be tested
    * @throws Exception
    */
-  public PushPages getTestPushPages() throws Exception {
+  public static PushPages getTestPushPages() throws Exception {
     PushPages pp = null;
     String sourceWikiId = "wikipedia_org_test2";
     String targetWikiId = "mediawiki-japi-test1_31";
@@ -29,7 +29,7 @@ public class TestPushPages extends APITestbase {
   @Test
   public void testPushPagesCheck() throws Exception {
     String[] pageTitles = { "PictureTestPage" };
-    PushPages pp = this.getTestPushPages();
+    PushPages pp = getTestPushPages();
     if (pp != null) {
       pp.setCheck(true);
       // uncomment to see images in desktop environment
@@ -41,7 +41,7 @@ public class TestPushPages extends APITestbase {
   @Test
   public void testPushPages() throws Exception {
     String[] pageTitles = { "PictureTestPage" };
-    PushPages pp = this.getTestPushPages();
+    PushPages pp = getTestPushPages();
     if (pp != null)
       pp.push(pageTitles);
   }
