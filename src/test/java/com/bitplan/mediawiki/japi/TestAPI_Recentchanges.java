@@ -108,7 +108,7 @@ public class TestAPI_Recentchanges extends APITestbase {
   @Test
   public void testGetMostRecentChanges() throws Exception {
     // debug=true;
-    ExampleWiki lewiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lewiki = ewm.get("mw31test");
     if (hasWikiUser(lewiki)) {
       lewiki.login();
       Mediawiki lwiki = lewiki.getMediaWikiJapi();
