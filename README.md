@@ -2,7 +2,7 @@
 [Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page](http://mediawiki-japi.bitplan.com/index.php/Main_Page)
 
 [![Join the chat at https://gitter.im/Mediawiki-Japi/community](https://badges.gitter.im/Mediawiki-Japi/community.svg)](https://gitter.im/Mediawiki-Japi/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
+[![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.com/github/WolfgangFahl/Mediawiki-Japi)
 [![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.1.05/jar)
 [![codecov](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi/branch/master/graph/badge.svg)](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi)
 [![GitHub issues](https://img.shields.io/github/issues/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues)
@@ -37,7 +37,7 @@ mvn install
 ```
 ### Status
 - Implemented Features are limited to what the test cases of the current version check
-- tests run against current wikipedia installations as well as 1.23.17,1.25.6,1.27.3 and 1.29.1 test wikis 
+- tests run against current wikipedia installations as well as 1.23.17,1.25.6,1.27.3 and 1.29.1 test wikis
 
 ## Examples
 See also [Examples](http://mediawiki-japi.bitplan.com/index.php/Examples) on the Mediawiki-Japi Wiki
@@ -55,7 +55,7 @@ http://www.mediawiki.org/wiki/API:Query#Sample_query
   /**
    * http://www.mediawiki.org/wiki/API:Query#Sample_query
    * http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&titles=Main%20Page&format=xml
-   * @throws Exception 
+   * @throws Exception
    */
 	@Test
 	public void testSampleQuery() throws Exception {
@@ -76,7 +76,7 @@ wiki.logout();
 #### junit test
 ```java
   /**
-	 * test Login and logout 
+	 * test Login and logout
 	 * see <a href='http://www.mediawiki.org/wiki/API:Login'>API:Login</a>
 	 * @throws Exception
 	 */
