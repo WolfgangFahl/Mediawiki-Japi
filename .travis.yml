@@ -3,12 +3,19 @@
 language: java
 # make sure things keep working see http://wiki.bitplan.com/index.php/Java8
 jdk: openjdk8
+before_install:
+- sudo apt-get update
+- sudo apt-get install python3
+- sudo apt-get install python3-pip
+- pip3 install pymediawiki-docker
+- mwcluster -f
+
 # switch off gpg handling
 # be available in test phase
 # let's first compile without tests
 install: mvn install -DskipTests=true -Dgpg.skip=true
 # do the tests separately after xvfb has been installed
-script: mvn test -D coverage 
+script: mvn test -D coverage
 # see https://github.com/trautonen/coveralls-maven-plugin
 # put the coverage results on codecov.io
 after_success:
