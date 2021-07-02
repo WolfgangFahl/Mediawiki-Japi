@@ -1218,8 +1218,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
     multiPart.field("filename", filename);
     multiPart.field("ignorewarnings", "true");
     multiPart.field("text", contents);
-    if (!comment.isEmpty())
-      multiPart.field("comment", comment);
+    if (comment!=null)
+    	if (!comment.isEmpty())
+    		multiPart.field("comment", comment);
     String params = "";
     // remember the old state of exception handling
     boolean oldThrowExceptionOnError = this.throwExceptionOnError;
