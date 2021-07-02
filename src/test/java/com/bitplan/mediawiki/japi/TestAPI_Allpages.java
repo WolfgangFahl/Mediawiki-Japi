@@ -45,7 +45,7 @@ public class TestAPI_Allpages extends APITestbase {
 
   @Test
   public void testAllpages() throws Exception {
-    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       String apfrom = null;
@@ -61,7 +61,7 @@ public class TestAPI_Allpages extends APITestbase {
 
   @Test
   public void testAllImages() throws Exception {
-    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       String aistart = "20080823180546";
@@ -96,7 +96,7 @@ public class TestAPI_Allpages extends APITestbase {
 
   @Test
   public void testBacklink() throws Exception {
-    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       // lWiki.wiki.setDebug(true);
@@ -110,7 +110,7 @@ public class TestAPI_Allpages extends APITestbase {
 
   @Test
   public void testImagesOnPage() throws Exception {
-    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       // lWiki.wiki.setDebug(true);
@@ -135,7 +135,7 @@ public class TestAPI_Allpages extends APITestbase {
 
   @Test
   public void testImagesInfosForPage() throws Exception {
-    ExampleWiki lWiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       // lWiki.wiki.setDebug(true);

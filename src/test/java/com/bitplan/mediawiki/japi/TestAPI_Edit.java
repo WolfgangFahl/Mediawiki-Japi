@@ -140,7 +140,7 @@ public class TestAPI_Edit extends APITestbase {
 
   @Test
   public void TestURLengthLimit() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lwiki = ewm.get("mw31test");
     if (hasWikiUser(lwiki)) {
       lwiki.login();
       // lwiki.setDebug(true);
@@ -167,7 +167,7 @@ public class TestAPI_Edit extends APITestbase {
 
   @Test
   public void testEditNoLogin() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lwiki = ewm.get("mw31test");
     if (hasWikiUser(lwiki)) {
       lwiki.login();
       // FIXME need TestEditNoLogin - should throw an Exception with Message
@@ -266,7 +266,7 @@ public class TestAPI_Edit extends APITestbase {
 
   @Test
   public void testNormalizeTitle() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lwiki = ewm.get("mw31test");
     String titles[] = { "Nice Page" };
     String expected[] = { "Nice_Page" };
     int index = 0;

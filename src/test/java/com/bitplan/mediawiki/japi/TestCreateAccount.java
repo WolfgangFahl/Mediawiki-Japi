@@ -49,7 +49,7 @@ public class TestCreateAccount extends APITestbase {
    */
   @Test
   public void testCreateAccountMW27Up() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lwiki = ewm.get("mw31test");
     Mediawiki wiki = (Mediawiki) lwiki.wiki;
     if (hasWikiUser(lwiki)) {
       lwiki.login();
@@ -73,7 +73,7 @@ public class TestCreateAccount extends APITestbase {
    */
   @Ignore
   public void testCreateAccount() throws Exception {
-    ExampleWiki lwiki = ewm.get("mediawiki-japi-test1_31");
+    ExampleWiki lwiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
     Mediawiki wiki = (Mediawiki) lwiki.wiki;
     if (hasWikiUser(lwiki)) {
       lwiki.login();

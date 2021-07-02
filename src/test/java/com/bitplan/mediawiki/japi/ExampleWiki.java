@@ -41,7 +41,9 @@ import com.bitplan.mediawiki.japi.user.WikiUser;
  */
 @XmlRootElement(name = "examplewiki")
 public class ExampleWiki  {
-  /**
+  public static final String DEFAULT_WIKI_ID = "mw31test";
+
+/**
    * Logging may be enabled by setting debug to true
    */
   protected static java.util.logging.Logger LOGGER = java.util.logging.Logger
