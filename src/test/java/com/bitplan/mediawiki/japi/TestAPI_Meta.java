@@ -62,7 +62,7 @@ public class TestAPI_Meta extends APITestbase {
 			if (debug)
 			  LOGGER.log(Level.INFO,wikiVersion);
 			if (wikiVersion.compareToIgnoreCase("Mediawiki 1.20") >= 0) {
-				assertEquals(lwiki.wiki.getSiteurl()+"/"+lwiki.wiki.getScriptPath(),lwiki.getLogo(), general.getLogo());
+				assertTrue(lwiki.wiki.getSiteurl()+"/"+lwiki.wiki.getScriptPath(),general.getLogo().endsWith(lwiki.getLogo()));
 				check("favicon", general.getFavicon());
 				check("langconversion", general.getLangconversion());
 				check("linkprefix", general.getLinkprefix());

@@ -36,9 +36,9 @@ import com.google.inject.Injector;
  *
  */
 public class ExampleWikiManager {
-  final String SOURCE_WIKI = "mediawiki-japi-test1_31";
-  final String TARGET_WIKI = "mediawiki-japi-test1_32";
-  final String IMGSRC_WIKI = "mediawiki-japi-test1_31";
+  final String SOURCE_WIKI = "mw31test";
+  final String TARGET_WIKI = "mw35test";
+  final String IMGSRC_WIKI = "mw31test";
   
   // FIXME this is not only for test ...
   Injector injector;
@@ -171,11 +171,14 @@ public class ExampleWikiManager {
       // test sites on mediawiki-japi.bitplan.com
       // uncommment to enable
       // /**
-      String versions[] = { "1_31", "1_32" };
+      String versions[] = { "27","31", "35", "36" };
+      int basePort=9080;
+      int i=0;
       for (String version : versions) {
-        wiki = add("mediawiki-japi-test" + version,
-            "http://mediawiki-japi.bitplan.com", "/mw" + version);
-        wiki.setLogo("http://mediawiki-japi.bitplan.com/images/BITPlanLogo2012_197x118.png");
+        wiki = add("mw" + version+"test",
+            "http://localhost:" + (basePort+i),"");
+        i++;
+        wiki.setLogo("wiki.png");
         wiki.setExpectedPages(3);
         testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1",
             true);
