@@ -116,7 +116,7 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-		<!--  https://stackoverflow.com/questions/52502189/java-11-package-javax-xml-bind-does-not-exist -->
+		<!-- Let's work around ugly oracle decisions: https://stackoverflow.com/questions/52502189/java-11-package-javax-xml-bind-does-not-exist -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
@@ -134,4 +134,17 @@
 		</dependency>
 
 	</dependencies>
+	<build>
+		<plugins>
+			<!-- Let's work around more ugly oracle decisions https://stackoverflow.com/a/63475569/1497139 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<detectJavaApiLink>false</detectJavaApiLink>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
