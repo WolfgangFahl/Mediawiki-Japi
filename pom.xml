@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at:
+<!-- Copyright (c) 2015-2020 BITPlan GmbH Project details and license at: 
 	https://github.com/WolfgangFahl/Mediawiki-Japi -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -74,7 +74,7 @@
 			<artifactId>org.eclipse.persistence.moxy</artifactId>
 			<version>${moxy.version}</version>
 		</dependency>
-		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html
+		<!-- needed by eclipse moxy 2.6.0-M3 http://dev.eclipse.org/mhonarc/lists/eclipselink-users/msg08372.html 
 			http://mvnrepository.com/artifact/javax.validation/validation-api/1.1.0.Final -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -116,5 +116,22 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
+		<!--  https://stackoverflow.com/questions/52502189/java-11-package-javax-xml-bind-does-not-exist -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+
 	</dependencies>
 </project>
