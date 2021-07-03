@@ -56,6 +56,8 @@ public class TestAPI_Query extends APITestbase {
     for (ExampleWiki lwiki : getWikis()) {
       Api api = getQueryResult(lwiki, "&list=allpages&apfrom=Kre&aplimit=3");
       List<P> pageRefList = api.getQuery().getAllpages();
+      // Main Page
+      // PictureTestPage
       assertEquals(lwiki.wiki.getSiteurl(), 3, pageRefList.size());
     }
   }
@@ -146,7 +148,7 @@ public class TestAPI_Query extends APITestbase {
   public void testImageInfo() throws Exception {
     /// choose the >1.23 wiki since it has proper imageinfo implementation
     ExampleWiki imageWiki = ewm.get("imgsrcWiki");
-    // debug=true;
+    debug=true;
     if (debug)
       imageWiki.getMediaWikiJapi().setDebug(debug);
     Ii ii = imageWiki.getImageInfo("File:Index.png");

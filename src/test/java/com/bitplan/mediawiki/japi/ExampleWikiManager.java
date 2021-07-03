@@ -38,7 +38,7 @@ import com.google.inject.Injector;
 public class ExampleWikiManager {
   final String SOURCE_WIKI = "mw31test";
   final String TARGET_WIKI = "mw35test";
-  final String IMGSRC_WIKI = "mw31test";
+  final String IMGSRC_WIKI = "bitplanwiki";
   
   // FIXME this is not only for test ...
   Injector injector;
@@ -191,10 +191,9 @@ public class ExampleWikiManager {
         ExamplePage testPage3=wiki.new ExamplePage("TestEditSection","=== section 1 ===\n=== section 2 ===\n",true);
         wiki.addExamplePage("testSectionEdit",testPage3);
       }
-      // bitplan internal wiki
-      // wiki = new
-      // ExampleWiki("capri_bitplan","http://capri.bitplan.com","/mediawiki");
-      // */
+      // bitplan wiki
+      wiki=add("bitplanwiki","https://wiki.bitplan.com","");
+      
       // Please modify this code according to the wikis you used ...
       // this is for a copy test - you need read access to the SOURCE_WIKI and
       // write access
