@@ -193,6 +193,7 @@ public class ExampleWikiManager {
       }
       // bitplan wiki
       wiki=add("bitplanwiki","https://wiki.bitplan.com","");
+      wiki.setLogo("132px-BITPlanLogoFontLessTransparent.png");
       
       // Please modify this code according to the wikis you used ...
       // this is for a copy test - you need read access to the SOURCE_WIKI and

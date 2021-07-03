@@ -58,10 +58,15 @@ public class TestAPI_Meta extends APITestbase {
 			check("generator", general.getGenerator());
 			check("logo", general.getLogo(), mayBeNull);
 			String wikiVersion=general.getGenerator();
-			// debug=true;
+			debug=true;
 			if (debug)
 			  LOGGER.log(Level.INFO,wikiVersion);
 			if (wikiVersion.compareToIgnoreCase("Mediawiki 1.20") >= 0) {
+				String expectedLogo=lwiki.getLogo();
+				String logo=general.getLogo();
+				if (debug) {
+					LOGGER.log(Level.INFO, logo);
+				}
 				assertTrue(lwiki.wiki.getSiteurl()+"/"+lwiki.wiki.getScriptPath(),general.getLogo().endsWith(lwiki.getLogo()));
 				check("favicon", general.getFavicon());
 				check("langconversion", general.getLangconversion());
