@@ -127,25 +127,23 @@ public class TestAPI_Allpages extends APITestbase {
 
 	@Test
 	public void testImagesInfosForPage() throws Exception {
-		ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
-		debug = true;
-		if (hasWikiUser(lWiki)) {
-			lWiki.login();
-			// lWiki.wiki.setDebug(true);
-			String[][] expected = { { "images/0/0c/" }, { "images/a/a0" }, { "images/0/0c/", "images/a/a0" } };
-			String pageTitles[] = { "Picture Example", "PDF Example", "Image Example" };
-			int i = 0;
-			for (String pageTitle : pageTitles) {
-				List<Ii> imageInfos = lWiki.wiki.getImageInfosForPage(pageTitle, 100);
-				assertEquals(pageTitle, expected[i].length, imageInfos.size());
-				for (int j = 0; j < imageInfos.size(); j++) {
-					Ii imageInfo = imageInfos.get(j);
-					assertTrue(imageInfo.getUrl(), imageInfo.getUrl().contains(expected[i][j]));
-					if (debug)
-						System.out.println(imageInfo.getCanonicaltitle());
-				}
-				i++;
+		ExampleWiki lWiki = ewm.get("bitplanwiki");
+		// debug = true;
+		// lWiki.wiki.setDebug(true);
+		String[][] expected = { { "/0/0c/" }, { "/a/a0" }, { "/0/0c/", "/a/a0" } };
+		String pageTitles[] = { "Picture Example", "PDF Example", "Image Example" };
+		int i = 0;
+		for (String pageTitle : pageTitles) {
+			List<Ii> imageInfos = lWiki.wiki.getImageInfosForPage(pageTitle, 100);
+			assertEquals(pageTitle, expected[i].length, imageInfos.size());
+			for (int j = 0; j < imageInfos.size(); j++) {
+				Ii imageInfo = imageInfos.get(j);
+				if (debug)
+					System.out.println(String.format("i: %d, j: %d pageTitle: %s, url:%s",i,j,pageTitle,imageInfo.getUrl()));
+				assertTrue(imageInfo.getUrl(), imageInfo.getUrl().contains(expected[i][j]));
+				
 			}
+			i++;
 		}
 	}
 }
