@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#
+# workaround https://github.com/gabrieldemarmiesse/python-on-whales/issues/188
+#
+installDockerComposeCLIPlugin() {
+   docker --version
+   # remember working directory
+   wd=$(pwd)
+   cliplugindir=$HOME/.docker/cli-plugins
+   mkdir -p $cliplugindir
+   cd $cliplugindir
+   wget https://github.com/docker/compose-cli/releases/download/v2.0.0-beta.3/docker-compose-linux-amd64
+   mv  docker-compose-linux-amd64 docker-compose
+   # try out plugin
+   chmod +x docker-compose
+   pwd
+   ls -l
+   docker
+   docker  2>&1 | grep compose
+   cd $wd
+}
+installDockerComposeCLIPlugin
