@@ -23,6 +23,7 @@ package org.wikipedia;
 import java.net.URLEncoder;
 import java.util.*;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -279,7 +280,7 @@ public class WikiUnitTest
         // assertTrue("getRevision: content revdeled", rev.isContentDeleted());
     }
     
-    @Test
+    @Ignore
     public void diff() throws Exception
     {
         assertNull("diff: no previous revision", enWiki.getRevision(586849481L).diff(Wiki.PREVIOUS_REVISION));
