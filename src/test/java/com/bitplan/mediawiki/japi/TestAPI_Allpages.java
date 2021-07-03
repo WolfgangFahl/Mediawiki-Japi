@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
 import java.util.logging.Level;
 
 import org.junit.Test;
@@ -66,13 +67,15 @@ public class TestAPI_Allpages extends APITestbase {
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       String aistart = "20080823180546";
-      String aiend = "20191231235959";
+      String aiend = "20301231235959";
       int ailimit = 500;
       // lWiki.wiki.setDebug(true);
       List<Img> images = lWiki.wiki.getAllImagesByTimeStamp(aistart, aiend,
           ailimit);
-      if (debug)
-        System.out.println(images.size());
+      debug=true;
+      if (debug) {
+        LOGGER.log(Level.INFO,"found images:"+images.size());
+      }  
       assertEquals(3, images.size());
       String[] expected = { "Index.png","Wuthering_Heights_NT.pdf",
           "Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg"
