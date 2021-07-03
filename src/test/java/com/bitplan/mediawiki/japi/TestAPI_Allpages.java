@@ -62,35 +62,38 @@ public class TestAPI_Allpages extends APITestbase {
 	}
 
 	@Test
-	public void testAllImages() throws Exception {
-		ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
-		if (hasWikiUser(lWiki)) {
-			lWiki.login();
-			String aistart = "20080823180546";
-			String aiend = "20301231235959";
-			int ailimit = 500;
-			// lWiki.wiki.setDebug(true);
-			List<Img> images = lWiki.wiki.getAllImagesByTimeStamp(aistart, aiend, ailimit);
-			debug = true;
-			if (debug) {
-				LOGGER.log(Level.INFO, "found images:" + images.size());
+	public void testGetAllImagesByTimeStamp() throws Exception {
+		ExampleWiki lWiki = ewm.get("bitplanwiki");
+		String[] expectedUsage = { "PDF Example", "Picture Example" };
+		String[] expected = { "Wuthering_Heights_NT.pdf",
+				"Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg" };
+		String aistart = "20210703131900";
+		String aiend = "20210703132500";
+		int ailimit = 500;
+		// lWiki.wiki.setDebug(true);
+		List<Img> images = lWiki.wiki.getAllImagesByTimeStamp(aistart, aiend, ailimit);
+		// debug = true;
+		if (debug) {
+			LOGGER.log(Level.INFO, "found images:" + images.size());
+			int i=0;
+			for (Img image:images) {
+				i++;
+				LOGGER.log(Level.INFO,String.format("%d: %s %s",i, image.getTimestamp(),image.getName()));
 			}
-			assertEquals(3, images.size());
-			String[] expected = { "Index.png", "Wuthering_Heights_NT.pdf",
-					"Radcliffe_Chastenay_-_Les_Mysteres_d_Udolphe_frontispice_T6.jpg" };
-			for (int i = 0; i < expected.length; i++) {
-				assertEquals(expected[i], images.get(i).getName());
-			}
-			// lWiki.wiki.setDebug(true);
-			String[] expectedUsage = { "PDF Example", "Picture Example" };
-			int i = 0;
-			for (Img img : images) {
-				if (!"Index.png".equals(img.getName())) {
-					List<Iu> ius = lWiki.wiki.getImageUsage("File:" + img.getName(), "", 50);
-					assertTrue(img.getName(), ius.size() > 1);
-					assertEquals(expectedUsage[i], ius.get(0).getTitle());
-					i++;
-				}
+		}
+		assertEquals(expected.length, images.size());
+		for (int i = 0; i < expected.length; i++) {
+			assertEquals(expected[i], images.get(i).getName());
+		}
+		// lWiki.wiki.setDebug(true);
+
+		int i = 0;
+		for (Img img : images) {
+			if (!"Index.png".equals(img.getName())) {
+				List<Iu> ius = lWiki.wiki.getImageUsage("File:" + img.getName(), "", 50);
+				assertTrue(img.getName(), ius.size() > 1);
+				assertEquals(expectedUsage[i], ius.get(0).getTitle());
+				i++;
 			}
 		}
 	}
@@ -139,9 +142,10 @@ public class TestAPI_Allpages extends APITestbase {
 			for (int j = 0; j < imageInfos.size(); j++) {
 				Ii imageInfo = imageInfos.get(j);
 				if (debug)
-					System.out.println(String.format("i: %d, j: %d pageTitle: %s, url:%s",i,j,pageTitle,imageInfo.getUrl()));
+					System.out.println(
+							String.format("i: %d, j: %d pageTitle: %s, url:%s", i, j, pageTitle, imageInfo.getUrl()));
 				assertTrue(imageInfo.getUrl(), imageInfo.getUrl().contains(expected[i][j]));
-				
+
 			}
 			i++;
 		}
