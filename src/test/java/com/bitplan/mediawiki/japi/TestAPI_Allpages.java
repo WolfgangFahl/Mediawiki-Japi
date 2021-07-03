@@ -46,6 +46,7 @@ public class TestAPI_Allpages extends APITestbase {
   @Test
   public void testAllpages() throws Exception {
     ExampleWiki lWiki = ewm.get(ExampleWiki.DEFAULT_WIKI_ID);
+    debug=true;
     if (hasWikiUser(lWiki)) {
       lWiki.login();
       String apfrom = null;
@@ -54,7 +55,7 @@ public class TestAPI_Allpages extends APITestbase {
       if (debug) {
         LOGGER.log(Level.INFO, "page #=" + pages.size());
       }
-      assertTrue(pages.size() >= 7);
+      assertTrue(pages.size() >= 6);
     }
 
   }
