@@ -1,3 +1,5 @@
+os: linux
+dist: bionic
 #
 # this is a java project using maven
 language: java
