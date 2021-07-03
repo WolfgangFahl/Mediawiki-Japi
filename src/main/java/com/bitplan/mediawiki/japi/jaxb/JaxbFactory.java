@@ -34,7 +34,7 @@ import javax.xml.bind.ValidationEventHandler;
 import org.eclipse.persistence.jaxb.MarshallerProperties;
 
 /**
- * gerneric JaxbFactory
+ * generic JaxbFactory
  * 
  * @author wf
  *
@@ -83,12 +83,28 @@ public class JaxbFactory<T> implements JaxbFactoryApi<T> {
     });
     return u;
   }
+  
+  /**
+   * fix the given xml - it might have trailing html content
+   * @param xml
+   * @return the fixed xml
+   */
+  public String fixXML(String xml) {
+	  xml=xml.trim();
+	  String br="<br />";
+	  if (xml.contains(br)) {
+		  String[] parts=xml.split(br);
+		  xml=parts[0];
+	  } 
+	  return xml;
+  }
 
   @SuppressWarnings("unchecked")
   public T fromString(Unmarshaller u, String s) throws Exception {
     // unmarshal the string to a Java object of type <T> (classOfT has the
     // runtime type)
-    StringReader stringReader = new StringReader(s.trim());
+	String xml=fixXML(s);
+    StringReader stringReader = new StringReader(xml);
     T result = null;
     // this step will convert from xml text to Java Object
     try {

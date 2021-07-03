@@ -30,7 +30,7 @@ import org.junit.runners.Suite;
  *
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ TestPushPages.class,TestIssues.class, TestApiJaxb.class, TestAPI_Query.class,
+@Suite.SuiteClasses({ TestXML.class,TestPushPages.class,TestIssues.class, TestApiJaxb.class, TestAPI_Query.class,
     TestAPI_Meta.class, TestAPI_Recentchanges.class, TestAPI_Login.class,
     TestAPI_Edit.class, TestAPI_Parse.class, TestAPI_Allpages.class,
     TestAPI_SMW.class,

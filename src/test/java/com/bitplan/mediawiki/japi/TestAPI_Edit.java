@@ -111,7 +111,7 @@ public class TestAPI_Edit extends APITestbase {
    * @throws Exception
    */
   @Test
-  public void TestEdit() throws Exception {
+  public void testEdit() throws Exception {
     for (ExampleWiki lwiki : getWikis()) {
       List<ExamplePage> exampleEditPages = lwiki
           .getExamplePages("testEditPages");
