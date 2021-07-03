@@ -70,7 +70,7 @@ public class TestAPI_Upload extends APITestbase {
    */
   @Test
   public void testUploadViaII() throws Exception {
-    ExampleWiki sourceWiki = ewm.get("sourceWiki");
+    ExampleWiki sourceWiki = ewm.get("bitplanwiki");
     // sourceWiki.wiki.setDebug(true);
     String imageName = "Index.png";
     String imageTitle = "File:" + imageName;

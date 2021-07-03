@@ -5,9 +5,10 @@ dist: focal
 language: java
 # make sure things keep working see http://wiki.bitplan.com/index.php/Java8
 jdk: openjdk8
+
 before_install:
 - sudo apt-get update
-- sudo apt-get install python3 python3-pip python3-setuptools
+- sudo apt-get install python3 python3-pip python3-setuptools openjdk-8-jdk 
 - pip3 install pymediawikidocker
 - mwcluster -f
 
