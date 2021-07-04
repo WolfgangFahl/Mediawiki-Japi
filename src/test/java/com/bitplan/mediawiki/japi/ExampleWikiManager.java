@@ -179,7 +179,7 @@ public class ExampleWikiManager {
             "http://localhost:" + (basePort+i),"");
         i++;
         wiki.setLogo("wiki.png");
-        wiki.setExpectedPages(3);
+        wiki.setExpectedPages(2);
         testPage1 = wiki.new ExamplePage("Testpage 1", "This is test page 1",
             true);
         wiki.addExamplePage("testGetPages", testPage1);

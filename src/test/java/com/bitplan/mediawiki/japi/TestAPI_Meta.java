@@ -127,7 +127,7 @@ public class TestAPI_Meta extends APITestbase {
 	 * @throws Exception
 	 */
 	public void testStatistics() throws Exception {
-		// debug=true;
+		debug=true;
 		for (ExampleWiki lwiki : getWikis()) {
 			Api api = getQueryResult(lwiki, "&meta=siteinfo&siprop=statistics");
 			assertNotNull(api);
@@ -138,8 +138,9 @@ public class TestAPI_Meta extends APITestbase {
 			if (debug) {
 				LOGGER.log(Level.INFO,String.format("%s: %3d pages",lwiki.getWikiId(),statistics.getPages()));
 			}
+			int expectedPages=lwiki.getExpectedPages();
 			assertTrue(lwiki.wiki.getSiteurl() + lwiki.wiki.getScriptPath() + " " + statistics.getPages() + ">"
-					+ lwiki.getExpectedPages(), statistics.getPages().intValue() >= lwiki.getExpectedPages());
+					+ lwiki.getExpectedPages(), statistics.getPages().intValue() >= expectedPages);
 		}
 	}
 
