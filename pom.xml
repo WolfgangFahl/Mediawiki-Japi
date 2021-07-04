@@ -14,7 +14,7 @@
 	<artifactId>mediawiki-japi</artifactId>
 	<packaging>jar</packaging>
 	<name>BITPlan-Mediawiki-Japi</name>
-	<version>0.1.06</version>
+	<version>0.2.1</version>
 	<description>Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page</description>
 	<properties>
 		<!-- for parent pom to work -->
@@ -26,7 +26,7 @@
 		<jersey.version>1.19.4</jersey.version>
 		<guice.version>3.0</guice.version>
 		<mockito.version>1.10.16</mockito.version>
-		<moxy.version>2.6.5</moxy.version>
+		<moxy.version>2.7.4</moxy.version>
 		<!-- <moxy.version>2.5.2</moxy.version> -->
 		<dependency.locations.enabled>false</dependency.locations.enabled>
 		<assemblyMainClass>com.bitplan.mediawiki.japi.MediawikiMain</assemblyMainClass>
