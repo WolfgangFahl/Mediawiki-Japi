@@ -775,7 +775,8 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    */
   public void logout() throws Exception {
     TokenResult token = null;
-    if (getVersion().compareToIgnoreCase("Mediawiki 1.31") >= 0) {
+    String version=getVersion();
+    if (version.compareToIgnoreCase("Mediawiki 1.27.7") >= 0) {
       token = this.getCSRF_Token();
     }
     Api apiResult = getActionResult("logout", "", token, null);
