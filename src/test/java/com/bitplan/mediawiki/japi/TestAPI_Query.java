@@ -115,36 +115,38 @@ public class TestAPI_Query extends APITestbase {
 		for (ExampleWiki lwiki : getWikis()) {
 			final List<ExamplePage> examplePages = lwiki.getExamplePages("testGetPages");
 			final List<String> titles = lwiki.getTitleList(examplePages);
-			final Mediawiki mediaWikiJapi = lwiki.getMediaWikiJapi();
-			final List<Page> pages = mediaWikiJapi.getPages(titles);
-			for (Page page : pages) {
-				final int nrOfRevisionsFromPageObject = page.getRevisions().size();
-				assertEquals(
-						"Expected exactly one revision, since multiple revisions are only available in single page mode.",
-						1, nrOfRevisionsFromPageObject);
-				final List<Rev> revisions = mediaWikiJapi.getPageRevisions(page.getTitle(), 500,
-						"content|ids|timestamp", "");
-				assertTrue("Expected a non-empty list of revisions.", revisions.size() > 0);
-				if (revisions.size() > 1) {
-					sawResultWithMoreThanOneRevision = true;
-				}
-				final Rev revFromPageObject = page.getRevisions().get(0);
-				final Rev rev0FromList = revisions.get(0);
-				assertEquals("Expected the same ID on top of the list.", revFromPageObject.getRevid(),
-						rev0FromList.getRevid());
-				assertEquals("Expected the same content on top of the list.", revFromPageObject.getValue(),
-						rev0FromList.getValue());
-				assertEquals("Expected the same timestamp on top of the list.", revFromPageObject.getTimestamp(),
-						rev0FromList.getTimestamp());
-				final List<Rev> revisionsSortedById = new ArrayList<>(revisions);
-				Collections.sort(revisionsSortedById, new Comparator<Rev>() {
-					@Override
-					public int compare(Rev rev1, Rev rev2) {
-						return rev2.getRevid().compareTo(rev1.getRevid());
+			if (titles.size() > 0) {
+				final Mediawiki mediaWikiJapi = lwiki.getMediaWikiJapi();
+				final List<Page> pages = mediaWikiJapi.getPages(titles);
+				for (Page page : pages) {
+					final int nrOfRevisionsFromPageObject = page.getRevisions().size();
+					assertEquals(
+							"Expected exactly one revision, since multiple revisions are only available in single page mode.",
+							1, nrOfRevisionsFromPageObject);
+					final List<Rev> revisions = mediaWikiJapi.getPageRevisions(page.getTitle(), 500,
+							"content|ids|timestamp", "");
+					assertTrue("Expected a non-empty list of revisions.", revisions.size() > 0);
+					if (revisions.size() > 1) {
+						sawResultWithMoreThanOneRevision = true;
 					}
-				});
-				assertEquals(revisionsSortedById, revisions);
+					final Rev revFromPageObject = page.getRevisions().get(0);
+					final Rev rev0FromList = revisions.get(0);
+					assertEquals("Expected the same ID on top of the list.", revFromPageObject.getRevid(),
+							rev0FromList.getRevid());
+					assertEquals("Expected the same content on top of the list.", revFromPageObject.getValue(),
+							rev0FromList.getValue());
+					assertEquals("Expected the same timestamp on top of the list.", revFromPageObject.getTimestamp(),
+							rev0FromList.getTimestamp());
+					final List<Rev> revisionsSortedById = new ArrayList<>(revisions);
+					Collections.sort(revisionsSortedById, new Comparator<Rev>() {
+						@Override
+						public int compare(Rev rev1, Rev rev2) {
+							return rev2.getRevid().compareTo(rev1.getRevid());
+						}
+					});
+					assertEquals(revisionsSortedById, revisions);
 
+				}
 			}
 		}
 		assertTrue(sawResultWithMoreThanOneRevision);
