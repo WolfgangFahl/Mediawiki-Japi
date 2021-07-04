@@ -3,10 +3,10 @@ dist: focal
 
 before_install:
 - sudo apt-get update
-- sudo apt-get install python3 python3-pip python3-setuptools openjdk-8-jdk
+- sudo apt-get install python3 python3-pip python3-setuptools
 - pip3 install pymediawikidocker
 - scripts/installDockerComposerCLIPlugin
-- mwcluster -f | grep -v sha256
+- mwcluster -f -wf mw27test mw31test mw35test mw36test | grep -v sha256
 
 #
 # this is a java project using maven
