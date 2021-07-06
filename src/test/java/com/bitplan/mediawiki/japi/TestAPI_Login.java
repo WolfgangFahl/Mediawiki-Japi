@@ -59,6 +59,18 @@ public class TestAPI_Login extends APITestbase {
 			assertNotNull(wuser.getPassword());
 		}
 	}
+	
+	/**
+	 * test the Version Comparison to be lenient
+	 * @see <a href="https://github.com/WolfgangFahl/Mediawiki-Japi/issues/58">Issue 58</a>
+	 * @throws Exception
+	 */
+	@Test
+	public void testVersionComparison() throws Exception {
+		Mediawiki mw=new Mediawiki();
+		mw.setVersion("1.35.2");
+		assertTrue(mw.isVersion128());
+	}
 
 	/**
 	 * http://www.mediawiki.org/wiki/API:Login

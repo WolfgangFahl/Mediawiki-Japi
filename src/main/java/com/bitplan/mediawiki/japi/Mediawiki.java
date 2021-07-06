@@ -634,6 +634,9 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
    * @return true if version is above 128
    */
   public boolean checkVersion128(String mwversion) {
+	if (!mwversion.toLowerCase().startsWith("mediawiki")) {
+		mwversion="Mediawiki "+mwversion;
+	}
     boolean result = mwversion.compareToIgnoreCase("Mediawiki 1.28") >= 0;
     return result;
   }
