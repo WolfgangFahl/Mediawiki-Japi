@@ -22,33 +22,35 @@ package com.bitplan.mediawiki.japi;
 
 import static org.junit.Assert.*;
 
+import java.util.logging.Level;
+
 import org.junit.Test;
 
 /**
  * test page Title handling
+ * 
  * @author wf
  *
  */
 public class TestPageTitle extends APITestbase {
 
-  @Test 
-  public void testCanonicalPageTitles() throws Exception {
-    for (ExampleWiki lwiki : getWikis()) {
-      Mediawiki mw=(Mediawiki) lwiki.wiki;
-      SiteInfo siteinfo = mw.getSiteInfo();
-      PageInfo pageinfo=new PageInfo("Template:Testtemplate",siteinfo);
-      if (debug) {
-        System.out.println(pageinfo.lang);
-        System.out.println(pageinfo.namespaceId);
-        System.out.println(pageinfo.nameSpaceName);
-        System.out.println(pageinfo.pageTitle);
-        System.out.println(pageinfo.canonicalPageTitle);
-      }
-      assertEquals("en",pageinfo.lang);
-      assertEquals(10,pageinfo.namespaceId);
-      assertEquals("Template",pageinfo.nameSpaceName);
-      assertEquals("Template:Testtemplate",pageinfo.pageTitle);
-      assertEquals("Template:Testtemplate",pageinfo.canonicalPageTitle);
-    }
-  }
+	@Test
+	public void testCanonicalPageTitles() throws Exception {
+		debug = true;
+		for (ExampleWiki lwiki : getWikis()) {
+			Mediawiki mw = (Mediawiki) lwiki.wiki;
+			SiteInfo siteinfo = mw.getSiteInfo();
+			PageInfo pageinfo = new PageInfo("Template:Testtemplate", siteinfo);
+			if (debug) {
+				LOGGER.log(Level.INFO, String.format("%s: lang: %s\nnamespaceId: %s\namespace: %s\npageTitle: %s\nCanonical PageTitle:%s ", 
+						lwiki.wikiId, pageinfo.lang, pageinfo.namespaceId,
+						pageinfo.nameSpaceName, pageinfo.pageTitle, pageinfo.canonicalPageTitle));
+			}
+			assertEquals("en", pageinfo.lang);
+			assertEquals(10, pageinfo.namespaceId);
+			assertEquals("Template", pageinfo.nameSpaceName);
+			assertEquals("Template:Testtemplate", pageinfo.pageTitle);
+			assertEquals("Template:Testtemplate", pageinfo.canonicalPageTitle);
+		}
+	}
 }

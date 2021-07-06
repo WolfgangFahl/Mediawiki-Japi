@@ -471,8 +471,15 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
         + "&format=" + format;
     ClientResponse response;
     // decide for the method to use for api access
-    response = this.getPostResponse(queryUrl, params, token, pFormData);
-    String text = this.getResponseString(response);
+    // FIXME should we have some valid default XML here?
+    String text="";
+    try { 
+    	response = this.getPostResponse(queryUrl, params, token, pFormData);
+    	text = this.getResponseString(response);
+    } catch (Throwable th ) {
+    	// some error e.g. a connection problem
+    	LOGGER.log(Level.SEVERE,th.getMessage());
+    }
     return text;
   }
 
