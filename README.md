@@ -128,3 +128,4 @@ unit tests supplied with Wiki.java).
 * 0.1.03 - 2019-03-20: merges #43
 * 0.1.04 - 2019      : not released to maven central
 * 0.1.05 - 2020-03-16: fixes #49 - adds command line mode and upgrades some dependencies
+* 0.2.1  - 2021-12-17: fixes log4j upgrade to 2.16.0
