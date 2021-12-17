@@ -1,4 +1,4 @@
 #!/bin/bash
 # WF 2021-07-06
-mvn -U clean install  -D skipTests deploy
+mvn -U clean install  -D skipTests deploy -Dgpg.skip
 mvn nexus-staging:release
