@@ -32,3 +32,4 @@
 * 0.2.0  - 2021      : not released to maven central
 * 0.2.1  - 2021-12-16: failed sonatype release
 * 0.2.2  - 2021-12-17: fixes log4j upgrade to 2.16.0
+* 0.2.3  - 2021-12-19: fixes log4j upgrade to 2.17.0

@@ -2,7 +2,7 @@
 [Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page](http://mediawiki-japi.bitplan.com/index.php/Main_Page)
 
 [![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
-[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.2.1/jar)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.2.3/jar)
 [![codecov](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi/branch/master/graph/badge.svg)](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi)
 [![GitHub issues](https://img.shields.io/github/issues/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues)
 [![GitHub issues](https://img.shields.io/github/issues-closed/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues/?q=is%3Aissue+is%3Aclosed)
@@ -22,11 +22,11 @@ Maven dependency
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.3</version>
 </dependency>
 ```
 
-[Current release at repo1.maven.org](https://repo1.maven.org/maven2/com/bitplan/mediawiki-japi/0.2.1/)
+[Current release at repo1.maven.org](https://repo1.maven.org/maven2/com/bitplan/mediawiki-japi/0.2.3/)
 
 ### How to build
 ```
@@ -128,4 +128,7 @@ unit tests supplied with Wiki.java).
 * 0.1.03 - 2019-03-20: merges #43
 * 0.1.04 - 2019      : not released to maven central
 * 0.1.05 - 2020-03-16: fixes #49 - adds command line mode and upgrades some dependencies
-* 0.2.1  - 2021-12-17: fixes log4j upgrade to 2.16.0
+* 0.2.0  - 2021      : not released to maven central
+* 0.2.1  - 2021-12-16: failed sonatype release
+* 0.2.2  - 2021-12-17: fixes log4j upgrade to 2.16.0
+* 0.2.3  - 2021-12-19: fixes log4j upgrade to 2.17.0
