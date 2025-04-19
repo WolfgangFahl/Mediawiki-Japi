@@ -39,7 +39,7 @@ public class TestPushPages extends APITestbase {
   public static PushPages getTestPushPages() throws Exception {
     PushPages pp = null;
     String sourceWikiId = "wikipedia_org_test2";
-    String targetWikiId = "mw31test";
+    String targetWikiId = "test";
     if (!TestSuite.isTravis()) {
       pp = new PushPages(sourceWikiId, targetWikiId,true);
     }
