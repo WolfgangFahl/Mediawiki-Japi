@@ -2,7 +2,7 @@
  *
  * This file is part of the https://github.com/WolfgangFahl/Mediawiki-Japi open source project
  *
- * Copyright 2015-2021 BITPlan GmbH https://github.com/BITPlan
+ * Copyright 2015-2025 BITPlan GmbH https://github.com/BITPlan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ public class WikiUnitTest
         String[] titles = new String[] { "Main page", "Main Page", "sdkghsdklg", "Hello.jpg", "Main page", "Fish & chips" };
         String[] expected = new String[] { "Main Page", null, null, "Goatse.cx", "Main Page", "Fish and chips" };
         assertArrayEquals("resolveRedirects", expected, enWiki.resolveRedirects(titles)); 
-        assertEquals("resolveRedirects: RTL", "الصفحة الرئيسية", arWiki.resolveRedirect("الصفحه الرئيسيه"));
+        assertEquals("resolveRedirects: RTL", "الصفحة الرئيسة", arWiki.resolveRedirect("الصفحه الرئيسيه"));
     }
     
     @Test
