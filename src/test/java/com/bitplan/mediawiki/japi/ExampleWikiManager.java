@@ -169,7 +169,7 @@ public class ExampleWikiManager {
        * testPage1b); wiki.addExamplePage("testEditPages", testPage1b);
        */
       // test sites on mediawiki-japi.bitplan.com
-      // uncommment to enable
+      // uncomment to enable
       // /**
       String versions[] = { "27","31", "35", "36" };
       int basePort=9080;

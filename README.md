@@ -2,7 +2,7 @@
 [Java library to call Mediawiki API described at http://www.mediawiki.org/wiki/API:Main_page](http://mediawiki-japi.bitplan.com/index.php/Main_Page)
 
 [![Travis (.org)](https://img.shields.io/travis/WolfgangFahl/Mediawiki-Japi.svg)](https://travis-ci.org/WolfgangFahl/Mediawiki-Japi)
-[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.2.3/jar)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan/mediawiki-japi.svg)](https://search.maven.org/artifact/com.bitplan/mediawiki-japi/0.3.0/jar)
 [![codecov](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi/branch/master/graph/badge.svg)](https://codecov.io/gh/WolfgangFahl/Mediawiki-Japi)
 [![GitHub issues](https://img.shields.io/github/issues/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues)
 [![GitHub issues](https://img.shields.io/github/issues-closed/WolfgangFahl/Mediawiki-Japi.svg)](https://github.com/WolfgangFahl/Mediawiki-Japi/issues/?q=is%3Aissue+is%3Aclosed)
@@ -22,11 +22,11 @@ Maven dependency
 <dependency>
   <groupId>com.bitplan</groupId>
   <artifactId>mediawiki-japi</artifactId>
-  <version>0.2.3</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
-[Current release at repo1.maven.org](https://repo1.maven.org/maven2/com/bitplan/mediawiki-japi/0.2.3/)
+[Current release at maven central](https://central.sonatype.com/artifact/com.bitplan/mediawiki-japi/0.2.3?smo=true)
 
 ### How to build
 ```

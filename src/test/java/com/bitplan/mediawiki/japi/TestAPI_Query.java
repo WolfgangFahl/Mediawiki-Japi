@@ -165,7 +165,8 @@ public class TestAPI_Query extends APITestbase {
 			// System.out.println(ii.getCanonicaltitle());
 			System.out.println(ii.getWidth() + "x" + ii.getHeight());
 		}
-		assertEquals("http://wiki.bitplan.com/images/wiki/a/ae/Index.png", ii.getUrl());
+		String url=ii.getUrl();
+		assertEquals("https://wiki.bitplan.com/images/a/ae/Index.png", url);
 		int expectedWidth = 48;
 		int expectedHeight = 48;
 		assertTrue(expectedHeight == ii.getHeight());

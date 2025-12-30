@@ -90,7 +90,7 @@ public class Mediawiki extends MediaWikiApiImpl implements MediawikiApi {
   /**
    * current Version
    */
-  protected static final String VERSION = "0.1.07";
+  protected static final String VERSION = "0.3.0";
 
   /**
    * if true main can be called without calling system.exit() when finished
